@@ -1,0 +1,13 @@
+packages
+
+
+npx express-generator
+npm install express mongoose mongodb multer ejs nodemon bcrypt  morgan dotenv  nodemailer path otp-generator 
+
+
+
+cloudinary  cors argon2 node-cron cron razorpay puppeteer 
+
+
+
+
