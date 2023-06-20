@@ -1,0 +1,48 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+
+
+<div class="mainBody">
+<!-- Add category block -->
+    <div class="shadow-div container rounded text-center">
+        <p>
+        
+            <button class="btn btn-primary m-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              Add Category
+            </button>
+          </p>
+          <div class="collapse container" id="collapseExample">
+            <form class="form-floating">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="Category Name">
+                <label for="floatingInput">Category Name</label>
+              </div>
+              <div class="form-floating">
+                <input type="file" class="form-control" id="file" placeholder="Add Image">
+                <label for="file">Image</label>
+                <input type="submit" class="btn btn-primary m-4 mx-auto" value="Add ">
+                <a class="btn btn-danger mx-4" href="/admin/category">Cancel</a>
+
+              </div>
+            </form>
+          </div>
+    </div>   
+
+    <!-- List category  -->
+    <div class="card text-center category-cards rounded" style="width: 20rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Category Name</h5>
+          <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+          <a href="/admin/editcategory" class="btn btn-warning">Edit</a>
+        </div>
+      </div>
+
+
+    
+</div>
+
+
+
+
+<%-include("../layout/adminFooter.ejs")%>

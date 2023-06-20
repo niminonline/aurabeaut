@@ -1,0 +1,79 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+
+
+<div class="mainBody">
+
+    <div class="shadow-div container text-center">
+        <h3 class=" my-4">Edit Product</h3>
+
+        
+        <div class="form-div container">
+            <form class="form-floating">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="productName" placeholder="Product Name">
+                    <label for="productName">Product Name</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="price" placeholder="Price">
+                    <label for="price">Price</label>
+                  </div>
+                  
+                  <div class="form-floating my-4">
+                    <select class="form-select" id="category" aria-label="category">
+                      <option selected>Choose Category</option>
+                      <option value="1">%=category%</option>
+                      
+                    </select>
+                    <label for="floatingSelect">Category</label>
+                  </div>
+
+                  <div class="form-floating mb-3">
+                    <textarea  class="form-control" id="description" placeholder="Description"></textarea>
+                    <label for="description">Description</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="stock" placeholder="Stock">
+                    <label for="stock">Stock</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="brand" placeholder="Brand">
+                    <label for="brand">Brand</label>
+                  </div>
+                  <!-- <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="Category Name">
+                    <label for="floatingInput">Product Name</label>
+                  </div> -->
+
+                  <div class="form-floating">
+                    <input type="file" class="form-control" id="image" placeholder="Add Image">
+                    <label for="image">Image</label>
+                    <input type="submit" class="btn btn-primary m-4 mx-auto" value="Save ">
+                    <a class="btn btn-danger mx-4" href="/admin/products">Cancel</a>
+                  </div>
+                </form>
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+</div>
+
+
+
+
+<%-include("../layout/adminFooter.ejs")%>

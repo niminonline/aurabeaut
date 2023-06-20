@@ -1,0 +1,74 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+
+
+<div class="mainBody">
+
+
+    <nav class="navbar bg-light mx-auto bg-primary">
+        <div class="container-fluid justify-content-around">
+          <form class="d-flex" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+          <a class="btn btn-primary" href="/admin/addproduct">Add Products</a>
+        </div>
+      </nav>
+    
+      <div class="table-responsive my-4">
+        <table class="table table-hover">
+          <tr class="heading-row">
+            <th>Sl No:</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Description </th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category</th>
+            <th>Action</th>
+            <!-- <th>View</th> -->
+          </tr>
+    
+          <tr>
+            <td>1</td>
+            <td>image</td>
+            <td>Neem Facewash</td>
+            <td>Facewash with moisturizer</td>
+            <td>299</td>
+            <td>50</td>
+            <td>Facewash</td>
+            <td>
+                <a href="/admin/editproduct"><i class="bi bi-pencil-square mx-2" style="font-size: 1.2rem; "></i></i></a>
+                <a href="#"><i class="bi bi-trash3-fill mx-2" style="font-size: 1.2rem;"></i></a>
+
+             </td>
+            
+          </tr>
+          
+        </table>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+</div>
+
+
+
+
+<%-include("../layout/adminFooter.ejs")%>

@@ -1,0 +1,55 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+<div class="mainBody">
+  <nav class="navbar bg-light mx-auto bg-primary">
+    <div class="container-fluid justify-content-center">
+      <form class="d-flex" role="search">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+  <div class="table-responsive my-4">
+    <table class="table table-hover">
+      <tr class="heading-row">
+        <th>Sl No.</th>
+        <th>Name</th>
+        <th>Email address</th>
+        <th>Mobile Number</th>
+        <th>Actions</th>
+        <!-- <th>View</th> -->
+      </tr>
+
+      <tr>
+        <td>1</td>
+        <td>Nimin</td>
+        <td>niminonline@gmail.com</td>
+        <td>9496778881</td>
+        <td>
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckChecked"
+              checked
+            />
+            <label
+              class="form-check-label"
+              for="flexSwitchCheckChecked"
+            ></label>
+          </div>
+        </td>
+        <!-- <td><button class="btn btn-primary">View Details</button></td> -->
+      </tr>
+    </table>
+  </div>
+</div>
+
+<%-include("../layout/adminFooter.ejs")%>

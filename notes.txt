@@ -9,5 +9,6 @@ npm install express mongoose mongodb multer ejs nodemon bcrypt  morgan dotenv  n
 cloudinary  cors argon2 node-cron cron razorpay puppeteer 
 
 
-
+Submit button
+<input type="submit" class="login100-form-btn" value="Submit">
 

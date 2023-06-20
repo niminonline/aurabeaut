@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>auraBeaut Admin Panel</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="admin/assets/images/logos/favicon.png"
+    />
+    <link rel="stylesheet" href="/admin/assets/css/styles.min.css" />
+    <link rel="stylesheet" href="/admin/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  </head>
+
+  <body>
+    <!--  Body Wrapper -->
+    <div
+      class="page-wrapper"
+      id="main-wrapper"
+      data-layout="vertical"
+      data-navbarbg="skin6"
+      data-sidebartype="full"
+      data-sidebar-position="fixed"
+      data-header-position="fixed"
+    >
+      <!-- Sidebar Start -->
+      <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div>
+          <div
+            class="brand-logo d-flex align-items-center justify-content-between"
+          >
+            <a href="#" class="text-nowrap logo-img">
+              <img
+                src="admin/assets/images/logos/logo.png"
+                width="180"
+                alt=""
+              />
+            </a>
+            <div
+              class="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
+              id="sidebarCollapse"
+            >
+              <i class="ti ti-x fs-8"></i>
+            </div>
+          </div>
+          <!-- Sidebar navigation-->
+          <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+            <ul id="sidebarnav">
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Home</span>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/home"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-layout-dashboard"></i>
+                  </span>
+                  <span class="hide-menu">Dashboard</span>
+                </a>
+              </li>
+
+              <!-- Sidebar Title -->
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">User Management</span>
+              </li>
+              <!-- End Sidebar Title -->
+
+              <!-- Sidebar Item -->
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/users"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-user"></i>
+                  </span>
+                  <span class="hide-menu">Users</span>
+                </a>
+              </li>
+              <!-- End Sidebar Item -->
+
+              <!-- Sidebar Title -->
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Order Management</span>
+              </li>
+              <!-- End Sidebar Title -->
+
+              <!-- Sidebar Item -->
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/orders"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-truck"></i>
+                  </span>
+                  <span class="hide-menu">Orders</span>
+                </a>
+              </li>
+              <!-- End Sidebar Item -->
+              <!-- Sidebar Title -->
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Shop Management</span>
+              </li>
+              <!-- End Sidebar Title -->
+              <!-- Sidebar Item -->
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/category"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-category"></i>
+                  </span>
+                  <span class="hide-menu">Category</span>
+                </a>
+              </li>
+              <!-- End Sidebar Item -->
+
+              <!-- Sidebar Item -->
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/products"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-layout-rows"></i>
+                  </span>
+                  <span class="hide-menu">Products</span>
+                </a>
+              </li>
+              <!-- End Sidebar Item -->
+
+              <!-- Sidebar Title -->
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Page Management</span>
+              </li>
+              <!-- End Sidebar Title -->
+
+              <!-- Sidebar Item -->
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/carousel"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-slideshow"></i>
+                  </span>
+                  <span class="hide-menu">Carousel</span>
+                </a>
+              </li>
+              <!-- End Sidebar Item -->
+
+              <!-- Sidebar Title -->
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Payment Management</span>
+              </li>
+              <!-- End Sidebar Title -->
+
+              <!-- Sidebar Item -->
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/wallets"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-wallet"></i>
+                  </span>
+                  <span class="hide-menu">Wallets</span>
+                </a>
+              </li>
+              <!-- End Sidebar Item -->
+
+              <!-- Sidebar Item -->
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/coupons"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-ticket"></i>
+                  </span>
+                  <span class="hide-menu">Coupons</span>
+                </a>
+              </li>
+              <!-- End Sidebar Item -->
+            </ul>
+          </nav>
+          <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+      </aside>
+      <!--  Sidebar End -->
+      <!--  Main wrapper -->
+      <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+          <nav class="navbar navbar-expand-lg navbar-light">
+            <ul class="navbar-nav">
+              <li class="nav-item d-block d-xl-none">
+                <a
+                  class="nav-link sidebartoggler nav-icon-hover"
+                  id="headerCollapse"
+                  href="javascript:void(0)"
+                >
+                  <i class="ti ti-menu-2"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                  <i class="ti ti-bell-ringing"></i>
+                  <div class="notification bg-primary rounded-circle"></div>
+                </a>
+              </li>
+            </ul>
+            <div
+              class="navbar-collapse justify-content-end px-0"
+              id="navbarNav"
+            >
+              <ul
+                class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
+              >
+                <a href="" target="_blank" class="btn btn-danger">Logout</a>
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link nav-icon-hover"
+                    href="javascript:void(0)"
+                    id="drop2"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <img
+                      src="admin/assets/images/profile/admin.png"
+                      alt=""
+                      width="35"
+                      height="35"
+                      class="rounded-circle"
+                    />
+                  </a>
+                  <div
+                    class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                    aria-labelledby="drop2"
+                  >
+                    <div class="message-body">
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-user fs-6"></i>
+                        <p class="mb-0 fs-3">My Profile</p>
+                      </a>
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-mail fs-6"></i>
+                        <p class="mb-0 fs-3">My Account</p>
+                      </a>
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-list-check fs-6"></i>
+                        <p class="mb-0 fs-3">My Task</p>
+                      </a>
+                      <a
+                        href="./authentication-login.html"
+                        class="btn btn-outline-primary mx-3 mt-2 d-block"
+                        >Logout</a
+                      >
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </header>
+        <!--  Header End -->

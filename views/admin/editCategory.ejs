@@ -1,0 +1,29 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+
+
+<div class="mainBody">
+
+    <div class="shadow-div container rounded text-center">
+        <h3 class="m-4">Edit Category</h3>
+
+            <form class="form-floating container">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="Category Name">
+                <label for="floatingInput">Category Name</label>
+              </div>
+              <div class="form-floating">
+                <input type="file" class="form-control" id="floatingFile" placeholder="Add Image">
+                <label for="floatingPassword"></label>
+                <input type="submit" class="btn btn-primary m-4 mx-auto" value="Save ">
+                <a class="btn btn-danger mx-4" href="/admin/category">Cancel</a>
+
+              </div>
+            </form>
+</div>
+</div>
+
+
+
+
+<%-include("../layout/adminFooter.ejs")%>
