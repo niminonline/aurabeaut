@@ -10,7 +10,7 @@
           transform: perspective(300px) rotateX(0deg) rotateY(0deg);
         "
       >
-        <img src="/login/img-01.webp" alt="IMG" />
+        <img src="/login/images/logoText.png" alt="IMG" />
       </div>
       <form class="login100-form validate-form" method="post">
         <span class="login100-form-title"> Login </span>
@@ -37,7 +37,7 @@
           <input
             class="input100"
             type="password"
-            name="pass"
+            name="password"
             placeholder="Password"
           />
           <span class="focus-input100"></span>
@@ -46,11 +46,15 @@
           </span>
         </div>
 
+        <%  if(typeof message !=='undefined'){ %>
+          <p style="color:red">  <%=message%> </p>
+          <%}%>
+      
         <!-- Start post button -->
         <div class="container-login100-form-btn">
           <input type="submit" class="login100-form-btn" value="Login" />
         </div>
-
+       
         <!-- End post button -->
         <div class="text-center p-t-12">
           <a class="txt2" href="/forgetPassword"> Forget Password? </a>

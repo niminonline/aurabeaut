@@ -14,65 +14,74 @@ Sign up
   <!-- input field -->
   <div class="wrap-input100 validate-input" data-validate="Name is required">
   <input class="input100" type="text" name="name"  id="name" placeholder="Name" oninput="handleNameChange()">
-  <p class="hidden-content red-text" id="name-error"></p>
+  
   <span class="focus-input100"></span>
   <span class="symbol-input100">
   <i class="fa  fa-user" aria-hidden="true"></i>
   </span>
   </div>
+  <p class="hidden-content red-text" id="name-error" style="color: red;"></p>
   <!-- End input field -->
   
   <!-- input field -->
   <div class="wrap-input100 validate-input" data-validate="Valid email is required">
   <input class="input100" type="text" name="email" id="email" placeholder="Email" oninput="handleEmailChange()" >
-  <p class="hidden-content red-text" id="email-error" value=""></p>
+  
   <span class="focus-input100"></span>
   <span class="symbol-input100">
   <i class="fa fa-envelope" aria-hidden="true"></i>
   </span>
   </div>
+  <p class="hidden-content red-text" id="email-error" value="" style="color: red;"></p>
   <!-- End input field -->
   
   <!-- input field -->
   <div class="wrap-input100 validate-input" data-validate="Phone number is required">
     <input class="input100" type="text" name="mobile" id="mobile" placeholder="Mobile number"  oninput="handlePhoneChange()">
-    <p class="hidden-content red-text" id="phone-error"></p>
+   
     <span class="focus-input100"></span>
     <span class="symbol-input100">
     <i class="fa fa-mobile" aria-hidden="true"></i>
     </span>
+   
     </div>
+    <p class="hidden-content red-text" id="mobile-error"  style="color: red;"></p>
     <!-- End input field -->
   
   <!-- input field -->
   <div class="wrap-input100 validate-input" data-validate="Password is required">
-    <input class="input100" type="password" name="password" id="password" placeholder="Password" onchange="handlePassword(this)">
-    <p class="hidden-content red-text" id="password-error"></p>
+    <input class="input100" type="password" name="password" id="password" placeholder="Password" onchange="handlePassword()">
+
   
     <span class="focus-input100"></span>
     <span class="symbol-input100">
     <i class="fa fa-lock" aria-hidden="true"></i>
     </span>
+    
     </div>
+    <p class=" red-text" id="password-error"  style="color: red;"></p>
+
     <!-- End input field -->
   
     <!-- input field -->
   <div class="wrap-input100 validate-input" data-validate="Password is required">
-    <input class="input100" type="password" id="confirmPassword" placeholder="Confirm Password" onchange="handlePassword(this)">
-    <p class="hidden-content red-text" id="confirmPassword-error"></p>
+    <input class="input100" type="password" id="confirmPassword" placeholder="Confirm Password" onchange="handleConfirmPassword(this)">
+    
   
     <span class="focus-input100"></span>
     <span class="symbol-input100">
     <i class="fa fa-key" aria-hidden="true"></i>
     </span>
+    <p class=" red-text" id="confirmPassword-error" style="color: red;"></p>
     </div>
+   
     <p class="wrong-password"></p>
     <!-- End input field -->
   
   
   <div class="container-login100-form-btn">
   
-    <input type="submit" class="login100-form-btn" value="Sign up">
+    <input type="submit" class="btn btn-success" id="signUpButton" value="Sign up" disabled>
     <p> <%=message%>  </p>
   </div>
 </form>

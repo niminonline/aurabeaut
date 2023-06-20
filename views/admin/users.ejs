@@ -27,11 +27,18 @@
       </tr>
 
       <tr>
-        <td>1</td>
-        <td>Nimin</td>
-        <td>niminonline@gmail.com</td>
-        <td>9496778881</td>
+        
+        <% if(userData==""){ %>
+          <h5 class="text-center text-white">No results found</h5>
+           <%}else{%>
+
+           <% for(let i=0;i<userData.length;i++){%>
+        <td><%=i%></td>
+        <td><%=userData.name%></td>
+        <td><%=userData.email%></td>
+        <td><%=userData.mobile%></td>
         <td>
+
           <div class="form-check form-switch">
             <input
               class="form-check-input"
@@ -48,6 +55,7 @@
         </td>
         <!-- <td><button class="btn btn-primary">View Details</button></td> -->
       </tr>
+    <%}}%>
     </table>
   </div>
 </div>

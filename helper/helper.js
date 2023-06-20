@@ -6,15 +6,20 @@ async function verifyEmail(email, otp) {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'niminonline@gmail.com',
-          pass: 'xqtgfrkxkvotbulz'
+          user: 'noreply.aurabeaut@gmail.com',
+          pass: 'bdzaicivbiwkkoua'
         }
       });
       const mailOptions = {
-        from: 'niminonline@gmail.com',
+        from: 'noreply.aurabeaut@gmail.com',
         to: email,
-        subject: 'Your OTP for user verification',
-        text: `Your OTP is ${otp}. Please enter this code to verify your account.`
+        subject: 'OTP for Signup Verification ',
+        text: `Hello,
+        Greetings from auraBeaute.
+        Your one time password is ${otp}. Please enter this code to verify your account. Please do not share OTP with anyone.
+        This is a system generated e-mail and please do not reply.
+        Regards,
+        Team auraBeaut`
       };
       const result = await transporter.sendMail(mailOptions);
       console.log(result);

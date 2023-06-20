@@ -39,9 +39,25 @@ const dashboardLoad = async(req,res)=>{
 //===============================Users Load====================
 const usersLoad = async(req,res)=>{
     try{
-        res.render("users");
 
-    }
+       const userData= await User.find({});
+       console.log(userData);
+            // let search='';
+            // if(req.query.search){
+            //     search= req.query.search;
+    
+            // }
+            // const userData= await User.find({
+            //     isAdmin:0,
+            //     $or:[
+            //         {name:{$regex:".*"+search+".*",$options:"i"}},
+            //         {email:{$regex:".*"+search+".*",$options:"i"}},
+            //         {mobile:{$regex:".*"+search+".*",$options:"i"}},
+            //     ]
+            // });
+            res.render("users",{userData:userData});
+            
+        }
     catch(err){
         console.log(err.message);
     }
