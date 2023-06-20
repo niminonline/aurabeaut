@@ -10,6 +10,7 @@ userRoute.set("views","views/user/");
 
 userRoute.use(bodyParser.urlencoded({extended:true}))
 const userController = require("../controller/user/userController");
+const pageLoadController= require("../controller/user/pageLoadController")
 
 // const userController = require("../controllers/userController");
 const { model } = require("mongoose");
@@ -22,23 +23,28 @@ userRoute.use(session({secret:config.sessionSecret,resave:false,saveUninitialize
 
 
 //========================User Route=============================
-userRoute.get('/', userController.loadHome);
-userRoute.get('/home', userController.loadHome);
-userRoute.get('/signup', userController.loadSignUp);
+userRoute.get('/', pageLoadController.loadHome);
+userRoute.get('/home', pageLoadController.loadHome);
+userRoute.get('/signup', pageLoadController.loadSignUp);
+userRoute.get("/login",pageLoadController.loginLoad);
+userRoute.get("/forgetpassword",pageLoadController.forgetPasswordLoad)
+userRoute.get("/verifyResetPassOtp",pageLoadController.verifyRPOtpLoad)
+userRoute.get("/resetpassword",pageLoadController.resetPasswordLoad)
+userRoute.get("/verifySignUpOtp",pageLoadController.loadSignUpOtp)
+userRoute.get('/allproducts', pageLoadController.loadAllProducts);
+userRoute.get('/product', pageLoadController.loadProduct);
+
+
+
 userRoute.post('/signup',userController.storeSignUpDetails);
-userRoute.get("/login",userController.loginLoad);
 userRoute.post("/login", userController.verifyLogin);
-userRoute.get("/forgetpassword",userController.forgetPasswordLoad)
 userRoute.post("/forgetpassword",userController.sendOTP)
-userRoute.get("/verifyotp",userController.verifyOTPLoad)
-userRoute.post("/verifyotp",userController.submitOTP)
-userRoute.get("/resetpassword",userController.resetPasswordLoad)
+userRoute.post("/verifyResetPassOtp",userController.submitOTP)
 userRoute.post("/resetpassword",userController.resetPassword)
-userRoute.get("/verifyemailotp",userController.loadEmailOtp)
-userRoute.post("/verifyemailotp",userController.insertUser)
+userRoute.post("/verifySignUpOtp",userController.insertUser)
 
 // userRoute.get("/",auth.isLogin,noCache,userController.loginLoad);
-userRoute.get("/home", userController.loadHome);
+// userRoute.get("/home", userController.loadHome);
 // userRoute.get("/logout",auth.isLogout, userController.userLogout);
 // userRoute.get("/edit",auth.isLogout, userController.editProfile);
 // userRoute.post("/edit",upload.single("image"), userController.update);
@@ -46,8 +52,7 @@ userRoute.get("/home", userController.loadHome);
 // userRoute.post("/changepassword",userController.changePassword);
 
 //===================Shop Routes================
-userRoute.get('/allproducts', userController.loadAllProducts);
-userRoute.get('/product', userController.loadProduct);
+
 
 
 

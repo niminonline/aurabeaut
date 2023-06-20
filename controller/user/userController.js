@@ -1,18 +1,8 @@
 const User= require("../../models/userModel");
 const bcrypt= require("bcrypt");
-
-//=================Load Login Page================================
-const loginLoad= async (req,res)=>{
-
-    try{
-        
-        res.render("login");
-
-    }
-    catch(err){
-        console.log(err.message);
-    }
-}
+const helper = require("../../helper/helper");
+const session = require("express-session");
+const nodemailer= require("nodemailer")
 
 //===============Verify Login===================
 
@@ -47,43 +37,12 @@ const verifyLogin = async(req,res)=>{
     // }
 }
 
-//================ Load ForgetPassword Page=========================
-
-const forgetPasswordLoad=(req,res)=>{
-    try{
-        res.render("forgetPassword")
-    }
-    catch(err){
-        console.log(err.message);
-    }
-}
-//==============Load Send OTP Page==================
-
-const verifyOTPLoad=(req,res)=>{
-    try{
-        res.render("verifyotp")
-    }
-    catch(err){
-        console.log(err.message);
-    }
-}
 
 //=========================Send OTP========================
 
 const sendOTP=(req,res)=>{
     try{
         res.redirect("verifyotp")
-    }
-    catch(err){
-        console.log(err.message);
-    }
-}
-
-//==============Load Reset Password Page==================
-
-const resetPasswordLoad=(req,res)=>{
-    try{
-        res.render("resetPassword")
     }
     catch(err){
         console.log(err.message);
@@ -102,40 +61,6 @@ const resetPassword=(req,res)=>{
 }
 
 
-//=====================User Home Page===================
-
-const loadHome= async (req,res)=>{
-    // const userData= await User.findOne({_id: req.session.user_id});
-            
-    // try{
-    //     res.render("home",{userDetails:userData});
-    // }
-    // catch(err){
-    //     console.log(err.message);
-    // }
-    res.render("home")
-}
-
-
-//=====================Signup page Load=======================
-const loadSignUp =(req,res)=>{
-    try{
-        res.render("signup");
-    }
-    catch(error){
-        console.log(error.message)
-    }
-}
-
-// ==============================Load email OTP====================
-const loadEmailOtp =(req,res)=>{
-    try{
-        res.render("verifyEmailOtp");
-    }
-    catch(error){
-        console.log(error.message)
-    }
-}
 
 //==============================Submit OTP==========================
 
@@ -151,18 +76,35 @@ const submitOTP =(req,res)=>{
 //===============================Store signup details==================
 
 
-const storeSignUpDetails =(req,res)=>{
+const storeSignUpDetails = async(req,res)=>{
     try{
-        res.redirect("verifyEmailOtp");
+
+        const {name,email,mobile,password}=req.body;
+
+        const userexist = await User.findOne({ $or: [{email }, { mobile }] });
+        if (!userexist){
+        console.log(req.body);
+        const spassword= await securePassword(password);
+        
+          req.session.tempUserData= req.body;
+          req.session.tempUserData.password=spassword;
+          const otp= helper.generateOtp();
+        helper.verifyEmail(req.session.tempUserData.email,otp);
+        req.session.otp=otp;
+    
+          
+      
+        res.redirect("/verifysignupotp");
     }
+    else{
+        res.render("signup",{message:"User already exists"})
+
+    }}
     catch(error){
         console.log(error.message)
-    }
-}
+    }}
 
 
-
-//==========================Signup User=====================
 const securePassword= async(password)=>{
     try{
         const passwordHash= await bcrypt.hash(password,10);
@@ -173,18 +115,36 @@ const securePassword= async(password)=>{
     }
 }
 
+//==========================Signup User=====================
+
+
                     //====Insert User=========
 const insertUser= async(req,res)=>{
     try{
         
-        const spassword= await securePassword(req.body.password);
-        const user=  new User({
-            name: req.body.name,
-            email: req.body.email,
-            mobile: req.body.mobile,
-            password:spassword,
-            
+        
+       console.log("New ==> "+ req.session.tempUserData);
+
+       if(req.body.otp== req.session.otp){
+
+           const user= new User({
+            name: req.session.tempUserData.name,
+            email: req.session.tempUserData.email,
+            mobile: req.session.tempUserData.mobile,
+            password:req.session.tempUserData.password,
+            isVerified:true,
+            isBlocked:false
         });
+        const userData= user.save();
+        if(userData){
+            delete req.session.tempUserData;
+            res.redirect("login")
+        }
+        else
+        res.render("verifyEmailOtp",{message:"Invalid OTP"})
+
+       }
+
         const userData= await user.save();
         if(userData){
             res.render("signup", {message:"Registration Successfull"});
@@ -199,38 +159,9 @@ const insertUser= async(req,res)=>{
 
     }}
 
-    //========================================================================================================
-    //===================================================Store Controls======================================
-    //========================================================================================================
 
 
-    //===============================Load All Products==================================
 
-    const loadAllProducts =(req,res)=>{
-        try{
-            res.render("allProducts");
-        }
-        catch(error){
-            console.log(error.message)
-        }
+    module.exports={insertUser,verifyLogin,
+        sendOTP,resetPassword,submitOTP,storeSignUpDetails
     }
-
-    //===============================Load Product Page==================================
-    
-    const loadProduct =(req,res)=>{
-        try{
-            res.render("product");
-        }
-        catch(error){
-            console.log(error.message)
-        }
-    }
-
-    
-
-
-
-
-    module.exports={loadSignUp,insertUser,loginLoad,loadHome,verifyLogin,forgetPasswordLoad,verifyOTPLoad,
-        resetPasswordLoad,sendOTP,resetPassword,loadEmailOtp,submitOTP,storeSignUpDetails
-    ,loadAllProducts,loadProduct}

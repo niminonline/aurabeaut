@@ -56,29 +56,40 @@ const handlePhoneChange=()=>
 }
 
 
-const handlePassword= (val)=>{
-    
-    if(val.name=="password"){
-    const password= val.value;
-    
-    }
-    else if(val.name=="confirmPassword")
-    {
-        const confirmPassword= val.value;
-       
-    }
-    if((password.length <8)||(confirmPassword.length<7)){
-        document.getElementById("confirmPassword-error").innerText= "Password must be atleast 8 characters";
-    }
-    
-    else if(password!=confirmPassword){
-        
-        
-        document.getElementById("confirmPassword-error").innerText= "Passwords mismatch";
-
-    }
-    else{
-        document.getElementById("confirmPassword-error").innerText= "";
-    }
+function validatePassword() {
+  let password = document.getElementById("password").value;
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+  if (!password) {
+      userpassword = false
+      document.getElementById("passwordError").innerText = "Password is required"
+  }
+  else if (!password.match(passwordRegex)) {
+      userpassword = false
+      document.getElementById("passwordError").innerText = "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one digit"
+  } else {
+      userpassword = true
+      document.getElementById("passwordError").innerText = ""
+      updateSubmitButton();
+  }
 }
 
+function validateConfirmPassword() {
+  let password = document.getElementById("password").value;
+  let confirmPassword = document.getElementById("confirm_password").value;
+
+
+  if (!confirmPassword) {
+      userconfirmpassword = false;
+      document.getElementById("confirm_passwordError").innerText = "Re enter password";
+  }
+  else if (password !== confirmPassword) {
+      userconfirmpassword = false;
+      document.getElementById("confirm_passwordError").innerText = "Passwords do not match";
+  }
+
+  else {
+      userconfirmpassword = true;
+      document.getElementById("confirm_passwordError").innerText = "";
+      updateSubmitButton();
+  }
+}

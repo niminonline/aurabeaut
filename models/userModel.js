@@ -6,9 +6,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    otp: {
-      type: Number,
-    },
     email: {
       type: String,
       required: true,
@@ -26,27 +23,27 @@ const userSchema = new mongoose.Schema(
 
     isVerified: {
       type: Boolean,
-      required: true,
+      required: false,
     },
 
     isBlocked: {
       type: Boolean,
-      required: true,
+      required: false,
     },
     address:[{
       name: {
         type: String,
-        required: true,
+        required: false,
       },
     
       mobile: {
         type: String,
-        required: true,
+        required: false,
       },
     
       addressLine1: {
         type: String,
-        required: true,
+        required: false,
       },
     
       addressLine2: {
@@ -55,25 +52,25 @@ const userSchema = new mongoose.Schema(
     
       city: {
         type: String,
-        required: true,
+        required: false,
       },
     
       state: {
         type: String,
-        required: true,
+        required: false,
       },
     
       pin: {
         type: String,
-        required: true,
+        required: false,
       },
       country: {
         type: String,
-        required: true,
+        required: false,
       },
       is_default: {
         type: Boolean,
-        required: true,
+        required: false,
       },
   }]
 })

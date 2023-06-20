@@ -35,7 +35,7 @@ Sign up
   
   <!-- input field -->
   <div class="wrap-input100 validate-input" data-validate="Phone number is required">
-    <input class="input100" type="text" name="phone" id="phone" placeholder="Mobile number"  oninput="handlePhoneChange()">
+    <input class="input100" type="text" name="mobile" id="mobile" placeholder="Mobile number"  oninput="handlePhoneChange()">
     <p class="hidden-content red-text" id="phone-error"></p>
     <span class="focus-input100"></span>
     <span class="symbol-input100">
@@ -58,7 +58,7 @@ Sign up
   
     <!-- input field -->
   <div class="wrap-input100 validate-input" data-validate="Password is required">
-    <input class="input100" type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" onchange="handlePassword(this)">
+    <input class="input100" type="password" id="confirmPassword" placeholder="Confirm Password" onchange="handlePassword(this)">
     <p class="hidden-content red-text" id="confirmPassword-error"></p>
   
     <span class="focus-input100"></span>
@@ -73,13 +73,14 @@ Sign up
   <div class="container-login100-form-btn">
   
     <input type="submit" class="login100-form-btn" value="Sign up">
+    <p> <%=message%>  </p>
   </div>
 </form>
 <div class="text-center p-t-12">
 
 </div>
 <div class="text-center p-t-136">
-  <p>  </p>
+ 
 
 
 </div>
