@@ -15,12 +15,12 @@ const produtSchema = new mongoose.Schema(
       require: true,
     },
     category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
+      type: String,
+      require: true,
     },
     imageUrl: {
-      type: [String],
-      require: true,
+      type: Array,
+      required: true,
     },
     is_blocked: {
       type: Boolean,
@@ -30,32 +30,10 @@ const produtSchema = new mongoose.Schema(
       type: Number,
       require: true,
     },
-    outofstock: {
-      type: Boolean,
-      default: false,
+    brand: {
+      type: String,
+      require: true,
     },
-    
-    review: [
-      {
-        userId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-        },
-        message: {
-          type: String,
-        },
-        date: {
-          type: String,
-        },
-        name: {
-          type: String,
-        },
-        time: {
-          type: String,
-        },
-
-      },
-    ],
   },
 
   { timestamps: true },

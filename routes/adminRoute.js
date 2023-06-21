@@ -4,6 +4,9 @@ const session =require("express-session");
 const config= require("../config/config");
 const bodyParser=require("body-parser")
 const pageLoadController= require("../controller/admin/pageLoadController")
+const shopController= require("../controller/admin/shopController")
+const upload= require("../middleware/multer")
+
 // const auth= require("../middleware/auth");
 // const {body,validationResult}= require("express-validator");
 const path= require("path");    
@@ -36,12 +39,21 @@ adminRoute.get("/products", pageLoadController.productsLoad)
 adminRoute.get("/carousel", pageLoadController.carouselLoad)
 adminRoute.get("/coupons", pageLoadController.couponsLoad)
 adminRoute.get("/wallets", pageLoadController.walletsLoad)
-adminRoute.get("/editproduct", pageLoadController.editProduct)
-adminRoute.get("/addProduct", pageLoadController.addProduct)
+adminRoute.get("/editproduct", pageLoadController.editProductLoad)
+adminRoute.get("/addProduct", pageLoadController.addProductLoad)
 adminRoute.get("/editcategory", pageLoadController.editCategoryLoad)
 adminRoute.get("/editcarousel", pageLoadController.editCarouselLoad)
 // adminRoute.get("/logout",pageLoadController.logout)
 
+
+adminRoute.post("/category",upload.single("image"), shopController.addCategory)
+adminRoute.post("/editCategory",upload.single("image"), shopController.editCategory)
+adminRoute.post("/addproduct",upload.array('image', 3), shopController.addProduct)
+
+
+
+
+// adminRoute.post("/addProduct", shopController.addProduct)
 
    
 module.exports= adminRoute;

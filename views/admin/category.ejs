@@ -1,48 +1,102 @@
 <%-include("../layout/adminHeader.ejs")%>
 
-
-
 <div class="mainBody">
-<!-- Add category block -->
-    <div class="shadow-div container rounded text-center">
-        <p>
-        
-            <button class="btn btn-primary m-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-              Add Category
-            </button>
-          </p>
-          <div class="collapse container" id="collapseExample">
-            <form class="form-floating">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="Category Name">
-                <label for="floatingInput">Category Name</label>
-              </div>
-              <div class="form-floating">
-                <input type="file" class="form-control" id="file" placeholder="Add Image">
-                <label for="file">Image</label>
-                <input type="submit" class="btn btn-primary m-4 mx-auto" value="Add ">
-                <a class="btn btn-danger mx-4" href="/admin/category">Cancel</a>
+  <!-- Add category block -->
 
-              </div>
-            </form>
-          </div>
-    </div>   
+  <div class="shadow-div container rounded text-center">
+    <%if(typeof errorMessage!= 'undefined'){%>
 
-    <!-- List category  -->
-    <div class="card text-center category-cards rounded" style="width: 20rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Category Name</h5>
-          <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-          <a href="/admin/editcategory" class="btn btn-warning">Edit</a>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Error:</strong> <%=errorMessage%>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+
+    <%}%> <%if(typeof successMessage!= 'undefined'){%>
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong></strong> <%=successMessage%>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+
+    <%}%>
+
+    <p>
+      <button
+        class="btn btn-primary m-4"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseExample"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+      >
+        Add Category
+      </button>
+    </p>
+    <div class="collapse container" id="collapseExample">
+      <form class="form-floating" method="post" enctype="multipart/form-data">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="floatingInput"
+            name="category"
+            placeholder="Category Name"
+            required
+          />
+          <label for="floatingInput">Category Name</label>
         </div>
+        <div class="form-floating">
+          <input
+            type="file"
+            class="form-control"
+            id="image"
+            name="image"
+            placeholder="Add Image"
+            required
+          />
+          <label for="image">Image</label>
+          <input
+            type="submit"
+            class="btn btn-primary m-4 mx-auto"
+            value="Add "
+          />
+          <a class="btn btn-danger mx-4" href="/admin/category">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- List category  -->
+  <div class="category-container d-flex flex-wrap align-self-start">
+    <% if(typeof categoryData!= 'undefined'){categoryData.map((item)=>{%>
+
+    <div class="card text-center category-cards rounded" style="width: 15rem">
+      <img
+        src="/images/uploads/<%=item.imageUrl%>"
+        class="card-img-top"
+        alt="category image"
+        width="200px"
+        height="200px"
+      />
+      <div class="card-body">
+        <h5 class="card-title"><%=item.category%></h5>
+        <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+        <a href="/admin/editcategory?_id=<%=item._id%>" class="btn btn-warning">Edit</a>
       </div>
-
-
-    
+    </div>
+  
+  <%})}%>
 </div>
-
-
-
+</div>
 
 <%-include("../layout/adminFooter.ejs")%>

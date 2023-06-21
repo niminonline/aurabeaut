@@ -43,6 +43,7 @@ userRoute.post("/verifyResetPassOtp",userController.submitOTP)
 userRoute.post("/resetpassword",userController.resetPassword)
 userRoute.post("/verifySignUpOtp",userController.insertUser)
 
+
 // userRoute.get("/",auth.isLogin,noCache,userController.loginLoad);
 // userRoute.get("/home", userController.loadHome);
 // userRoute.get("/logout",auth.isLogout, userController.userLogout);

@@ -1,6 +1,9 @@
 const User= require("../../models/userModel");
+const Category= require("../../models/categoryModel");
+const Product= require("../../models/productModel");
 const bcrypt= require("bcrypt");
 const fs= require("fs");
+
 
 
 //==================Load Admin Login Page==================
@@ -79,7 +82,15 @@ const ordersLoad = async(req,res)=>{
 //===============================Category Load====================
 const categoryLoad = async(req,res)=>{
     try{
-        res.render("category");
+
+        const categoryData= await Category.find();
+        if (categoryData){
+            res.render("category",{categoryData:categoryData})
+        }
+        else
+        res.render("category",{errorMessage:"No categories found"})
+        
+        
 
     }
     catch(err){
@@ -101,7 +112,10 @@ const carouselLoad = async(req,res)=>{
 //===============================Products Load====================
 const productsLoad = async(req,res)=>{
     try{
-        res.render("products");
+        const productData= await Product.find({});
+        console.log(productData);
+       
+        res.render("products",{productData:productData});
 
     }
     catch(err){
@@ -131,7 +145,7 @@ const couponsLoad = async(req,res)=>{
 }
 //===================================Edit Product Load==========================
 
-const editProduct = async(req,res)=>{
+const editProductLoad = async(req,res)=>{
     try{
         res.render("editProduct");
 
@@ -142,9 +156,13 @@ const editProduct = async(req,res)=>{
 }
 //===================================Add Product Load==========================
 
-const addProduct = async(req,res)=>{
+const addProductLoad = async(req,res)=>{
     try{
-        res.render("addProduct");
+        const categoryData= await Category.find();
+        const categories= categoryData.map((item)=>item.category);
+        console.log(categories);
+        
+        res.render("addProduct",{categories:categories});
 
     }
     catch(err){
@@ -152,10 +170,19 @@ const addProduct = async(req,res)=>{
     }
 }
 
-//===================================Add Product Load==========================
+//===================================Edit Category Load==========================
 
 const editCategoryLoad = async(req,res)=>{
     try{
+        const id= req.query._id;
+        const categoryData= await Category.findById({_id:id});
+        if(categoryData){
+            res.render("editCategory",{categoryData:categoryData})
+        }
+        else
+        {
+            res.render("editCategory",{errorMessage:"Category no longer exist"})
+        }
         res.render("editCategory");
 
     }
@@ -178,5 +205,5 @@ const editCarouselLoad = async(req,res)=>{
 
 
 module.exports={ loginLoad,adminLogin,dashboardLoad,usersLoad,categoryLoad,productsLoad,
-                carouselLoad,couponsLoad,walletsLoad,ordersLoad,editProduct,addProduct,
+                carouselLoad,couponsLoad,walletsLoad,ordersLoad,editProductLoad,addProductLoad,
                 editCategoryLoad,editCarouselLoad}

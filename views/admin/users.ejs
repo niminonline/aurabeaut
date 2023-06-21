@@ -7,6 +7,7 @@
         <input
           class="form-control me-2"
           type="search"
+          name="search"
           placeholder="Search"
           aria-label="Search"
         />
@@ -33,10 +34,10 @@
            <%}else{%>
 
            <% for(let i=0;i<userData.length;i++){%>
-        <td><%=i%></td>
-        <td><%=userData.name%></td>
-        <td><%=userData.email%></td>
-        <td><%=userData.mobile%></td>
+        <td><%=i+1%></td>
+        <td><%=userData[i].name%></td>
+        <td><%=userData[i].email%></td>
+        <td><%=userData[i].mobile%></td>
         <td>
 
           <div class="form-check form-switch">

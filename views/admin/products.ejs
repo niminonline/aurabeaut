@@ -26,30 +26,40 @@
             <th>Sl No:</th>
             <th>Image</th>
             <th>Name</th>
+            <th>Category</th>
             <th>Description </th>
             <th>Price</th>
             <th>Stock</th>
-            <th>Category</th>
+            <th>Brand</th>
             <th>Action</th>
             <!-- <th>View</th> -->
           </tr>
     
-          <tr>
-            <td>1</td>
-            <td>image</td>
-            <td>Neem Facewash</td>
-            <td>Facewash with moisturizer</td>
-            <td>299</td>
-            <td>50</td>
-            <td>Facewash</td>
+
+          <% if(typeof productData ==undefined){ %>
+            <h5 class="text-center text-white">No results found</h5>
+             <%}else{%>
+  
+             <% for(let i=0;i<productData.length;i++){%>
+          <td><%=i+1%></td>
+          
+          <td><%=productData[i].name%></td>
+          <td><%=productData[i].category%></td>
+          <td><%=productData[i].description%></td>
+          <td><%=productData[i].price%></td>
+          <td><%=productData[i].stock%></td>
+          <td><%=productData[i].brand%></td>
+          
+          <td>
+           
             <td>
-                <a href="/admin/editproduct"><i class="bi bi-pencil-square mx-2" style="font-size: 1.2rem; "></i></i></a>
+                <a href="/admin/editproduct?=<%=productData._id%>"><i class="bi bi-pencil-square mx-2" style="font-size: 1.2rem; "></i></i></a>
                 <a href="#"><i class="bi bi-trash3-fill mx-2" style="font-size: 1.2rem;"></i></a>
 
              </td>
             
           </tr>
-          
+          <%}}%>
         </table>
       </div>
 

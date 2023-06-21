@@ -5,17 +5,57 @@
 <div class="mainBody">
 
     <div class="shadow-div container rounded text-center">
+    
         <h3 class="m-4">Edit Category</h3>
+        <%if(typeof errorMessage!= 'undefined'){%>
 
-            <form class="form-floating container">
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Error:</strong> <%=errorMessage%>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          <%}%> 
+          <%if(typeof successMessage!= 'undefined'){%>
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong></strong> <%=successMessage%>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+            </div>
+        
+            <%}%>
+
+
+<%if(typeof categoryData!= 'undefined'){%>
+ 
+            <form class="form-floating container" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="_id" value="<%=categoryData._id%>">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="Category Name">
+
+                <input type="text" class="form-control" id="floatingInput" name= "category" placeholder="Category Name" 
+                
+                
+                value="<%=categoryData.category%>"
+                
+                
+                required>
                 <label for="floatingInput">Category Name</label>
               </div>
               <div class="form-floating">
-                <input type="file" class="form-control" id="floatingFile" placeholder="Add Image">
-                <label for="floatingPassword"></label>
+                <input type="file" class="form-control" id="image" name="image" placeholder="Add Image">
+                <label for="image"></label>
+                
                 <input type="submit" class="btn btn-primary m-4 mx-auto" value="Save ">
+                <%}%> 
+
                 <a class="btn btn-danger mx-4" href="/admin/category">Cancel</a>
 
               </div>

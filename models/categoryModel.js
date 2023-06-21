@@ -1,18 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const categorySchema = new mongoose.Schema(
-  {
+const categorySchema = new mongoose.Schema({
+
     category: {
-      type: String,
-      required: true,
+        type: String,
+        required: true
     },
 
     imageUrl: {
-      type: [String],
-      required: true,
+        type: String,
+        required: true
     },
-  },
-  { timestamps: true },
-);
+    is_blocked: {
+      type: Boolean,
+      default: false,
+    },
+})
 
-module.exports = mongoose.model('category', categorySchema);
+
+module.exports = mongoose.model('Category', categorySchema)

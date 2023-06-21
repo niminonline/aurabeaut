@@ -5,7 +5,7 @@ const imageTypes = /jpeg|jpg|png|gif|svg|webp/;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/uploads');
+    cb(null, 'public/images/uploads');
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
