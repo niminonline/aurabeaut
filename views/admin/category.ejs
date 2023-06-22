@@ -91,48 +91,55 @@
       <div class="card-body">
         <h5 class="card-title"><%=item.category%></h5>
         <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-        <a href="/admin/editcategory?_id=<%=item._id%>" class="btn btn-warning">Edit</a>
+        <a href="/admin/editcategory?_id=<%=item._id%>" class="btn btn-warning"
+          >Edit</a
+        >
 
         <%if(item.isBlocked){ %>
-          <button onclick="BlockUnblock('<%=item._id%>', 'unBlock')"
-             style="min-width:100px"
-            class="btn btn-success userListButton ">List</button>
-          <% }else{%>
-              <button onclick="BlockUnblock('<%=item._id%>', 'block')"
-                style="min-width:100px" class="btn btn-danger userListButton">Unlist</button>
-              <%}%>
-
-
-
-
+        <button
+          onclick="BlockUnblock('<%=item._id%>', 'unBlock')"
+          style="min-width: 100px"
+          class="btn btn-success userListButton"
+        >
+          List
+        </button>
+        <% }else{%>
+        <button
+          onclick="BlockUnblock('<%=item._id%>', 'block')"
+          style="min-width: 100px"
+          class="btn btn-danger userListButton"
+        >
+          Unlist
+        </button>
+        <%}%>
       </div>
     </div>
-  
-  <%})}%>
-</div>
+
+    <%})}%>
+  </div>
 </div>
 
-<script>function BlockUnblock(id, type) {
-  console.log("=====================================script"+id);
-  fetch("/admin/listUnlistCategory", {
+<script>
+  function BlockUnblock(id, type) {
+    console.log("=====================================script" + id);
+    fetch("/admin/listUnlistCategory", {
       method: "POST",
       headers: {
-          "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-          type,
-          id
+        type,
+        id,
+      }),
+    })
+      .then((response) => {})
+      .then((data) => {
+        location.reload();
       })
-  })
-      .then(response => {
-      })
-      .then(data => {
-          location.reload()
-      })
-      .catch(error => {
-          console.log(error);
+      .catch((error) => {
+        console.log(error);
       });
-}
+  }
 </script>
 
 <%-include("../layout/adminFooter.ejs")%>

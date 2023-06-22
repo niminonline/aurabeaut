@@ -1,4 +1,6 @@
-const User= require("../../models/userModel");
+const User = require("../../models/userModel");
+const Product = require("../../models/productModel");
+const Category = require("../../models/categoryModel");
 const bcrypt= require("bcrypt");
 
 //=================Load Login Page================================
@@ -52,15 +54,31 @@ const resetPasswordLoad=(req,res)=>{
 const loadHome= async (req,res)=>{
     try{
 
+        // const productData = await Product.aggregate([
+        //     {
+        //         $lookup: {
+        //           from: "categories",
+        //           localField: "category",
+        //           foreignField: "_id",
+        //           as: "categoryDetails",
+        //         },
+        //       },
+        //       {
+        //         $unwind: "$categoryDetails",
+        //       },
+        //   ]);
+        const categoryData = await Category.find();
+
+        //   console.   log("Prodata"+categoryData);
         if(req.session.user_id){
        
         const userData= await User.findOne({_id: req.session.user_id});
 
-        res.render("home",{userData:userData});
+        res.render("home",{userData:userData,categoryData:categoryData});
         }
         else
         {
-            res.render("home");
+            res.render("home",{categoryData:categoryData});
         }
     }
     catch(err){
@@ -91,9 +109,15 @@ const loadSignUpOtp =(req,res)=>{
 }
     //===============================Load All Products==================================
 
-    const loadAllProducts =(req,res)=>{
+    const loadAllProducts = async(req,res)=>{
+
         try{
-            res.render("allProducts");
+            const categoryId= req.query._id;
+            const productData= await Product.find({category:categoryId})
+            console.log(productData);
+            res.render("allProducts",{productData:productData});
+
+
         }
         catch(error){
             console.log(error.message)

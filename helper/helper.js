@@ -16,8 +16,7 @@ async function verifyEmail(email, otp) {
         subject: 'OTP for Signup Verification ',
         text: `Hello,
         Greetings from auraBeaute.
-        Your one time password is ${otp}. Please enter this code to verify your account. Please do not share OTP with anyone.
-        This is a system generated e-mail and please do not reply.
+        Your one time password is ${otp}. Please enter this code to verify your account. This is a system generated e-mail and please do not reply.
         Regards,
         Team auraBeaut`
       };
