@@ -75,14 +75,14 @@ const listUnlistCategory = async (req, res) => {
     );
     Category.findByIdAndUpdate(
       { _id: new ObjectId(id) },
-      { $set: { isBlocked: type === "block" ? true : false } }
+      { $set: { isUnList: type === "block" ? true : false } }
     )
       .then((response) => {
         if (type === "block") {
           req.session.user = false;
         }
         res.json(response);
-        res.redirect("/admin/users");
+        res.redirect("/admin/category");
       })
       .catch((err) => {
         console.log(err.message);

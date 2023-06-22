@@ -69,7 +69,6 @@ const loadHome= async (req,res)=>{
         //   ]);
         const categoryData = await Category.find();
 
-        //   console.   log("Prodata"+categoryData);
         if(req.session.user_id){
        
         const userData= await User.findOne({_id: req.session.user_id});
@@ -114,7 +113,6 @@ const loadSignUpOtp =(req,res)=>{
         try{
             const categoryId= req.query._id;
             const productData= await Product.find({category:categoryId})
-            console.log(productData);
             res.render("allProducts",{productData:productData});
 
 
@@ -124,11 +122,26 @@ const loadSignUpOtp =(req,res)=>{
         }
     }
 
-    //===============================Load Product Page==================================
+    //===============================Load Single Product Page==================================
     
-    const loadProduct =(req,res)=>{
+    const loadProduct = async(req,res)=>{
         try{
-            res.render("product");
+            const id= req.query._id;
+            
+            console.log("id=============="+id);
+            const productData= await Product.findById(id);
+            console.log("==============id"+productData);
+            res.render("product",{productData:productData})
+
+            // console.log(productData);
+            // if (productData){
+            //     res.render("product",{productData:productData});
+            // }
+            // else
+            // {
+            //     res.render("product",{Errormessage:"Product not found",productData:undefined});
+            // }
+            
         }
         catch(error){
             console.log(error.message)

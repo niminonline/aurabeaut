@@ -16,7 +16,6 @@ const verifyLogin = async (req, res) => {
 
         if (passwordMatch) {
           req.session.user_id = userData._id;
-          // console.log("SessionID2:"+req.session.user_id);
           res.redirect("/home");
         } else {
           res.render("login", { message: "Incorrect Password" });
@@ -69,7 +68,6 @@ const storeSignUpDetails = async (req, res) => {
 
     const userexist = await User.findOne({ $or: [{ email }, { mobile }] });
     if (!userexist) {
-      console.log(req.body);
       const spassword = await securePassword(password);
 
       req.session.tempUserData = req.body;
@@ -101,7 +99,6 @@ const securePassword = async (password) => {
 //====Insert User=========
 const insertUser = async (req, res) => {
   try {
-    console.log("New ==> " + req.session.tempUserData);
 
     if (req.body.otp == req.session.otp) {
       const user = new User({

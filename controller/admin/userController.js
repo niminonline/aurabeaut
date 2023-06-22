@@ -5,16 +5,8 @@ const Category = require("../../models/categoryModel");
 
 const userBlockUnblock = (req, res) => {
   try {
-    console.log("Hitting");
     const id = req.body.id;
     const type = req.body.type;
-    console.log(
-      "================================================================id" + id
-    );
-    console.log(
-      "================================================================id" +
-        type
-    );
     User.findByIdAndUpdate(
       { _id: new ObjectId(id) },
       { $set: { isBlocked: type === "block" ? true : false } }
