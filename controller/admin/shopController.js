@@ -114,7 +114,7 @@ const editProduct = async (req, res) => {
   try {
     const productName = req.body.category.toUpperCase();
     const id = req.body._id;
-
+    console.log(req.body);
     const isProductExist = await Product.findOne({ name: productName });
     if (!isProductExist || isProductExist._id == id) {
       if (req.files) {

@@ -58,9 +58,9 @@
 
                                             <%if(productData.imageUrl.length>1){%>
                                                 <% for(let i=1;i<productData.imageUrl.length;i++){%>
-                                            <a class="product-gallery-item" href="#" data-image="/images/uploads/<%= productData.imageUrl[i]%>" data-zoom-image="/images/uploads/<%= productData.imageUrl[i]%>">
+                                            <p onclick="handleImage('<%= productData.imageUrl[i]%>')" class="product-gallery-item" href="#" data-image="/images/uploads/<%= productData.imageUrl[i]%>" data-zoom-image="/images/uploads/<%= productData.imageUrl[i]%>">
                                                 <img src="/images/uploads/<%= productData.imageUrl[i]%>" alt="product back">
-                                            </a>
+                                            </p>
                                         <%}}%>
 
 
@@ -253,7 +253,14 @@
         </main><!-- End .main -->
 
 
+<script>
 
+    const handleImage= (imageid)=>{
+        document.getElementById("product-zoom").src=`/images/uploads/${imageid}`
+
+
+    }
+</script>
 
 
 

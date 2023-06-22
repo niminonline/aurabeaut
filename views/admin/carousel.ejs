@@ -12,30 +12,30 @@
             </button>
           </p>
           <div class="collapse container" id="collapseExample">
-            <form class="form-floating">
+            <form class="form-floating" method="post" enctype="multipart/form-data">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="title" placeholder="Enter title">
+                <input type="text" class="form-control" id="title" name= "title" placeholder="Enter title">
                 <label for="title">Title</label>
               </div>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="subtitle" placeholder="Enter sub title">
+                <input type="text" class="form-control" id="subtitle" name= "subtitle" placeholder="Enter sub title">
                 <label for="subtitle">Sub title</label>
               </div>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="buttonText" placeholder="Enter button text">
+                <input type="text" class="form-control" id="buttonText" name= "buttonText" placeholder="Enter button text">
                 <label for="buttonText">Button Text</label>
               </div>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="buttonLink" placeholder="Enter Button link">
+                <input type="text" class="form-control" id="buttonLink" name= "buttonLink" placeholder="Enter Button link">
                 <label for="buttonLink">Button link</label>
               </div>
 
               
               <div class="form-floating">
-                <input type="file" class="form-control" id="file" placeholder="Choose Image">
+                <input type="file" class="form-control" id="file" name= "imageUrl" placeholder="Choose Image">
                 <label for="file">Slider image</label>
                 <input type="submit" class="btn btn-primary m-4 mx-auto" value="Add ">
                 <a class="btn btn-danger mx-4" href="/admin/carousel">Cancel</a>

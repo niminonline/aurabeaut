@@ -41,20 +41,20 @@
           <%if(typeof productData!= 'undefined'){%>
 
 
-            <form class="form-floating">
+            <form class="form-floating" method="post" enctype="multipart/form-data">
               <input type="hidden" name="_id" value="<%=productData._id%>">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="productName" placeholder="Product Name" value="<%=productData.name%>" required>
+                    <input type="text" class="form-control" id="productName" name="name" placeholder="Product Name" value="<%=productData.name%>" required>
                     <label for="productName">Product Name</label>
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="price" placeholder="Price" value="<%=productData.price%>" required>
+                    <input type="number" class="form-control" id="price" name="price" placeholder="Price" value="<%=productData.price%>" required>
                     <label for="price">Price</label>
                   </div>
 
                   <div class="form-floating my-4">
                   
-                    <select class="form-select" name="category" required>
+                    <select class="form-select" name="category"  required>
                         <%categoryDetails.map((item)=>{%>
                           
                         <option value= <%=item._id%> > <%=item.category%> </option>
@@ -69,7 +69,7 @@
                   </div>
 
                   <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="description" placeholder="Description" value="<%=productData.description%>" required>
+                    <input type="text" class="form-control" id="description" placeholder="Description" name="description" value="<%=productData.description%>" required>
                     <label for="description">Description</label>
                   </div>
                   <!-- <div class="form-floating mb-3">
@@ -77,16 +77,16 @@
                     <label for="description">Description</label>
                   </div> -->
                   <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="stock" placeholder="Stock" value="<%=productData.stock%>" required>
+                    <input type="number" class="form-control" id="stock" placeholder="Stock" name="stock" value="<%=productData.stock%>" required>
                     <label for="stock">Stock</label>
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="brand" placeholder="Brand" value="<%=productData.brand%>" required>
+                    <input type="text" class="form-control" id="brand" placeholder="Brand" name="brand" value="<%=productData.brand%>" required>
                     <label for="brand">Brand</label>
                   </div>
 
                   <div class="form-floating">
-                    <input type="file" class="form-control" id="image" placeholder="Add Image">
+                    <input type="file" class="form-control" id="image" name="image" multiple placeholder="Add Image" required>
                     <label for="image">Image</label>
                     <input type="submit" class="btn btn-primary m-4 mx-auto" value="Save ">
                     <%}%> 

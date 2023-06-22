@@ -5,14 +5,18 @@ const banner = mongoose.Schema({
   imageUrl: {
     type: [String],
   },
-  heading: {
+  title: {
     type: String,
   },
-  subheading: {
+  subtitle: {
     type: String,
   },
-  link: {
+  buttonText: {
     type: String,
   },
+  buttonLink: {
+    type: String,
+  },
+ 
 }, { timestamp: true });
 module.exports = mongoose.model('banner', banner);

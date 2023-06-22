@@ -2,9 +2,8 @@
 const express = require("express");
 const userRoute = express();
 const bodyParser = require("body-parser");
-const path = require("path");
-const { model } = require("mongoose");
 const session = require("express-session");
+
 
 userRoute.use(
   session({
