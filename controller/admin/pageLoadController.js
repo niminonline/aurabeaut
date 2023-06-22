@@ -19,8 +19,7 @@ const loginLoad = async(req,res)=>{
 //============================Admin login=======================
 const adminLogin = async(req,res)=>{
     try{
-        console.log(req.body.email+process.env.adminEmail+req.body.pass+process.env.adminPassword );
-        // console.log(process.env.adminEmail,process.env.adminPassword)
+       
         if((req.body.email==process.env.adminEmail)&&(req.body.pass==process.env.adminPassword)){
             req.session.admin_id= req.body.email;
         res.redirect("/admin/home");
@@ -135,8 +134,6 @@ const productsLoad = async(req,res)=>{
           ]);
 
         
-        console.log("Lookup data"+productData);
-       
         res.render("products",{productData:productData});
 
     }
@@ -173,6 +170,8 @@ const editProductLoad = async(req,res)=>{
         const categoryDetails= await Category.find();
         
         const productData= await Product.findById({_id:id});
+
+    
         if(productData){
             res.render("editProduct",{productData:productData,categoryDetails:categoryDetails})
         }
@@ -194,8 +193,6 @@ const addProductLoad = async(req,res)=>{
         const categorydata= await Category.find();
         
       
-        // console.log(categoryData);
-        
         res.render("addProduct",{categorydata:categorydata});
 
     }

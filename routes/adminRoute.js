@@ -110,7 +110,10 @@ adminRoute.post(
   shopController.editProduct
 );
 adminRoute.post("/blockUnblockUser", userController.userBlockUnblock);
-adminRoute.post("/listunlistcategory", shopController.listUnlistCategory)
+adminRoute.post("/listunlistcategory", shopController.listUnlistCategory);
+adminRoute.post("/productListUnlist", shopController.productListUnlist);
+adminRoute.get("/deleteproduct", shopController.deleteproduct);
+
 
 // adminRoute.post("/addProduct", shopController.addProduct)
 

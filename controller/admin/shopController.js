@@ -2,11 +2,11 @@ const Product = require("../../models/productModel");
 const Category = require("../../models/categoryModel");
 const fs = require("fs");
 const path = require("path");
+const { ObjectId } = require("mongodb");
 
 // =============================================Add Category==============================
 const addCategory = async (req, res) => {
   try {
-    console.log(req.body);
     const categoryName = req.body.category.toUpperCase();
     const image = req.file;
 
@@ -32,8 +32,6 @@ const addCategory = async (req, res) => {
 // ===================================Edit Category======================================
 const editCategory = async (req, res) => {
   try {
-    console.log(req.body);
-    console.log(req.file);
 
     const categoryName = req.body.category.toUpperCase();
     const id = req.body._id;
@@ -63,30 +61,15 @@ const editCategory = async (req, res) => {
 
 const listUnlistCategory = async (req, res) => {
   try {
-    console.log("Hitting");
     const id = req.body.id;
     const type = req.body.type;
-    console.log(
-      "================================================================id" + id
-    );
-    console.log(
-      "================================================================id" +
-        type
-    );
-    Category.findByIdAndUpdate(
-      { _id: new ObjectId(id) },
-      { $set: { isUnList: type === "block" ? true : false } }
-    )
-      .then((response) => {
-        if (type === "block") {
-          req.session.user = false;
-        }
-        res.json(response);
-        res.redirect("/admin/category");
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+
+    await Category.findByIdAndUpdate(new ObjectId(id), {
+      $set: { isUnList: type === "unlist" ? true : false },
+    });
+    await Product.updateMany({ category: new ObjectId(id) }, { $set: { isCategoryUnlist: type === "unlist" ? true : false } });
+    res.json("Success");
+    // res.redirect("/admin/category");
   } catch (err) {
     console.log(err.message);
   }
@@ -96,7 +79,6 @@ const listUnlistCategory = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    console.log(req.body);
     const categoryData = await Category.find();
 
     const name = req.body.name.toUpperCase();
@@ -175,10 +157,38 @@ const editProduct = async (req, res) => {
   }
 };
 
+const productListUnlist = async (req, res) => {
+  try {
+    const id = req.body.id;
+    const type = req.body.type;
+
+    await Product.findByIdAndUpdate(new ObjectId(id), {
+      $set: { isProductUnlist: type === "unlist" ? true : false },
+    });
+    res.json("Success");
+    // res.redirect("/admin/category");
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const deleteproduct = async (req, res) => {
+  try {
+    const id = req.query._id;
+    await Product.deleteOne({ _id: id }); 
+
+    res.redirect("/admin/products");
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+
 module.exports = {
   addCategory,
   editCategory,
   addProduct,
   editProduct,
   listUnlistCategory,
+  productListUnlist,deleteproduct
 };

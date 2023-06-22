@@ -91,13 +91,13 @@
       <div class="card-body">
         <h5 class="card-title"><%=item.category%></h5>
         <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-        <a href="/admin/editcategory?_id=<%=item._id%>" class="btn btn-warning"
+        <a href="/admin/editcategory?_id=<%=item._id%>" class="btn btn-warning mx-2"
           >Edit</a
         >
 
-        <%if(item.isBlocked){ %>
+        <%if(item.isUnList){ %>
         <button
-          onclick="BlockUnblock('<%=item._id%>', 'unBlock')"
+          onclick="listUnList('<%=item._id%>', 'list')"
           style="min-width: 100px"
           class="btn btn-success userListButton"
         >
@@ -105,7 +105,7 @@
         </button>
         <% }else{%>
         <button
-          onclick="BlockUnblock('<%=item._id%>', 'block')"
+          onclick="listUnList('<%=item._id%>', 'unlist')"
           style="min-width: 100px"
           class="btn btn-danger userListButton"
         >
@@ -120,24 +120,30 @@
 </div>
 
 <script>
-  function BlockUnblock(id, type) {
+  function listUnList(id, type) {
     fetch("/admin/listUnlistCategory", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        type,
-        id,
-      }),
-    })
-      .then((response) => {})
-      .then((data) => {
-        location.reload();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    type,
+    id,
+  }),
+})
+  .then(response => {
+    // Perform any necessary operations with the response
+    // ...
+
+    // Reload the page
+    location.reload();
+  })
+  .catch(error => {
+    // Handle any errors that occur during the fetch request
+    console.error("Error:", error);
+  });
+      
+     
   }
 </script>
 

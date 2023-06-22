@@ -67,7 +67,7 @@ const loadHome= async (req,res)=>{
         //         $unwind: "$categoryDetails",
         //       },
         //   ]);
-        const categoryData = await Category.find();
+        const categoryData = await Category.find({isUnList:false});
 
         if(req.session.user_id){
        
@@ -112,8 +112,12 @@ const loadSignUpOtp =(req,res)=>{
 
         try{
             const categoryId= req.query._id;
-            const productData= await Product.find({category:categoryId})
-            res.render("allProducts",{productData:productData});
+            const productData = await Product.find({
+                category: categoryId,
+                isProductUnlist: false,
+                isCategoryUnlist: false
+              });
+                          res.render("allProducts",{productData:productData});
 
 
         }
@@ -128,9 +132,7 @@ const loadSignUpOtp =(req,res)=>{
         try{
             const id= req.query._id;
             
-            console.log("id=============="+id);
             const productData= await Product.findById(id);
-            console.log("==============id"+productData);
             res.render("product",{productData:productData})
 
             // console.log(productData);
