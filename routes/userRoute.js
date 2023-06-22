@@ -1,38 +1,41 @@
+// ==============================Import====================================
 const express = require("express");
 const userRoute= express();
 const bodyParser= require("body-parser")
 const path= require("path");
-const config= require("../config/config");
+const { model } = require("mongoose");
+const session = require("express-session");
 
+userRoute.use(session({secret:process.env.sessionSecret,resave:false,saveUninitialized:false}));
 userRoute.use(express.static("public"));
+userRoute.use(bodyParser.urlencoded({extended:true}))
+
+// ========================View Engine================
 userRoute.set("view engine","ejs");
 userRoute.set("views","views/user/");
 
-userRoute.use(bodyParser.urlencoded({extended:true}))
+
+// =========================Controllers======================
 const userController = require("../controller/user/userController");
 const pageLoadController= require("../controller/user/pageLoadController")
 
-// const userController = require("../controllers/userController");
-const { model } = require("mongoose");
-const session = require("express-session");
-userRoute.use(session({secret:config.sessionSecret,resave:false,saveUninitialized:false}));
-// const auth= require("../middleware/auth");
-// const validator = require("../middleware/validator")
-// const {noCache} = require("../middleware/routingMW")
-
-
+//==========================Middlewares==============================
+const {noCache} = require("../middleware/routingMW")
+const userAuth=require("../middleware/userAuth")
 
 //========================User Route=============================
-userRoute.get('/', pageLoadController.loadHome);
-userRoute.get('/home', pageLoadController.loadHome);
+userRoute.get('/', noCache,pageLoadController.loadHome);
+userRoute.get('/home',noCache, pageLoadController.loadHome);
 userRoute.get('/signup', pageLoadController.loadSignUp);
-userRoute.get("/login",pageLoadController.loginLoad);
+userRoute.get("/login",noCache, pageLoadController.loginLoad);
 userRoute.get("/forgetpassword",pageLoadController.forgetPasswordLoad)
 userRoute.get("/verifyResetPassOtp",pageLoadController.verifyRPOtpLoad)
 userRoute.get("/resetpassword",pageLoadController.resetPasswordLoad)
 userRoute.get("/verifySignUpOtp",pageLoadController.loadSignUpOtp)
 userRoute.get('/allproducts', pageLoadController.loadAllProducts);
 userRoute.get('/product', pageLoadController.loadProduct);
+userRoute.get('/logout', userController.logout);
+
 
 
 

@@ -1,5 +1,10 @@
 <%-include("../layout/header.ejs")%>
-<%-include("../layout/menu.ejs")%>
+
+<%if(typeof userData != 'undefined'){%>
+<%-include("../layout/menuUser.ejs")%>
+ <%}else{%>
+  <%-include("../layout/menu.ejs")%> 
+  <%}%>
 
 
 <!-- Start Carousal -->
@@ -35,29 +40,7 @@
             	<div class="categories-page">
 	                <div class="container">
 	                	<div class="row">
-	                		<div class="col-md-6">
-	                			<div class="banner banner-cat banner-badge">
-		                			<a href="#">
-		                				<img src="assets/images/category/boxed/banner-1.jpg" alt="Banner">
-		                			</a>
-
-		                			<a class="banner-link" href="#">
-		                				<h3 class="banner-title">Shampoo</h3><!-- End .banner-title -->
-		                				<span class="banner-link-text">Shop Now</span>
-		                			</a><!-- End .banner-link -->
-	                			</div><!-- End .banner -->
-
-	                			<div class="banner banner-cat banner-badge">
-		                			<a href="#">
-		                				<img src="assets/images/category/boxed/banner-2.jpg" alt="Banner">
-		                			</a>
-
-		                			<a class="banner-link" href="#">
-		                				<h3 class="banner-title">Facewash</h3><!-- End .banner-title -->
-		                				<span class="banner-link-text">Shop Now</span>
-		                			</a><!-- End .banner-link -->
-	                			</div><!-- End .banner -->
-	                		</div><!-- End .col-md-6 -->
+	                		
 
 	                		<div class="col-md-6">
 	                			<div class="row">
@@ -74,29 +57,8 @@
 			                			</div><!-- End .banner -->
 	                				</div><!-- End .col-sm-6 -->
 
-	                				<div class="col-sm-6">
-	                					<div class="banner banner-cat banner-badge">
-				                			<a href="#">
-				                				<img src="assets/images/category/boxed/banner-4.jpg" alt="Banner">
-				                			</a>
-
-				                			<a class="banner-link" href="#">
-				                				<h3 class="banner-title">Hair Gel</h3><!-- End .banner-title -->
-				                				<span class="banner-link-text">Shop Now</span>
-				                			</a><!-- End .banner-link -->
-			                			</div><!-- End .banner -->
-	                				</div><!-- End .col-sm-6 -->
-	                			</div><!-- End .row -->
-
-	                			<div class="banner banner-cat banner-badge">
-		                			<a href="#">
-		                				<img src="assets/images/category/boxed/banner-5.jpg" alt="Banner">
-		                			</a>
-
-		                			<a class="banner-link" href="#">
-		                				<h3 class="banner-title">Hair Oil</h3><!-- End .banner-title -->
-		                				<span class="banner-link-text">Shop Now</span>
-		                			</a><!-- End .banner-link -->
+	                				
+				                			
 	                			</div><!-- End .banner -->
 	                		</div><!-- End .col-md-6 -->
 

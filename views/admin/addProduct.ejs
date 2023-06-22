@@ -23,7 +23,7 @@
       
           <%}%>
 
-          
+
         <div class="form-div container">
             <form class="form-floating" method="post" enctype="multipart/form-data">
                 <div class="form-floating mb-3">
@@ -35,14 +35,21 @@
                     <label for="price">Price</label>
                   </div>
                   
+
+
+               
+
                   <div class="form-floating my-4">
-                    <select class="form-select" id="category" aria-label="category" required>
-                      <option selected>Choose Category</option>
-                      <%categories.map((item)=>{%>
+                  
+                    <select class="form-select" name="category" required>
+
+
+                      <%categorydata.map((item)=>{%>
                         
-                      <option value="<%=item%>"><%=item%></option>
+                      <option value= <%=item._id%> > <%=item.category%> </option>
                    <% })%>
                     </select>
+                   
                     <label for="floatingSelect">Category</label>
                   </div>
 

@@ -3,7 +3,7 @@
 <div class="mainBody">
   <nav class="navbar bg-light mx-auto bg-primary">
     <div class="container-fluid justify-content-center">
-      <form class="d-flex" role="search">
+      <!-- <form class="d-flex" role="search">
         <input
           class="form-control me-2"
           type="search"
@@ -12,7 +12,7 @@
           aria-label="Search"
         />
         <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      </form> -->
     </div>
   </nav>
 
@@ -38,9 +38,34 @@
         <td><%=userData[i].name%></td>
         <td><%=userData[i].email%></td>
         <td><%=userData[i].mobile%></td>
-        <td>
+       
 
-          <div class="form-check form-switch">
+        <td>
+          <%if(userData[i].isBlocked){ %>
+              <button onclick="BlockUnblock('<%=userData[i]._id%>', 'unBlock')"
+                 style="min-width:100px"
+                class="btn btn-success userListButton ">Unblock</button>
+              <% }else{%>
+                  <button onclick="BlockUnblock('<%=userData[i]._id%>', 'block')"
+                    style="min-width:100px" class="btn btn-danger userListButton">Block</button>
+                  <%}%>
+      </td>
+
+
+
+
+
+
+
+          <!-- <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked<%=i%>" checked />
+            <label class="form-check-label" for="flexSwitchCheckChecked" id="switchLabel<%=i%>"></label>
+          </div> -->
+          
+
+
+
+          <!-- <div class="form-check form-switch">
             <input
               class="form-check-input"
               type="checkbox"
@@ -52,13 +77,37 @@
               class="form-check-label"
               for="flexSwitchCheckChecked"
             ></label>
-          </div>
-        </td>
+          </div> -->
+        
         <!-- <td><button class="btn btn-primary">View Details</button></td> -->
       </tr>
     <%}}%>
     </table>
   </div>
 </div>
+
+<script>function BlockUnblock(id, type) {
+  console.log("=====================================script"+id);
+  fetch("/admin/blockUnblockUser", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          type,
+          id
+      })
+  })
+      .then(response => {
+      })
+      .then(data => {
+          location.reload()
+      })
+      .catch(error => {
+          console.log(error);
+      });
+}
+</script>
+
 
 <%-include("../layout/adminFooter.ejs")%>

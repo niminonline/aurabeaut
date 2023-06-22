@@ -50,10 +50,18 @@ const resetPasswordLoad=(req,res)=>{
 //=====================Load User Home Page===================
 
 const loadHome= async (req,res)=>{
-    const userData= await User.findOne({_id: req.session.user_id});
-            
     try{
-        res.render("home",{userDetails:userData});
+
+        if(req.session.user_id){
+       
+        const userData= await User.findOne({_id: req.session.user_id});
+
+        res.render("home",{userData:userData});
+        }
+        else
+        {
+            res.render("home");
+        }
     }
     catch(err){
         console.log(err.message);

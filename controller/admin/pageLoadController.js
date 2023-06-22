@@ -19,9 +19,16 @@ const loginLoad = async(req,res)=>{
 //============================Admin login=======================
 const adminLogin = async(req,res)=>{
     try{
-        
+        console.log(req.body.email+process.env.adminEmail+req.body.pass+process.env.adminPassword );
+        // console.log(process.env.adminEmail,process.env.adminPassword)
+        if((req.body.email==process.env.adminEmail)&&(req.body.pass==process.env.adminPassword)){
+            req.session.admin_id= req.body.email;
         res.redirect("/admin/home");
-        // res.render("temp");
+        }
+    
+        else{
+        res.render("login",{message:"Invalid credentials"});
+        }
 
     }
     catch(err){
@@ -31,6 +38,7 @@ const adminLogin = async(req,res)=>{
 //===============================Dashboard Load====================
 const dashboardLoad = async(req,res)=>{
     try{
+        
         res.render("home");
 
     }
@@ -112,8 +120,22 @@ const carouselLoad = async(req,res)=>{
 //===============================Products Load====================
 const productsLoad = async(req,res)=>{
     try{
-        const productData= await Product.find({});
-        console.log(productData);
+        const productData = await Product.aggregate([
+            {
+                $lookup: {
+                  from: "categories",
+                  localField: "category",
+                  foreignField: "_id",
+                  as: "categoryDetails",
+                },
+              },
+              {
+                $unwind: "$categoryDetails",
+              },
+          ]);
+
+        
+        console.log("Lookup data"+productData);
        
         res.render("products",{productData:productData});
 
@@ -147,7 +169,18 @@ const couponsLoad = async(req,res)=>{
 
 const editProductLoad = async(req,res)=>{
     try{
-        res.render("editProduct");
+        const id= req.query._id;
+        const categoryDetails= await Category.find();
+        
+        const productData= await Product.findById({_id:id});
+        if(productData){
+            res.render("editProduct",{productData:productData,categoryDetails:categoryDetails})
+        }
+        else
+        {
+            res.render("editProduct",{errorMessage:"This Product no longer exists"})
+        }
+       
 
     }
     catch(err){
@@ -158,11 +191,12 @@ const editProductLoad = async(req,res)=>{
 
 const addProductLoad = async(req,res)=>{
     try{
-        const categoryData= await Category.find();
-        const categories= categoryData.map((item)=>item.category);
-        console.log(categories);
+        const categorydata= await Category.find();
         
-        res.render("addProduct",{categories:categories});
+      
+        // console.log(categoryData);
+        
+        res.render("addProduct",{categorydata:categorydata});
 
     }
     catch(err){

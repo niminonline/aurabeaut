@@ -1,54 +1,60 @@
 const express = require('express');
 const adminRoute= express();
 const session =require("express-session");
-const config= require("../config/config");
 const bodyParser=require("body-parser")
+adminRoute.use(bodyParser.urlencoded({extended:true}));
+adminRoute.use(session({secret:process.env.sessionSecret,resave:false,saveUninitialized:false}));
+adminRoute.use(express.static("public"));
+
+// ==============================Controllers===================================
 const pageLoadController= require("../controller/admin/pageLoadController")
 const shopController= require("../controller/admin/shopController")
+const userController= require("../controller/admin/userController")
+const admincontroller= require("../controller/admin/adminController")
+
+//==========================Middlewares======================================
+const adminAuth=require("../middleware/adminAuth")
 const upload= require("../middleware/multer")
-
-// const auth= require("../middleware/auth");
-// const {body,validationResult}= require("express-validator");
 const path= require("path");    
-// const validator= require("../middleware/validator")
-// const {noCache} = require("../middleware/routingMW")
+const {noCache} = require("../middleware/routingMW")
 
 
-
-adminRoute.use(express.static("public"));
+// ======================View Engine=================
 adminRoute.set("view engine","ejs");
 adminRoute.set("views","views/admin/");
-
-
-adminRoute.use(bodyParser.urlencoded({extended:true}));
-adminRoute.use(session({secret:config.sessionSecret,resave:false,saveUninitialized:false}));
-
 
 
 //=======================Routing====================================================
 
 //=============================Page Loads==========================
-adminRoute.get("/", pageLoadController.loginLoad)
-adminRoute.get("/login", pageLoadController.loginLoad)
+adminRoute.get("/",adminAuth.isLogin,noCache, pageLoadController.loginLoad)
+adminRoute.get("/login",adminAuth.isLogin,noCache, pageLoadController.loginLoad)
+adminRoute.get("/home", adminAuth.isLogout,noCache,pageLoadController.dashboardLoad)
+adminRoute.get("/users", adminAuth.isLogout,pageLoadController.usersLoad)
+adminRoute.get("/orders", adminAuth.isLogout,pageLoadController.ordersLoad)
+adminRoute.get("/category", adminAuth.isLogout,pageLoadController.categoryLoad)
+adminRoute.get("/products", adminAuth.isLogout,pageLoadController.productsLoad)
+adminRoute.get("/carousel", adminAuth.isLogout,pageLoadController.carouselLoad)
+adminRoute.get("/coupons", adminAuth.isLogout,pageLoadController.couponsLoad)
+adminRoute.get("/wallets", adminAuth.isLogout,pageLoadController.walletsLoad)
+adminRoute.get("/editproduct", adminAuth.isLogout,pageLoadController.editProductLoad)
+adminRoute.get("/addProduct", adminAuth.isLogout,pageLoadController.addProductLoad)
+adminRoute.get("/editcategory", adminAuth.isLogout,pageLoadController.editCategoryLoad)
+adminRoute.get("/editcarousel", adminAuth.isLogout,pageLoadController.editCarouselLoad)
+
+// ===================Log in/log out=========================================
 adminRoute.post("/login",pageLoadController.adminLogin)
-adminRoute.get("/home", pageLoadController.dashboardLoad)
-adminRoute.get("/users", pageLoadController.usersLoad)
-adminRoute.get("/orders", pageLoadController.ordersLoad)
-adminRoute.get("/category", pageLoadController.categoryLoad)
-adminRoute.get("/products", pageLoadController.productsLoad)
-adminRoute.get("/carousel", pageLoadController.carouselLoad)
-adminRoute.get("/coupons", pageLoadController.couponsLoad)
-adminRoute.get("/wallets", pageLoadController.walletsLoad)
-adminRoute.get("/editproduct", pageLoadController.editProductLoad)
-adminRoute.get("/addProduct", pageLoadController.addProductLoad)
-adminRoute.get("/editcategory", pageLoadController.editCategoryLoad)
-adminRoute.get("/editcarousel", pageLoadController.editCarouselLoad)
-// adminRoute.get("/logout",pageLoadController.logout)
+adminRoute.get("/logout", admincontroller.adminLogout)
 
 
+// ================================Post Routes===================================
 adminRoute.post("/category",upload.single("image"), shopController.addCategory)
-adminRoute.post("/editCategory",upload.single("image"), shopController.editCategory)
+adminRoute.post("/editcategory",upload.single("image"), shopController.editCategory)
 adminRoute.post("/addproduct",upload.array('image', 3), shopController.addProduct)
+adminRoute.post("/editproduct",upload.array('image', 3), shopController.editProduct)
+adminRoute.post("/blockUnblockUser", userController.userBlockUnblock)
+// adminRoute.post("/listunlistcategory", shopController.listUnlistCategory)
+
 
 
 

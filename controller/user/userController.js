@@ -6,33 +6,31 @@ const nodemailer = require("nodemailer");
 
 //===============Verify Login===================
 
-const verifyLogin = async(req,res)=>{
-    try{
-        
-       const {email,password}= req.body;
-       const userData= await User.findOne({email:email});
-       if(userData){
-       const passwordMatch= await bcrypt.compare(password,userData.password);
+const verifyLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const userData = await User.findOne({ email: email });
+    if (userData) {
+      if (userData.isBlocked == false) {
+        const passwordMatch = await bcrypt.compare(password, userData.password);
 
-       if(passwordMatch){
-        req.session.user_id= userData._id;
-        // console.log("SessionID2:"+req.session.user_id);
-        res.redirect("/home");
-       }
-       else{
-        res.render("login",{message:"Incorrect Password"});
-       }
-
-       }
-       else{
-        res.render("login",{message:"User not found"});
-       }
-
+        if (passwordMatch) {
+          req.session.user_id = userData._id;
+          // console.log("SessionID2:"+req.session.user_id);
+          res.redirect("/home");
+        } else {
+          res.render("login", { message: "Incorrect Password" });
+        }
+      } else {
+        res.render("login", { message: "User is Blocked" });
+      }
+    } else {
+      res.render("login", { message: "User not found" });
     }
-    catch(err){
-        console.log(err.message);
-    }
-}
+  } catch (err) {
+    console.log(err.message);
+  }
+};
 
 //=========================Send OTP========================
 
@@ -117,6 +115,7 @@ const insertUser = async (req, res) => {
       const userData = user.save();
       if (userData) {
         delete req.session.tempUserData;
+
         res.redirect("login");
       } else res.render("verifyEmailOtp", { message: "Invalid OTP" });
     }
@@ -132,6 +131,23 @@ const insertUser = async (req, res) => {
   }
 };
 
+
+
+//==================================Log out=============================
+const logout = async(req,res)=>{
+  try{
+      delete req.session.user_id
+      // req.session.destroy();
+      res.redirect("/login"); 
+      
+  }
+  
+  catch(err){
+      console.log(err.message);
+  }
+}
+
+
 module.exports = {
   insertUser,
   verifyLogin,
@@ -139,4 +155,5 @@ module.exports = {
   resetPassword,
   submitOTP,
   storeSignUpDetails,
+  logout
 };

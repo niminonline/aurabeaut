@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const produtSchema = new mongoose.Schema(
+const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -15,16 +15,13 @@ const produtSchema = new mongoose.Schema(
       require: true,
     },
     category: {
-      type: String,
-      require: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
     },
     imageUrl: {
       type: Array,
       required: true,
-    },
-    is_blocked: {
-      type: Boolean,
-      default: false,
     },
     stock: {
       type: Number,
@@ -34,9 +31,17 @@ const produtSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    isProductUnlist: {
+      type: Boolean,
+      default: false,
+    },
+    isCategoryUnlist: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   { timestamps: true },
 );
 
-module.exports = mongoose.model('Product', produtSchema);
+module.exports = mongoose.model('Product', productSchema);

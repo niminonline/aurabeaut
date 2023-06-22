@@ -7,48 +7,84 @@
     <div class="shadow-div container text-center">
         <h3 class=" my-4">Edit Product</h3>
 
+
+
+        <%if(typeof errorMessage!= 'undefined'){%>
+
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Error:</strong> <%=errorMessage%>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+      
+          <%}%> 
+          <%if(typeof successMessage!= 'undefined'){%>
+      
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong></strong> <%=successMessage%>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+      
+          <%}%>
+      
         
         <div class="form-div container">
+          <%if(typeof productData!= 'undefined'){%>
+
+
             <form class="form-floating">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="productName" placeholder="Product Name">
+                    <input type="text" class="form-control" id="productName" placeholder="Product Name" value="<%=productData.name%>" required>
                     <label for="productName">Product Name</label>
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="price" placeholder="Price">
+                    <input type="number" class="form-control" id="price" placeholder="Price" value="<%=productData.price%>" required>
                     <label for="price">Price</label>
                   </div>
-                  
+
                   <div class="form-floating my-4">
-                    <select class="form-select" id="category" aria-label="category">
-                      <option selected>Choose Category</option>
-                      <option value="1">%=category%</option>
-                      
-                    </select>
+                  
+                    <select class="form-select" name="category" required>
+                        <%categorydata.map((item)=>{%>
+                          
+                        <option value= <%=item._id%> > <%=item.category%> </option>
+                     <% })%>
+
+                     
+                      </select>
+                     
+                      <label for="floatingSelect">Category</label>
+                    </div>
                     <label for="floatingSelect">Category</label>
                   </div>
-
                   <div class="form-floating mb-3">
-                    <textarea  class="form-control" id="description" placeholder="Description"></textarea>
+                    <textarea  class="form-control" id="description" placeholder="Description" value="<%=productData.description%>" required> </textarea>
                     <label for="description">Description</label>
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="stock" placeholder="Stock">
+                    <input type="number" class="form-control" id="stock" placeholder="Stock" value="<%=productData.stock%>" required>
                     <label for="stock">Stock</label>
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="brand" placeholder="Brand">
+                    <input type="text" class="form-control" id="brand" placeholder="Brand" value="<%=productData.brand%>" required>
                     <label for="brand">Brand</label>
                   </div>
-                  <!-- <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingInput" placeholder="Category Name">
-                    <label for="floatingInput">Product Name</label>
-                  </div> -->
 
                   <div class="form-floating">
                     <input type="file" class="form-control" id="image" placeholder="Add Image">
                     <label for="image">Image</label>
                     <input type="submit" class="btn btn-primary m-4 mx-auto" value="Save ">
+                    <%}%> 
+
                     <a class="btn btn-danger mx-4" href="/admin/products">Cancel</a>
                   </div>
                 </form>
