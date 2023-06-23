@@ -1,8 +1,8 @@
 const express = require("express");
 const adminRoute = express();
 const session = require("express-session");
-const bodyParser = require("body-parser");
-adminRoute.use(bodyParser.urlencoded({ extended: true }));
+// const bodyParser = require("body-parser");
+// adminRoute.use(bodyParser.urlencoded({ extended: true }));
 adminRoute.use(
   session({
     secret: process.env.sessionSecret,
@@ -10,42 +10,35 @@ adminRoute.use(
     saveUninitialized: false,
   })
 );
-adminRoute.use(express.static("public"));
+// adminRoute.use(express.static("public"));
 
 // ==============================Controllers===================================
-const pageLoadController = require("../controller/admin/pageLoadController");
-const shopController = require("../controller/admin/shopController");
-const userController = require("../controller/admin/userController");
-const admincontroller = require("../controller/admin/adminController");
+const admincontroller = require("../controller/adminController");
+const carouselController = require("../controller/carouselController");
+const categoryController = require("../controller/categoryController");
+const couponController = require("../controller/couponController");
+const offerController = require("../controller/offerController");
+const oderController = require("../controller/orderController");
+const productController = require("../controller/productController");
+const userController = require("../controller/userController");
 
 //==========================Middlewares======================================
-const adminAuth = require("../middleware/adminAuth");
+const {isAdminLogin,isAdminLogout} = require("../middleware/auth");
 const upload = require("../middleware/multer");
 const path = require("path");
 const { noCache } = require("../middleware/routingMW");
 
-// ======================View Engine=================
-adminRoute.set("view engine", "ejs");
+//===============================Set View Engine directory========================
 adminRoute.set("views", "views/admin/");
 
 //=======================Routing====================================================
 
-//=============================Page Loads==========================
-adminRoute.get("/", adminAuth.isLogin, noCache, pageLoadController.loginLoad);
-adminRoute.get(
-  "/login",
-  adminAuth.isLogin,
-  noCache,
-  pageLoadController.loginLoad
-);
-adminRoute.get(
-  "/home",
-  adminAuth.isLogout,
-  noCache,
-  pageLoadController.dashboardLoad
-);
-adminRoute.get("/users", adminAuth.isLogout, pageLoadController.usersLoad);
-adminRoute.get("/orders", adminAuth.isLogout, pageLoadController.ordersLoad);
+
+adminRoute.get("/", isAdminLogin, noCache, admincontroller.adminLoginLoad);
+adminRoute.get("/login",adminAuth.isLogin,noCache,admincontroller.adminLoginLoad);
+adminRoute.get("/home",adminAuth.isLogout,noCache,admincontroller.dashboardLoad);
+adminRoute.get("/users", isAdminLogout, admincontroller.adminUsersLoad);
+adminRoute.get("/orders", isAdminLogout, oderController.adminOrderLoad);
 adminRoute.get(
   "/category",
   adminAuth.isLogout,

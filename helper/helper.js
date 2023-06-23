@@ -1,6 +1,8 @@
 
 const nodemailer = require('nodemailer');
 
+const bcrypt = require("bcrypt");
+
 async function verifyEmail(email, otp) {
     try {
       const transporter = nodemailer.createTransport({
@@ -38,4 +40,16 @@ async function verifyEmail(email, otp) {
         console.log(err.message);
     }
   }
-  module.exports={generateOtp,verifyEmail}
+
+  // =============================Encrypt Password=============================
+
+const securePassword = async (password) => {
+  try {
+    const passwordHash = await bcrypt.hash(password, 10);
+    return await bcrypt.hash(password, 10);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+  module.exports={generateOtp,verifyEmail,securePassword}

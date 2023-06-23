@@ -1,83 +1,105 @@
-const Product = require("../../models/productModel");
+const User = require("../../models/userModel");
 const Category = require("../../models/categoryModel");
+const Product = require("../../models/productModel");
+const bcrypt = require("bcrypt");
 const fs = require("fs");
-const path = require("path");
-const { ObjectId } = require("mongodb");
 
-// =============================================Add Category==============================
-const addCategory = async (req, res) => {
+//===============================Products Load====================
+const adminProductsLoad = async (req, res) => {
   try {
-    const categoryName = req.body.category.toUpperCase();
-    const image = req.file;
+    const productData = await Product.aggregate([
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "categoryDetails",
+        },
+      },
+      {
+        $unwind: "$categoryDetails",
+      },
+    ]);
 
-    const isCategoryExist = await Category.findOne({ category: categoryName });
-    if (!isCategoryExist) {
-      const category = new Category({
-        category: categoryName,
-        imageUrl: image.filename,
-      });
-      await category.save().then((response) => {
-        res.render("category", {
-          successMessage: "Category added successfully",
-        });
+    res.render("products", { productData: productData });
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+//===================================Edit Product Load==========================
+
+const adminEditProductLoad = async (req, res) => {
+  try {
+    const id = req.query._id;
+    const categoryDetails = await Category.find();
+
+    const productData = await Product.findById({ _id: id });
+
+    if (productData) {
+      res.render("editProduct", {
+        productData: productData,
+        categoryDetails: categoryDetails,
       });
     } else {
-      res.render("category", { errorMessage: "Category already exist" });
+      res.render("editProduct", {
+        errorMessage: "This Product no longer exists",
+      });
     }
   } catch (err) {
     console.log(err.message);
   }
 };
+//===================================Add Product Load==========================
 
-// ===================================Edit Category======================================
-const editCategory = async (req, res) => {
+const adminAddProductLoad = async (req, res) => {
   try {
+    const categorydata = await Category.find();
 
-    const categoryName = req.body.category.toUpperCase();
-    const id = req.body._id;
-
-    const isCategoryExist = await Category.findOne({ category: categoryName });
-    if (!isCategoryExist || isCategoryExist._id == id) {
-      if (req.file) {
-        const categoryData = await Category.findByIdAndUpdate(
-          { _id: id },
-          { $set: { category: categoryName, imageUrl: req.file.filename } }
-        );
-      } else {
-        const categoryData = await Category.findByIdAndUpdate(
-          { _id: id },
-          { $set: { category: categoryName } }
-        );
-      }
-      res.redirect("/admin/category");
-    } else {
-      res.render("editCategory", { errorMessage: "Category already exist" });
-    }
+    res.render("addProduct", { categorydata: categorydata });
   } catch (err) {
     console.log(err.message);
   }
 };
-//=======================================List Unlist category=============================
 
-const listUnlistCategory = async (req, res) => {
+//===============================Load All Products==================================
+
+const loadAllProducts = async (req, res) => {
   try {
-    const id = req.body.id;
-    const type = req.body.type;
-
-    await Category.findByIdAndUpdate(new ObjectId(id), {
-      $set: { isUnList: type === "unlist" ? true : false },
+    const categoryId = req.query._id;
+    const productData = await Product.find({
+      category: categoryId,
+      isProductUnlist: false,
+      isCategoryUnlist: false,
     });
-    await Product.updateMany({ category: new ObjectId(id) }, { $set: { isCategoryUnlist: type === "unlist" ? true : false } });
-    res.json("Success");
-    // res.redirect("/admin/category");
-  } catch (err) {
-    console.log(err.message);
+    res.render("allProducts", { productData: productData });
+  } catch (error) {
+    console.log(error.message);
   }
 };
 
+//===============================Load Single Product Page==================================
+const loadProduct = async (req, res) => {
+  try {
+    const id = req.query._id;
+
+    const productData = await Product.findById(id);
+    res.render("product", { productData: productData });
+
+    // console.log(productData);
+    // if (productData){
+    //     res.render("product",{productData:productData});
+    // }
+    // else
+    // {
+    //     res.render("product",{Errormessage:"Product not found",productData:undefined});
+    // }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 // ===============================Add Product==========================
 
-const addProduct = async (req, res) => {
+const adminAddProduct = async (req, res) => {
   try {
     const categoryData = await Category.find();
 
@@ -108,9 +130,10 @@ const addProduct = async (req, res) => {
     console.log(error.message);
   }
 };
+
 //=================================Edit Product===============================
 
-const editProduct = async (req, res) => {
+const adminEditProduct = async (req, res) => {
   try {
     const productName = req.body.category.toUpperCase();
     const id = req.body._id;
@@ -157,6 +180,7 @@ const editProduct = async (req, res) => {
   }
 };
 
+//=========================Prduct List/Unlist======================
 const productListUnlist = async (req, res) => {
   try {
     const id = req.body.id;
@@ -172,23 +196,12 @@ const productListUnlist = async (req, res) => {
   }
 };
 
-const deleteproduct = async (req, res) => {
-  try {
-    const id = req.query._id;
-    await Product.deleteOne({ _id: id }); 
-
-    res.redirect("/admin/products");
-  } catch (err) {
-    console.log(err.message);
-  }
-};
-
-
 module.exports = {
-  addCategory,
-  editCategory,
-  addProduct,
-  editProduct,
-  listUnlistCategory,
-  productListUnlist,deleteproduct
+  adminProductsLoad,
+  adminEditProductLoad,
+  adminAddProductLoad,
+  loadAllProducts,
+  loadProduct,
+  adminAddProduct,
+  adminEditProduct,
 };
