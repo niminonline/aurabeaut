@@ -1,32 +1,9 @@
-const { ObjectId } = require("mongodb");
 const User = require("../../models/userModel");
-const Product = require("../../models/productModel");
 const Category = require("../../models/categoryModel");
 const bcrypt = require("bcrypt");
+const helper = require("../../helper/helper");
+const nodemailer = require("nodemailer");
 
-// =========================User Block/Unblock=============
-const userBlockUnblock = (req, res) => {
-  try {
-    const id = req.body.id;
-    const type = req.body.type;
-    User.findByIdAndUpdate(
-      { _id: new ObjectId(id) },
-      { $set: { isBlocked: type === "block" ? true : false } }
-    )
-      .then((response) => {
-        if (type === "block") {
-          req.session.user = false;
-        }
-        res.json(response);
-        res.redirect("/admin/users");
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  } catch (err) {
-    console.log(err.message);
-  }
-};
 //=================Load Login Page================================
 const loginLoad = async (req, res) => {
   try {
@@ -35,6 +12,7 @@ const loginLoad = async (req, res) => {
     console.log(err.message);
   }
 };
+
 //================ Load ForgetPassword Page=========================
 
 const forgetPasswordLoad = (req, res) => {
@@ -52,64 +30,6 @@ const verifyRPOtpLoad = (req, res) => {
     res.render("verifyResetPassOtp");
   } catch (err) {
     console.log(err.message);
-  }
-};
-
-//==============Load Reset Password Page==================
-
-const resetPasswordLoad = (req, res) => {
-  try {
-    res.render("resetPassword");
-  } catch (err) {
-    console.log(err.message);
-  }
-};
-//=====================Signup page Load=======================
-const loadSignUp = (req, res) => {
-  try {
-    res.render("signup", { message: "" });
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-//=====================Load User Home Page===================
-
-const loadHome = async (req, res) => {
-  try {
-    // const productData = await Product.aggregate([
-    //     {
-    //         $lookup: {
-    //           from: "categories",
-    //           localField: "category",
-    //           foreignField: "_id",
-    //           as: "categoryDetails",
-    //         },
-    //       },
-    //       {
-    //         $unwind: "$categoryDetails",
-    //       },
-    //   ]);
-    const categoryData = await Category.find({ isUnList: false });
-
-    if (req.session.user_id) {
-      const userData = await User.findOne({ _id: req.session.user_id });
-
-      res.render("home", { userData: userData, categoryData: categoryData });
-    } else {
-      res.render("home", { categoryData: categoryData });
-    }
-  } catch (err) {
-    console.log(err.message);
-  }
-};
-
-// ==============================Load email OTP====================
-const loadSignUpOtp = (req, res) => {
-  try {
-    res.render("verifySignUpOtp");
-  } catch (error) {
-    console.log(error.message);
   }
 };
 
@@ -149,6 +69,16 @@ const sendOTP = (req, res) => {
     console.log(err.message);
   }
 };
+
+//==============Load Reset Password Page==================
+
+const resetPasswordLoad = (req, res) => {
+  try {
+    res.render("resetPassword");
+  } catch (err) {
+    console.log(err.message);
+  }
+};
 // =======================Reset Password=====================
 
 const resetPassword = (req, res) => {
@@ -168,7 +98,6 @@ const submitOTP = (req, res) => {
     console.log(error.message);
   }
 };
-
 //===============================Store signup details==================
 
 const storeSignUpDetails = async (req, res) => {
@@ -177,10 +106,10 @@ const storeSignUpDetails = async (req, res) => {
 
     const userexist = await User.findOne({ $or: [{ email }, { mobile }] });
     if (!userexist) {
-      const spassword = await securePassword(password);
+      const securePassword = await helper.hashPassword(password);
 
       req.session.tempUserData = req.body;
-      req.session.tempUserData.password = spassword;
+      req.session.tempUserData.password = securePassword;
       const otp = helper.generateOtp();
       helper.verifyEmail(req.session.tempUserData.email, otp);
       req.session.otp = otp;
@@ -193,6 +122,8 @@ const storeSignUpDetails = async (req, res) => {
     console.log(error.message);
   }
 };
+
+//==========================Signup User=====================
 
 //====Insert User=========
 const insertUser = async (req, res) => {
@@ -236,20 +167,68 @@ const logout = async (req, res) => {
   }
 };
 
+//=====================Signup page Load=======================
+const loadSignUp = (req, res) => {
+  try {
+    res.render("signup", { message: "" });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// ==============================Load email OTP====================
+const loadSignUpOtp = (req, res) => {
+  try {
+    res.render("verifySignUpOtp");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//=====================Load User Home Page===================
+
+const loadHome = async (req, res) => {
+  try {
+    // const productData = await Product.aggregate([
+    //     {
+    //         $lookup: {
+    //           from: "categories",
+    //           localField: "category",
+    //           foreignField: "_id",
+    //           as: "categoryDetails",
+    //         },
+    //       },
+    //       {
+    //         $unwind: "$categoryDetails",
+    //       },
+    //   ]);
+    const categoryData = await Category.find({ isUnList: false });
+
+    if (req.session.user_id) {
+      const userData = await User.findOne({ _id: req.session.user_id });
+
+      res.render("home", { userData: userData, categoryData: categoryData });
+    } else {
+      res.render("home", { categoryData: categoryData });
+    }
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 module.exports = {
-  userBlockUnblock,
   loginLoad,
   forgetPasswordLoad,
-  verifyRPOtpLoad,
-  resetPasswordLoad,
-  loadHome,
-  loadSignUp,
-  loadSignUpOtp,
+  insertUser,
   verifyLogin,
   sendOTP,
+  verifyRPOtpLoad,
+  resetPasswordLoad,
   resetPassword,
   submitOTP,
   storeSignUpDetails,
-  insertUser,
   logout,
+  loadHome,
+  loadSignUp,
+  loadSignUpOtp,
 };

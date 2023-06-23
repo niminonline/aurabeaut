@@ -1,8 +1,6 @@
-const User = require("../../models/userModel");
 const Category = require("../../models/categoryModel");
 const Product = require("../../models/productModel");
-const bcrypt = require("bcrypt");
-const fs = require("fs");
+const { ObjectId } = require("mongodb");
 
 //===============================Category Load====================
 const categoryLoad = async (req, res) => {
@@ -46,9 +44,7 @@ const addCategory = async (req, res) => {
         imageUrl: image.filename,
       });
       await category.save().then((response) => {
-        res.render("category", {
-          successMessage: "Category added successfully",
-        });
+        res.redirect("/admin/category");
       });
     } else {
       res.render("category", { errorMessage: "Category already exist" });
@@ -57,6 +53,7 @@ const addCategory = async (req, res) => {
     console.log(err.message);
   }
 };
+
 // ===================================Edit Category======================================
 const editCategory = async (req, res) => {
   try {

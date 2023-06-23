@@ -1,9 +1,5 @@
-const User= require("../../models/userModel");
-const Category= require("../../models/categoryModel");
-const Product= require("../../models/productModel");
-const bcrypt= require("bcrypt");
-const fs= require("fs");
 
+const Carousel= require("../../models/carouselModel");
 
 
 
@@ -18,7 +14,6 @@ const carouselLoad = async(req,res)=>{
     }
 }
 
-
 //===================================Edit Carousel Load==========================
 
 const editCarouselLoad = async(req,res)=>{
@@ -30,6 +25,7 @@ const editCarouselLoad = async(req,res)=>{
         console.log(err.message);
     }
 }
+
 
 
 module.exports={carouselLoad,editCarouselLoad}

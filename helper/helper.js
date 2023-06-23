@@ -43,7 +43,7 @@ async function verifyEmail(email, otp) {
 
   // =============================Encrypt Password=============================
 
-const securePassword = async (password) => {
+const hashPassword = async (password) => {
   try {
     const passwordHash = await bcrypt.hash(password, 10);
     return await bcrypt.hash(password, 10);
@@ -52,4 +52,4 @@ const securePassword = async (password) => {
   }
 }
 
-  module.exports={generateOtp,verifyEmail,securePassword}
+  module.exports={generateOtp,verifyEmail,hashPassword}

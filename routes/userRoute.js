@@ -1,56 +1,48 @@
 // ==============================Import====================================
 const express = require("express");
 const userRoute = express();
-const bodyParser = require("body-parser");
-const session = require("express-session");
+// const bodyParser = require("body-parser");
+// userRoute.use(bodyParser.urlencoded({ extended: true }));
 
 
-userRoute.use(
-  session({
-    secret: process.env.sessionSecret,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-userRoute.use(express.static("public"));
-userRoute.use(bodyParser.urlencoded({ extended: true }));
 
-// ========================View Engine================
-userRoute.set("view engine", "ejs");
+// //============================Set
+// userRoute.use(express.static("public"));
+
+// ========================View Engine Directory================
 userRoute.set("views", "views/user/");
 
 // =========================Controllers======================
 const userController = require("../controller/user/userController");
-const pageLoadController = require("../controller/user/pageLoadController");
-const userShopContrller = require("../controller/user/userShopController");
+const productController = require("../controller/user/productController");
+const orderController = require("../controller/user/orderController");
 
-//==========================Middlewares==============================
+//==========================Middlewares======================================
+const { isUserLogin, isUserLogout } = require("../middleware/auth");
+const upload = require("../middleware/multer");
 const { noCache } = require("../middleware/routingMW");
-const userAuth = require("../middleware/userAuth");
 
-//========================User Route=============================
-userRoute.get("/", noCache, pageLoadController.loadHome);
-userRoute.get("/home", noCache, pageLoadController.loadHome);
-userRoute.get("/signup", pageLoadController.loadSignUp);
-userRoute.get("/login", noCache, pageLoadController.loginLoad);
-userRoute.get("/forgetpassword", pageLoadController.forgetPasswordLoad);
-userRoute.get("/verifyResetPassOtp", pageLoadController.verifyRPOtpLoad);
-userRoute.get("/resetpassword", pageLoadController.resetPasswordLoad);
-userRoute.get("/verifySignUpOtp", pageLoadController.loadSignUpOtp);
-userRoute.get("/allproducts", pageLoadController.loadAllProducts);
-userRoute.get("/product", pageLoadController.loadProduct);
+//========================Get Routes=============================
+userRoute.get("/", noCache, userController.loadHome);
+userRoute.get("/home", noCache, userController.loadHome);
+userRoute.get("/signup", userController.loadSignUp);
+userRoute.get("/login", noCache,isUserLogin,  userController.loginLoad);
+userRoute.get("/forgetpassword", isUserLogin,userController.forgetPasswordLoad);
+userRoute.get("/verifyResetPassOtp",isUserLogin, userController.verifyRPOtpLoad);
+userRoute.get("/resetpassword", isUserLogin,userController.resetPasswordLoad);
+userRoute.get("/verifySignUpOtp",isUserLogin,userController.loadSignUpOtp);
+userRoute.get("/allproducts", productController.loadAllProducts);
+userRoute.get("/product", productController.loadProduct);
 userRoute.get("/logout", userController.logout);
 
+
+// ============================Post Routes====================
 userRoute.post("/signup", userController.storeSignUpDetails);
 userRoute.post("/login", userController.verifyLogin);
 userRoute.post("/forgetpassword", userController.sendOTP);
 userRoute.post("/verifyResetPassOtp", userController.submitOTP);
 userRoute.post("/resetpassword", userController.resetPassword);
 userRoute.post("/verifySignUpOtp", userController.insertUser);
-
-
-//===================Shop Routes================
-// userRoute.get("/allProducts", userController.getCategory);
 
 
 

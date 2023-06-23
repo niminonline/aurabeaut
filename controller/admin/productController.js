@@ -1,11 +1,8 @@
-const User = require("../../models/userModel");
-const Category = require("../../models/categoryModel");
 const Product = require("../../models/productModel");
-const bcrypt = require("bcrypt");
-const fs = require("fs");
+const Category = require("../../models/categoryModel");
 
 //===============================Products Load====================
-const adminProductsLoad = async (req, res) => {
+const productsLoad = async (req, res) => {
   try {
     const productData = await Product.aggregate([
       {
@@ -26,9 +23,10 @@ const adminProductsLoad = async (req, res) => {
     console.log(err.message);
   }
 };
+
 //===================================Edit Product Load==========================
 
-const adminEditProductLoad = async (req, res) => {
+const editProductLoad = async (req, res) => {
   try {
     const id = req.query._id;
     const categoryDetails = await Category.find();
@@ -51,7 +49,7 @@ const adminEditProductLoad = async (req, res) => {
 };
 //===================================Add Product Load==========================
 
-const adminAddProductLoad = async (req, res) => {
+const addProductLoad = async (req, res) => {
   try {
     const categorydata = await Category.find();
 
@@ -61,45 +59,9 @@ const adminAddProductLoad = async (req, res) => {
   }
 };
 
-//===============================Load All Products==================================
-
-const loadAllProducts = async (req, res) => {
-  try {
-    const categoryId = req.query._id;
-    const productData = await Product.find({
-      category: categoryId,
-      isProductUnlist: false,
-      isCategoryUnlist: false,
-    });
-    res.render("allProducts", { productData: productData });
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-//===============================Load Single Product Page==================================
-const loadProduct = async (req, res) => {
-  try {
-    const id = req.query._id;
-
-    const productData = await Product.findById(id);
-    res.render("product", { productData: productData });
-
-    // console.log(productData);
-    // if (productData){
-    //     res.render("product",{productData:productData});
-    // }
-    // else
-    // {
-    //     res.render("product",{Errormessage:"Product not found",productData:undefined});
-    // }
-  } catch (error) {
-    console.log(error.message);
-  }
-};
 // ===============================Add Product==========================
 
-const adminAddProduct = async (req, res) => {
+const addProduct = async (req, res) => {
   try {
     const categoryData = await Category.find();
 
@@ -133,11 +95,11 @@ const adminAddProduct = async (req, res) => {
 
 //=================================Edit Product===============================
 
-const adminEditProduct = async (req, res) => {
+const editProduct = async (req, res) => {
   try {
     const productName = req.body.category.toUpperCase();
     const id = req.body._id;
-    console.log(req.body);
+    // console.log(req.body);
     const isProductExist = await Product.findOne({ name: productName });
     if (!isProductExist || isProductExist._id == id) {
       if (req.files) {
@@ -180,7 +142,6 @@ const adminEditProduct = async (req, res) => {
   }
 };
 
-//=========================Prduct List/Unlist======================
 const productListUnlist = async (req, res) => {
   try {
     const id = req.body.id;
@@ -196,12 +157,23 @@ const productListUnlist = async (req, res) => {
   }
 };
 
+// const deleteproduct = async (req, res) => {
+//   try {
+//     const id = req.query._id;
+//     await Product.deleteOne({ _id: id });
+
+//     res.redirect("/admin/products");
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+//};
+
 module.exports = {
-  adminProductsLoad,
-  adminEditProductLoad,
-  adminAddProductLoad,
-  loadAllProducts,
-  loadProduct,
-  adminAddProduct,
-  adminEditProduct,
+  productsLoad,
+  editProductLoad,
+  addProductLoad,
+  addProduct,
+  editProduct,
+  productListUnlist
+  
 };
