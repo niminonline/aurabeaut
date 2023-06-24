@@ -78,24 +78,56 @@ const adminLogout = async (req, res) => {
 };
 
 // =========================User Block/Unblock=============
-const userBlockUnblock = (req, res) => {
+const userBlockUnblock = async (req, res) => {
   try {
-    const id = req.body.id;
-    const type = req.body.type;
-    User.findByIdAndUpdate(
-      { _id: new ObjectId(id) },
-      { $set: { isBlocked: type === "block" ? true : false } }
-    )
-      .then((response) => {
-        if (type === "block") {
-          req.session.user_id = false;
-        }
+    const {id,type} = req.body;
+    
+    const userData= await User.findOne({_id:id});
+    console.log(userData);
+    if(userData.isBlocked == true){
+      await User.findByIdAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: { isBlocked: false } }
+      )
+
+    }
+    else {
+      await User.findByIdAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: { isBlocked: true } }
+      ) .then((response) => {
+        
+          delete req.session.user_id ;
+        
         // res.json(response);
-        res.redirect("/admin/users");
+        
       })
       .catch((err) => {
         console.log(err.message);
       });
+
+    }
+    res.redirect("/admin/users");
+    // User.findByIdAndUpdate(
+    //   { _id: new ObjectId(id) },
+    //   { $set: { isBlocked: true ? false : true } }
+    // )
+
+
+    // User.findByIdAndUpdate(
+    //   { _id: new ObjectId(id) },
+    //   { $set: { isBlocked: type === "block" ? true : false } }
+    // )
+      // .then((response) => {
+      //   if (type === "block") {
+      //     req.session.user_id = false;
+      //   }
+      //   // res.json(response);
+      //   res.redirect("/admin/users");
+      // })
+      // .catch((err) => {
+      //   console.log(err.message);
+      // });
   } catch (err) {
     console.log(err.message);
   }
