@@ -3,7 +3,7 @@
 }
 
 .shadow-div {
-    max-width: 50vw;
+    /* max-width: 50vw; */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding: 5px;
 }
@@ -11,3 +11,12 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin: 60px;
 }
+
+.thumbnail-image-container{
+    width: 200px;
+    height: 200px;
+}
+.scrolling-div {
+    overflow-x: auto;
+    white-space: nowrap;
+  }

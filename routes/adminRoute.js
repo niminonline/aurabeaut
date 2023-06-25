@@ -40,9 +40,11 @@ adminRoute.get("/products",isAdminLogout,productController.productsLoad);
 adminRoute.get("/carousel",isAdminLogout,carouselController.carouselLoad);
 adminRoute.get("/coupons", isAdminLogout, couponController.couponsLoad);
 adminRoute.get("/editproduct",isAdminLogout,productController.editProductLoad);
-adminRoute.get("/addProduct",isAdminLogout,productController.addProductLoad);
+adminRoute.get("/addproduct",isAdminLogout,productController.addProductLoad);
 adminRoute.get("/editcategory",isAdminLogout,categoryController.editCategoryLoad);
 adminRoute.get("/editcarousel",isAdminLogout,carouselController.editCarouselLoad);
+adminRoute.get("/delete-product-image", productController.deleteProductImage);
+
 
 // =================== Admin Log in/log out=========================================
 adminRoute.post("/login", admincontroller.adminLogin);
@@ -54,9 +56,9 @@ adminRoute.post("/category",upload.single("image"),categoryController.addCategor
 adminRoute.post("/editcategory",upload.single("image"),categoryController.editCategory);
 adminRoute.post("/addproduct", upload.array("image", 3),productController.addProduct);
 adminRoute.post("/editproduct",upload.array("image", 3),productController.editProduct);
-adminRoute.post("/blockUnblockUser", admincontroller.userBlockUnblock);
+adminRoute.post("/blockunblockuser", admincontroller.userBlockUnblock);
 adminRoute.post("/listunlistcategory", categoryController.listUnlistCategory);
-adminRoute.post("/productListUnlist", productController.productListUnlist);
+adminRoute.post("/productlistunlist", productController.productListUnlist);
 // adminRoute.get("/deleteproduct", shopController.deleteproduct);
 
 

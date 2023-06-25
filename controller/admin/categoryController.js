@@ -1,8 +1,7 @@
 const Category = require("../../models/categoryModel");
 const Product = require("../../models/productModel");
 const { ObjectId } = require("mongodb");
-const cloudinary= require('cloudinary').v2;
-const path= require('path')
+const cloudinary = require("../../helper/cloudinary");
 
 //===============================Category Load====================
 const categoryLoad = async (req, res) => {
@@ -35,89 +34,38 @@ const editCategoryLoad = async (req, res) => {
 
 // =============================================Add Category==============================
 const addCategory = async (req, res) => {
-  
   try {
-    // console.log("cat"+ req.body+req.file );
     const categoryName = req.body.category.toUpperCase();
     const image = req.file;
-    console.log("cat", image.path);
-    console.log("req fil", req.file);
-    // console.log("cat"+ categoryName+image );
-    // cloudinary.uploader.upload(req, function(error, result) {
-    //   if (error) {
-    //     console.log('Upload error:', error);
-    //   } else {
-    //     console.log('Uploaded image:', result);
-    //   }
-    // });
 
-   
-
-  const isCategoryExist = await Category.findOne({ category: categoryName });
+    const isCategoryExist = await Category.findOne({ category: categoryName });
     if (!isCategoryExist) {
 
-     
-      await cloudinary.uploader.upload(image.path, function(error, result) {
-      
-
-        if (error) {
-          console.log('Upload error:', error);
-        } else {
-          console.log('Uploaded image:', result);
-          const category = new Category({
-            category: categoryName,
-            imageUrl: result.url
-          })
-        }
+      //-----Start Cloudinary Upload-----
+      const result = await cloudinary.uploader.upload(image.path, {
+        folder: "image_uploads",
       });
-      
-      
-      
-      
-      
-      
-      // cloudinary.uploader.upload(image.filename,
-      //   { public_id: "image_uploads" }, 
-      //   function(error, result) {
-      //     console.log("result",result); 
-      //     const category = new Category({
-      //       category: categoryName,
-      //       imageUrl: result.url,
-      //     });});
-      
-      await category.save().then((response) => {
-        res.redirect("/admin/category");
-      });
+      //-----End Cloudinary Upload-----
 
-
-
-    }
-     else {
-      res.render("category", { errorMessage: "Category already exist" });
+      if (result) {
+        const category = new Category({
+          category: categoryName,
+          imageUrl: result.secure_url,
+        });
+        await category.save().then((response) => {
+          res.redirect("/admin/category");
+        });
+      } else {
+        res.render("category", { errorMessage: "Category already exist" });
+      }
+    } else {
+      console.log("cloudinary upload failed");
     }
 
-
-
-
-
-  //   // const isCategoryExist = await Category.findOne({ category: categoryName });
-  //   // if (!isCategoryExist) {
-  //   //   const category = new Category({
-  //   //     category: categoryName,
-  //   //     imageUrl: image.filename,
-  //   //   });
-  //   //   await category.save().then((response) => {
-  //   //     res.redirect("/admin/category");
-  //   //   });
-  //   // }
-  //   //  else {
-  //   //   res.render("category", { errorMessage: "Category already exist" });
-  //   // }
-  } 
-  catch (err) {
+  } catch (err) {
     console.log(err.message);
   }
-}
+};
 
 // ===================================Edit Category======================================
 const editCategory = async (req, res) => {
@@ -128,10 +76,22 @@ const editCategory = async (req, res) => {
     const isCategoryExist = await Category.findOne({ category: categoryName });
     if (!isCategoryExist || isCategoryExist._id == id) {
       if (req.file) {
+        const image = req.file.path;
+
+    //-----Start Cloudinary Upload-----
+    const result = await cloudinary.uploader.upload(image, {
+      folder: "image_uploads",
+    });
+    //-----End Cloudinary Upload-----
+
+      if(result){
         const categoryData = await Category.findByIdAndUpdate(
           { _id: id },
-          { $set: { category: categoryName, imageUrl: req.file.filename } }
-        );
+          { $set: { category: categoryName, imageUrl: result.secure_url } }
+        );}
+        else{
+          console.log("Error Uploading image to cloudinary");
+        }
       } else {
         const categoryData = await Category.findByIdAndUpdate(
           { _id: id },

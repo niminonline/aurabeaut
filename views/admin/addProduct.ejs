@@ -1,141 +1,143 @@
 <%-include("../layout/adminHeader.ejs")%>
 
-
-
 <div class="mainBody">
+  <div class="shadow-div container text-center">
+    <h3 class="my-4">Add Product</h3>
+    <%if(typeof errorMessage!= 'undefined'){%>
 
-    <div class="shadow-div container text-center">
-        <h3 class=" my-4">Add Product</h3>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Error:</strong> <%=errorMessage%>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <%}%>
+    <div class="form-div container">
+      <form class="form-floating" method="post" enctype="multipart/form-data">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="productName"
+            name="name"
+            placeholder="Product Name"
+            required
+          />
+          <label for="productName">Product Name</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="number"
+            class="form-control"
+            id="price"
+            name="price"
+            placeholder="Price"
+            required
+          />
+          <label for="price">Price</label>
+        </div>
+        <div class="form-floating my-4">
+          <select class="form-select" name="category" required>
+            <%categorydata.map((item)=>{%>
 
-        
+            <option value="<%=item._id%>"> <%=item.category%></option>
+            <% })%>
+          </select>
 
-        <%if(typeof errorMessage!= 'undefined'){%>
+          <label for="floatingSelect">Category</label>
+        </div>
 
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Error:</strong> <%=errorMessage%>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-            ></button>
-          </div>
-      
-          <%}%>
-
-
-        <div class="form-div container">
-            <form class="form-floating" method="post" enctype="multipart/form-data">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="productName" name= "name" placeholder="Product Name" required>
-                    <label for="productName">Product Name</label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="price" name= "price"  placeholder="Price" required>
-                    <label for="price">Price</label>
-                  </div>
-                  
-
-
-               
-
-                  <div class="form-floating my-4">
-                  
-                    <select class="form-select" name="category" required>
-
-
-                      <%categorydata.map((item)=>{%>
-                        
-                      <option value= <%=item._id%> > <%=item.category%> </option>
-                   <% })%>
-                    </select>
-                   
-                    <label for="floatingSelect">Category</label>
-                  </div>
-
-                  <div class="form-floating mb-3">
-                    <textarea  class="form-control" id="description" name= "description" placeholder="Description" required></textarea>
-                    <label for="description">Description</label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="stock" name= "stock" placeholder="Stock" required>
-                    <label for="stock">Stock</label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="brand" name= "brand" placeholder="Brand" required>
-                    <label for="brand">Brand</label>
-                  </div>
-                  <!-- <div class="form-floating mb-3">
+        <div class="form-floating mb-3">
+          <textarea
+            class="form-control"
+            id="description"
+            name="description"
+            placeholder="Description"
+            required
+          ></textarea>
+          <label for="description">Description</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="number"
+            class="form-control"
+            id="stock"
+            name="stock"
+            placeholder="Stock"
+            required
+          />
+          <label for="stock">Stock</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="brand"
+            name="brand"
+            placeholder="Brand"
+            required
+          />
+          <label for="brand">Brand</label>
+        </div>
+        <!-- <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="floatingInput" placeholder="Category Name">
                     <label for="floatingInput">Product Name</label>
                   </div> -->
 
-                  <div class="form-floating">
-                    <input type="file" class="form-control" id="image" name="image" 
-                    placeholder="Add Image" accept="image/*" multiple required onchange="previewImages(event)"
-                     >
-                    <label for="image">Image</label>
+ 
 
+        <div class="form-floating">
+          <input
+            type="file"
+            class="form-control"
+            id="image"
+            name="image"
+            placeholder="Add Image"
+            accept="image/*"
+            onchange="previewImages(event)"
+            multiple
+            required
+            
+          />
+          <label for="image">Image</label>
+<!-- =====================Selected Image preview=================  -->
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="scrolling-div">
 
-
-                    <input type="submit" class="btn btn-primary m-4 mx-auto" value="Add ">
-                    <a class="btn btn-danger mx-4" href="/admin/products">Cancel</a>
-                  </div>
-                </form>
+        <div id="image-previews">
+        
+          
+          
         </div>
+      </div>
+     
 
 
-
+      </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+  </div>
 </div>
 
+ <!-- =====================End Selected Image preview=================  -->
 
-<script>
 
-  function previewImages(event) {
-      var input = event.target;
-      if (input.files.length > 3) {
-          alert('You can only select up to 3 files.');
-          event.target.value = '';
-      }
-      var imagePreviews = document.getElementById('image-previews');
-      imagePreviews.innerHTML = '';
+          <input
+            type="submit"
+            class="btn btn-primary m-4 mx-auto"
+            value="Add "
+          />
+          <a class="btn btn-danger mx-4" href="/admin/products">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-      if (input.files && input.files.length > 0) {
-          for (var i = 0; i < input.files.length; i++) {
-              var reader = new FileReader();
-              reader.onload = (function (file) {
-                  return function (e) {
-                      var imagePreview = document.createElement('img');
-                      imagePreview.src = e.target.result;
-                      imagePreview.alt = 'Selected Image';
-                      imagePreview.style.display = 'inline-block';
-                      imagePreview.style.maxWidth = '100px'; // Adjust the width as needed
-                      imagePreview.style.height = 'auto';
-                      imagePreview.style.margin = '10px';
-                      imagePreviews.appendChild(imagePreview);
-                  };
-              })(input.files[i]);
-
-              reader.readAsDataURL(input.files[i]);
-          }
-      }
-  }
-
-</script>
+<script src="/javascripts/imagePreviewMultiple.js"></script>
 
 <%-include("../layout/adminFooter.ejs")%>

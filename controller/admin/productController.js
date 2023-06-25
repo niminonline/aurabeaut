@@ -1,5 +1,8 @@
 const Product = require("../../models/productModel");
 const Category = require("../../models/categoryModel");
+const cloudinary = require("../../helper/cloudinary");
+const { ObjectId } = require("mongodb");
+
 
 //===============================Products Load====================
 const productsLoad = async (req, res) => {
@@ -68,20 +71,57 @@ const addProduct = async (req, res) => {
     const name = req.body.name.toUpperCase();
     const isProductExist = await Product.findOne({ name: name });
     if (!isProductExist) {
-      const images = req.files.map((file) => file.filename);
-      const product = new Product({
-        name: req.body.name,
-        price: req.body.price,
-        description: req.body.description,
-        category: req.body.category,
-        imageUrl: images,
-        brand: req.body.brand,
-        stock: req.body.stock,
-        is_blocked: false,
-      });
-      await product.save().then((response) => {
-        res.redirect("/admin/products");
-      });
+      const images = req.files.map((file) => file.path);
+
+      // -------------------------Cloudinary---------------------
+
+      const uploadImages = async (images) => {
+        try {
+          const results = await Promise.all(images.map(uploadImage));
+          console.log("Images uploaded:", results);
+          const imageUrls = results.map((result) => result.secure_url);
+          return imageUrls;
+        } catch (error) {
+          console.log("Upload error:", error);
+          return [];
+        }
+      };
+
+      // Upload a single image
+      const uploadImage = (image) => {
+        return new Promise((resolve, reject) => {
+          cloudinary.uploader.upload(
+            image,
+            { folder: "image_uploads" },
+            (error, result) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(result);
+              }
+            }
+          );
+        });
+      };
+      const imageUrl = await uploadImages(images);
+      //------------------End Cloudinary----------------
+      if (imageUrl) {
+        const product = new Product({
+          name: req.body.name,
+          price: req.body.price,
+          description: req.body.description,
+          category: req.body.category,
+          imageUrl: imageUrl,
+          brand: req.body.brand,
+          stock: req.body.stock,
+          is_blocked: false,
+        });
+        await product.save().then((response) => {
+          res.redirect("/admin/products");
+        });
+      } else {
+        console.log("Error while uploading images to cloudinary");
+      }
     } else {
       res.render("addproduct", {
         categoryData: categoryData,
@@ -103,21 +143,59 @@ const editProduct = async (req, res) => {
     const isProductExist = await Product.findOne({ name: productName });
     if (!isProductExist || isProductExist._id == id) {
       if (req.files) {
-        const images = req.files.map((file) => file.filename);
+        const images = req.files.map((file) => file.path);
+
+        // -------------------------Cloudinary---------------------
+
+        const uploadImages = async (images) => {
+          try {
+            const results = await Promise.all(images.map(uploadImage));
+            console.log("Images uploaded:", results);
+            const imageUrls = results.map((result) => result.secure_url);
+            return imageUrls;
+          } catch (error) {
+            console.log("Upload error:", error);
+            return [];
+          }
+        };
+
+        // Upload a single image
+        const uploadImage = (image) => {
+          return new Promise((resolve, reject) => {
+            cloudinary.uploader.upload(
+              image,
+              { folder: "image_uploads" },
+              (error, result) => {
+                if (error) {
+                  reject(error);
+                } else {
+                  resolve(result);
+                }
+              }
+            );
+          });
+        };
+        const imageUrl = await uploadImages(images);
+        //------------------End Cloudinary----------------
+        if (imageUrl) {
+          console.log(imageUrl);
         const productData = await Product.findByIdAndUpdate(
-          { _id: id },
-          {
+          { _id: id },{
+          $push: { imageUrl: { $each: imageUrl } },
             $set: {
               name: req.body.name,
               price: req.body.price,
               description: req.body.description,
               category: req.body.category,
-              imageUrl: images,
               brand: req.body.brand,
               stock: req.body.stock,
             },
           }
         );
+      } else {
+        console.log("Error while uploading images to cloudinary");
+      }
+        
       } else {
         const productData = await Product.findByIdAndUpdate(
           { _id: id },
@@ -142,6 +220,7 @@ const editProduct = async (req, res) => {
   }
 };
 
+// ===========================Product List/Unlist=====================
 const productListUnlist = async (req, res) => {
   try {
     const id = req.body.id;
@@ -152,6 +231,25 @@ const productListUnlist = async (req, res) => {
     });
     res.json("Success");
     // res.redirect("/admin/category");
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+// ====================================Delete Product Image==========================
+
+const deleteProductImage = async (req, res) => {
+  try {
+    const { id, imageurl } = req.query;
+
+    //-----Start Cloudinary Upload-----
+    const result = await cloudinary.uploader.destroy(imageurl, {
+      folder: "image_uploads",
+      function(result) {
+        console.log(result);
+      },
+    });
+    //-----End Cloudinary Upload-----
   } catch (err) {
     console.log(err.message);
   }
@@ -174,6 +272,6 @@ module.exports = {
   addProductLoad,
   addProduct,
   editProduct,
-  productListUnlist
-  
+  productListUnlist,
+  deleteProductImage,
 };

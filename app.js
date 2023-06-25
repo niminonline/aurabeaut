@@ -5,7 +5,6 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 require("dotenv").config();
-const cloudinary= require('cloudinary').v2
 
 //==============Mongodb connection=====================
 mongoose.connect(process.env.mongo_url);
@@ -37,12 +36,7 @@ app.use("/", userRoute);
 app.use("/admin", adminRoute);
 
 
-//======================COnfig Cloudinary===================
-cloudinary.config({ 
-    cloud_name: process.env.cloudinary_cloudName , 
-    api_key:process.env.cloudinary_apiKey , 
-    api_secret: process.env.cloudinary_apiSecret 
-  });
+
 
 
 
