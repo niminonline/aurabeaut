@@ -52,4 +52,9 @@ const hashPassword = async (password) => {
   }
 }
 
+
+
+// ======================================cloudinary==========================
+
+
   module.exports={generateOtp,verifyEmail,hashPassword}

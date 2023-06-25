@@ -1,6 +1,8 @@
 const Category = require("../../models/categoryModel");
 const Product = require("../../models/productModel");
 const { ObjectId } = require("mongodb");
+const cloudinary= require('cloudinary').v2;
+const path= require('path')
 
 //===============================Category Load====================
 const categoryLoad = async (req, res) => {
@@ -33,26 +35,89 @@ const editCategoryLoad = async (req, res) => {
 
 // =============================================Add Category==============================
 const addCategory = async (req, res) => {
+  
   try {
+    // console.log("cat"+ req.body+req.file );
     const categoryName = req.body.category.toUpperCase();
     const image = req.file;
+    console.log("cat", image.path);
+    console.log("req fil", req.file);
+    // console.log("cat"+ categoryName+image );
+    // cloudinary.uploader.upload(req, function(error, result) {
+    //   if (error) {
+    //     console.log('Upload error:', error);
+    //   } else {
+    //     console.log('Uploaded image:', result);
+    //   }
+    // });
 
-    const isCategoryExist = await Category.findOne({ category: categoryName });
+   
+
+  const isCategoryExist = await Category.findOne({ category: categoryName });
     if (!isCategoryExist) {
-      const category = new Category({
-        category: categoryName,
-        imageUrl: image.filename,
+
+     
+      await cloudinary.uploader.upload(image.path, function(error, result) {
+      
+
+        if (error) {
+          console.log('Upload error:', error);
+        } else {
+          console.log('Uploaded image:', result);
+          const category = new Category({
+            category: categoryName,
+            imageUrl: result.url
+          })
+        }
       });
+      
+      
+      
+      
+      
+      
+      // cloudinary.uploader.upload(image.filename,
+      //   { public_id: "image_uploads" }, 
+      //   function(error, result) {
+      //     console.log("result",result); 
+      //     const category = new Category({
+      //       category: categoryName,
+      //       imageUrl: result.url,
+      //     });});
+      
       await category.save().then((response) => {
         res.redirect("/admin/category");
       });
-    } else {
+
+
+
+    }
+     else {
       res.render("category", { errorMessage: "Category already exist" });
     }
-  } catch (err) {
+
+
+
+
+
+  //   // const isCategoryExist = await Category.findOne({ category: categoryName });
+  //   // if (!isCategoryExist) {
+  //   //   const category = new Category({
+  //   //     category: categoryName,
+  //   //     imageUrl: image.filename,
+  //   //   });
+  //   //   await category.save().then((response) => {
+  //   //     res.redirect("/admin/category");
+  //   //   });
+  //   // }
+  //   //  else {
+  //   //   res.render("category", { errorMessage: "Category already exist" });
+  //   // }
+  } 
+  catch (err) {
     console.log(err.message);
   }
-};
+}
 
 // ===================================Edit Category======================================
 const editCategory = async (req, res) => {

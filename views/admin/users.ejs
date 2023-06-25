@@ -2,6 +2,9 @@
 
 <div class="mainBody">
   <nav class="navbar bg-light mx-auto bg-primary">
+
+
+
     <div class="container-fluid justify-content-center">
       <!-- <form class="d-flex" role="search">
         <input
@@ -40,36 +43,40 @@
         <td><%=userData[i].mobile%></td>
        
 
+
+
+
+
         <!-- <td>
           <%if(userData[i].isBlocked){ %>
-              <button onclick="BlockUnblock('<%=userData[i]._id%>', 'unBlock')"
-                 style="min-width:100px"
-                class="btn btn-success userListButton ">Unblock</button>
+            <div class="form-check form-switch" onclick="BlockUnblock('<%=userData[i]._id%>')" style="width: 50px;">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Blocked</label>
+            </div>
+            
               <% }else{%>
-                  <button onclick="BlockUnblock('<%=userData[i]._id%>', 'block')"
-                    style="min-width:100px" class="btn btn-danger userListButton">Block</button>
-                  <%}%>
+                <div class="form-check form-switch" onclick="BlockUnblock('<%=userData[i]._id%>')" style="width: 50px;">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                  <label class="form-check-label" for="flexSwitchCheckChecked">Active</label>
+                </div>
+                <%}%>
       </td> -->
+     
 
       <td>
         <%if(userData[i].isBlocked){ %>
-          <div class="form-check form-switch" onclick="BlockUnblock('<%=userData[i]._id%>', 'unBlock')" style="width: 50px;">
+          <div class="form-check form-switch" onclick="confirmBlockUnblock('<%=userData[i]._id%>','unblock')" style="width: 50px;">
             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
             <label class="form-check-label" for="flexSwitchCheckDefault">Blocked</label>
           </div>
           
             <% }else{%>
-              <div class="form-check form-switch" onclick="BlockUnblock('<%=userData[i]._id%>', 'block')" style="width: 50px;">
+              <div class="form-check form-switch" onclick="confirmBlockUnblock('<%=userData[i]._id%>','block')" style="width: 50px;">
                 <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
                 <label class="form-check-label" for="flexSwitchCheckChecked">Active</label>
               </div>
               <%}%>
     </td>
-
-
-
-
-
 
 
           <!-- <div class="form-check form-switch">
@@ -101,14 +108,25 @@
   </div>
 </div>
 
-<script>function BlockUnblock(id, type) {
-  fetch("/admin/blockUnblockUser", {
+<script>
+
+const  confirmBlockUnblock=(id,todo)=> {
+
+  new swal({
+  title: "Are you sure to "+ todo+" the user?",
+  // text: "Once deleted, you will not be able to recover this imaginary file!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    fetch("/admin/blockUnblockUser", {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
       },
       body: JSON.stringify({
-          type,
           id
       })
   })
@@ -120,7 +138,43 @@
       .catch(error => {
           console.log(error);
       });
+
+    
+  } else {
+    location.reload()
+  }
+});
 }
+
+
+  //   fetch("/admin/blockUnblockUser", {
+  //     method: "POST",
+  //     headers: {
+  //         "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify({
+  //         id
+  //     })
+  // })
+  //     .then(response => {
+  //     })
+  //     .then(data => {
+  //         location.reload()
+  //     })
+  //     .catch(error => {
+  //         console.log(error);
+  //     });
+// }
+
+    
+  //  else {
+  //   new swal("Your imaginary file is safe!");
+  // }
+// });
+
+
+
+  
 </script>
 
 

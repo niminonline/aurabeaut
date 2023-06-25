@@ -1,6 +1,7 @@
 const User = require("../../models/userModel");
 const { ObjectId } = require("mongodb");
 
+
 //==================Load Admin Login Page==================
 const loginLoad = async (req, res) => {
   try {
@@ -38,6 +39,7 @@ const dashboardLoad = async (req, res) => {
 const usersLoad = async (req, res) => {
   try {
     const userData = await User.find({});
+   
     
     // let search='';
     // if(req.query.search){
@@ -80,7 +82,7 @@ const adminLogout = async (req, res) => {
 // =========================User Block/Unblock=============
 const userBlockUnblock = async (req, res) => {
   try {
-    const {id,type} = req.body;
+    const {id} = req.body;
     
     const userData= await User.findOne({_id:id});
     console.log(userData);
@@ -89,6 +91,7 @@ const userBlockUnblock = async (req, res) => {
         { _id: new ObjectId(id) },
         { $set: { isBlocked: false } }
       )
+      
 
     }
     else {

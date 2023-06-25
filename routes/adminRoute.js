@@ -2,6 +2,9 @@ const express = require("express");
 const adminRoute = express();
 
 
+
+
+
 // const bodyParser = require("body-parser");
 // adminRoute.use(bodyParser.urlencoded({ extended: true }));
 // adminRoute.use(express.static("public"));
@@ -46,6 +49,7 @@ adminRoute.post("/login", admincontroller.adminLogin);
 adminRoute.get("/logout",admincontroller.adminLogout );
 
 // ================================Post Routes===================================
+// adminRoute.post("/category",categoryController.addCategory);
 adminRoute.post("/category",upload.single("image"),categoryController.addCategory);
 adminRoute.post("/editcategory",upload.single("image"),categoryController.editCategory);
 adminRoute.post("/addproduct", upload.array("image", 3),productController.addProduct);
