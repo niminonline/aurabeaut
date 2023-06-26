@@ -41,13 +41,9 @@ const userSchema = new mongoose.Schema(
         required: false,
       },
     
-      addressLine1: {
+      address: {
         type: String,
         required: false,
-      },
-    
-      addressLine2: {
-        type: String,
       },
     
       city: {
@@ -64,16 +60,26 @@ const userSchema = new mongoose.Schema(
         type: String,
         required: false,
       },
-      country: {
-        type: String,
-        required: false,
-      },
       is_default: {
         type: Boolean,
         required: false,
       },
-  }]
-})
+  }],
+  wishlist:[{
+    product:{
+      type:mongoose.Types.ObjectId,
+      ref:'Product',
+      
+    }
+  }],
+  
+ wallet:{
+  type:Number,
+  default:0
+ },
+
+
+});
 
 module.exports = mongoose.model('User', userSchema);
 

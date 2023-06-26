@@ -6,7 +6,7 @@ const userRoute = express();
 
 
 
-// //============================Set
+// //============================Set public directory=============
 // userRoute.use(express.static("public"));
 
 // ========================View Engine Directory================
@@ -18,7 +18,7 @@ const productController = require("../controller/user/productController");
 const orderController = require("../controller/user/orderController");
 
 //==========================Middlewares======================================
-const { isUserLogin, isUserLogout } = require("../middleware/auth");
+const { isUserLogin, isUserLogout,isUserSession } = require("../middleware/auth");
 const upload = require("../middleware/multer");
 const { noCache } = require("../middleware/routingMW");
 
@@ -34,6 +34,11 @@ userRoute.get("/verifySignUpOtp",isUserLogin,userController.loadSignUpOtp);
 userRoute.get("/allproducts", productController.loadAllProducts);
 userRoute.get("/product", productController.loadProduct);
 userRoute.get("/logout", userController.logout);
+userRoute.get("/cart", isUserSession,userController.loadCart);
+userRoute.get("/wishlist",isUserSession, userController.loadWishlist);
+userRoute.get("/checkout",isUserSession, orderController.loadCheckout);
+userRoute.get("/user-dashboard",isUserSession, userController.loadUserDashboard);
+
 
 
 // ============================Post Routes====================

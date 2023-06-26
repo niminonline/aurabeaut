@@ -28,9 +28,31 @@
             </div>
 
             <div class="header-right">
+
+
+                <div class="dropdown cart-dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                        <div class="icon">
+                            <i class="icon-user"></i>
+                        </div>
+                        <p>User options</p>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="">
+                            
+                        <div class="dropdown mx-1 px-1">
+                            <a href="/user-dashboard" class="btn btn-primary mx-1 my-2">Profile</a>
+                            <a href="cart.html" class="btn btn-primary mx-1 my-2">Orders</a>
+                            <a href="/logout" class="btn btn-outline-danger my-2"><span>Logout</span><i class="icon-long-arrow-right"></i></a>
+                        </div><!-- End .dropdown-cart-total -->
+                    </div><!-- End .dropdown-menu -->
+                </div><!-- End .cart-dropdown -->
+                </div>
+
               
                 <div class="wishlist">
-                    <a href="wishlist.html" title="Wishlist">
+                    <a href="/wishlist" title="Wishlist">
                         <div class="icon">
                             <i class="icon-heart-o"></i>
                             <span class="wishlist-count badge">0</span>
@@ -39,87 +61,23 @@
                     </a>
                 </div><!-- End .compare-dropdown -->
 
-                <div class="dropdown cart-dropdown">
-                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                
+                <div class="wishlist">
+                    <a href="/cart" title="cart">
                         <div class="icon">
                             <i class="icon-shopping-cart"></i>
-                            <span class="cart-count">0</span>
+                            <span class="wishlist-count badge">0</span>
                         </div>
                         <p>Cart</p>
                     </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <div class="dropdown-cart-products">
-                            <div class="product">
-                                <div class="product-cart-details">
-                                    <h4 class="product-title">
-                                        <a href="product.html">Beige knitted elastic runner shoes</a>
-                                    </h4>
-
-                                    <span class="cart-product-info">
-                                        <span class="cart-product-qty">1</span>
-                                        x $84.00
-                                    </span>
-                                </div><!-- End .product-cart-details -->
-
-                                <figure class="product-image-container">
-                                    <a href="product.html" class="product-image">
-                                        <img src="assets/images/products/cart/product-1.jpg" alt="product">
-                                    </a>
-                                </figure>
-                                <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                            </div><!-- End .product -->
-
-                            <div class="product">
-                                <div class="product-cart-details">
-                                    <h4 class="product-title">
-                                        <a href="product.html">Blue utility pinafore denim dress</a>
-                                    </h4>
-
-                                    <span class="cart-product-info">
-                                        <span class="cart-product-qty">1</span>
-                                        x $76.00
-                                    </span>
-                                </div><!-- End .product-cart-details -->
-
-                                <figure class="product-image-container">
-                                    <a href="product.html" class="product-image">
-                                        <img src="assets/images/products/cart/product-2.jpg" alt="product">
-                                    </a>
-                                </figure>
-                                <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                            </div><!-- End .product -->
-                        </div><!-- End .cart-product -->
-
-                        <div class="dropdown-cart-total">
-                            <span>Total</span>
-
-                            <span class="cart-total-price">$160.00</span>
-                        </div><!-- End .dropdown-cart-total -->
-
-                        <div class="dropdown-cart-action">
-                            <a href="cart.html" class="btn btn-primary">View Cart</a>
-                            <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
-                        </div><!-- End .dropdown-cart-total -->
-                    </div><!-- End .dropdown-menu -->
-                </div><!-- End .cart-dropdown -->
-
-                
-
-
-                <div class="account">
-                    <a href="/logout" title="">
-                        <div class="icon">
-                            <i class="icon-user"></i>
-                        </div>
-                        <p>Log out</p>
-                    </a>
-                    
                 </div>
+
                 
+
+
                 
-                    
-                </div><!-- End .compare-dropdown -->
+
+<!-- End .compare-dropdown -->
 
 
 
@@ -164,20 +122,20 @@
 
                         </li>
                         <li>
-                            <a href="product.html" class="">Offers</a>
+                            <a href="#" class="">Offers</a>
 
                         </li>
                         <li>
-                            <a href="#" class="">Wishlist</a>
+                            <a href="/wishlist" class="">Wishlist</a>
 
                             </li>
                         <li>
-                            <a href="blog.html" class="">Cart</a>
+                            <a href="/cart" class="">Cart</a>
 
                             
                         </li>
                         <li>
-                            <a href="elements-list.html" class="">About</a>
+                            <a href="#" class="">About</a>
 
                          
                         </li>

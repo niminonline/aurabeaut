@@ -1,6 +1,6 @@
-<%-include("../layout/header.ejs")%>
-<%-include("../layout/menu.ejs")%>
-
+<%-include("../layout/header.ejs")%> <%if(typeof userData != 'undefined'){%>
+    <%-include("../layout/menuUser.ejs")%> <%}else{%>
+    <%-include("../layout/menu.ejs")%> <%}%>
 
 
 

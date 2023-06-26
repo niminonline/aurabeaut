@@ -1,3 +1,17 @@
 const Order = require("../../models/orderModel");
 
-module.exports = {};
+
+//=================Load Checkout Page================================
+
+const loadCheckout = (req, res) => {
+    try {
+      res.render("checkout");
+    } 
+    catch (error) {
+      console.log(error.message);
+    }
+  };
+  
+
+
+module.exports = {loadCheckout};

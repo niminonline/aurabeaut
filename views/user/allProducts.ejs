@@ -1,5 +1,6 @@
-<%-include("../layout/header.ejs")%>
-<%-include("../layout/menu.ejs")%>
+<%-include("../layout/header.ejs")%> <%if(typeof userData != 'undefined'){%>
+    <%-include("../layout/menuUser.ejs")%> <%}else{%>
+    <%-include("../layout/menu.ejs")%> <%}%>
 
 
 <!-- Start BreadCrumb -->
@@ -70,7 +71,7 @@
                                     <div class="product-action action-icon-top">
                                         <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
                                         <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
-                                        <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a>
+                                        <!-- <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a> -->
                                     </div><!-- End .product-action -->
                                 </figure><!-- End .product-media -->
 

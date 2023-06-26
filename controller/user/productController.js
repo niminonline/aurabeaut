@@ -5,13 +5,21 @@ const Product = require("../../models/productModel");
 const loadAllProducts = async (req, res) => {
   try {
     const categoryId = req.query._id;
+    if(categoryId){
     const productData = await Product.find({
       category: categoryId,
       isProductUnlist: false,
       isCategoryUnlist: false,
     });
-    res.render("allProducts", { productData: productData });
-  } catch (error) {
+    res.render("allProducts", { productData: productData });}
+    else{
+      const productData = await Product.find({
+        isProductUnlist: false,
+        isCategoryUnlist: false,
+      });
+      res.render("allProducts", { productData: productData });}
+    }
+   catch (error) {
     console.log(error.message);
   }
 };

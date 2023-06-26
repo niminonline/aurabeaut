@@ -3,7 +3,6 @@ const Category = require("../../models/categoryModel");
 const cloudinary = require("../../helper/cloudinary");
 const { ObjectId } = require("mongodb");
 
-
 //===============================Products Load====================
 const productsLoad = async (req, res) => {
   try {
@@ -179,23 +178,23 @@ const editProduct = async (req, res) => {
         //------------------End Cloudinary----------------
         if (imageUrl) {
           console.log(imageUrl);
-        const productData = await Product.findByIdAndUpdate(
-          { _id: id },{
-          $push: { imageUrl: { $each: imageUrl } },
-            $set: {
-              name: req.body.name,
-              price: req.body.price,
-              description: req.body.description,
-              category: req.body.category,
-              brand: req.body.brand,
-              stock: req.body.stock,
-            },
-          }
-        );
-      } else {
-        console.log("Error while uploading images to cloudinary");
-      }
-        
+          const productData = await Product.findByIdAndUpdate(
+            { _id: id },
+            {
+              $push: { imageUrl: { $each: imageUrl } },
+              $set: {
+                name: req.body.name,
+                price: req.body.price,
+                description: req.body.description,
+                category: req.body.category,
+                brand: req.body.brand,
+                stock: req.body.stock,
+              },
+            }
+          );
+        } else {
+          console.log("Error while uploading images to cloudinary");
+        }
       } else {
         const productData = await Product.findByIdAndUpdate(
           { _id: id },
@@ -223,14 +222,45 @@ const editProduct = async (req, res) => {
 // ===========================Product List/Unlist=====================
 const productListUnlist = async (req, res) => {
   try {
-    const id = req.body.id;
-    const type = req.body.type;
+    const {id} = req.body;
+    
+    const productData= await Product.findOne({_id:id});
+    console.log(productData);
+    if(productData.isProductUnlist == true){
+      await Product.findByIdAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: { isProductUnlist: false } }
+      )
+      
 
-    await Product.findByIdAndUpdate(new ObjectId(id), {
-      $set: { isProductUnlist: type === "unlist" ? true : false },
-    });
-    res.json("Success");
-    // res.redirect("/admin/category");
+    }
+    else {
+      await Product.findByIdAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: { isProductUnlist: true } }
+      ) 
+      // .then((response) => {
+        
+        
+      //    res.json(response);
+        
+      // })
+      // .catch((err) => {
+      //   console.log(err.message);
+      // });
+
+    }
+    res.redirect("/admin/products");
+
+
+    // const id = req.body.id;
+    // const type = req.body.type;
+
+    // await Product.findByIdAndUpdate(new ObjectId(id), {
+    //   $set: { isProductUnlist: type === "unlist" ? true : false },
+    // });
+    // res.json("Success");
+    // // res.redirect("/admin/category");
   } catch (err) {
     console.log(err.message);
   }
@@ -241,15 +271,30 @@ const productListUnlist = async (req, res) => {
 const deleteProductImage = async (req, res) => {
   try {
     const { id, imageurl } = req.query;
+    const public_id = imageurl.match(/image_uploads\/\w+/)[0];
+    // -----Start Cloudinary Image Removal-----
+    
+    const result = cloudinary.uploader.destroy(
+      public_id,
+      { invalidate: true },
+      (result, error) => {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log(result);
+          return result;
+        }
+      }
+    );
 
-    //-----Start Cloudinary Upload-----
-    const result = await cloudinary.uploader.destroy(imageurl, {
-      folder: "image_uploads",
-      function(result) {
-        console.log(result);
-      },
-    });
-    //-----End Cloudinary Upload-----
+    if (result) {
+      await Product.findByIdAndUpdate(
+        { _id: id },
+        { $pull: { imageUrl: imageurl } }
+      ).then(res.redirect(req.headers.referer));
+    } else {
+      console.log("Image deletion failed");
+    }
   } catch (err) {
     console.log(err.message);
   }

@@ -98,7 +98,8 @@ const userBlockUnblock = async (req, res) => {
       await User.findByIdAndUpdate(
         { _id: new ObjectId(id) },
         { $set: { isBlocked: true } }
-      ) .then((response) => {
+      ) 
+      .then((response) => {
         
           delete req.session.user_id ;
         

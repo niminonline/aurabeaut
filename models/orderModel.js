@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema(
@@ -23,6 +22,7 @@ const orderSchema = new mongoose.Schema(
     ],
     address: {
       type: String,
+      
     },
     total: {
       type: Number,
@@ -42,6 +42,10 @@ const orderSchema = new mongoose.Schema(
     returndate: {
       type: Date,
     },
+    notes:{
+      type:String,
+      
+    }
   },
   { timestamps: true },
 );

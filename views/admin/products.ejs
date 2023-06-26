@@ -29,6 +29,7 @@
             <th>Price</th>
             <th>Stock</th>
             <th>Brand</th>
+            <th>Status</th>
             <th>Action</th>
             <!-- <th>View</th> -->
           </tr>
@@ -64,30 +65,50 @@
           <td><%=productData[i].stock%></td>
           <td><%=productData[i].brand%></td>
           
+           
+            
+
+              <td class="mx-2">
+                <%if(productData[i].isProductUnlist){ %>
+                  <div class="form-check form-switch" onclick="confirmBlockUnblock('<%=productData[i]._id%>','list')" style="width: 55px;">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Unlisted</label>
+                  </div>
+                  
+                    <% }else{%>
+                      <div class="form-check form-switch" onclick="confirmBlockUnblock('<%=productData[i]._id%>','unlist')" style="width: 55px;">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Listed</label>
+                      </div>
+                      <%}%>
+            </td>
+
             <td>
-                <a href="/admin/editproduct?_id=<%=productData[i]._id%>"><i class="bi bi-pencil-square mx-2" style="font-size: 1.2rem; "></i></i></a>
-                <!-- <a href="/admin/deleteproduct?_id=""><i class="bi bi-trash3-fill mx-2" style="font-size: 1.2rem;"></i></a> -->
+              <a href="/admin/editproduct?_id=<%=productData[i]._id%>"><i class="bi bi-pencil-square mx-2" style="font-size: 1.2rem; "></i></i></a>
+              <!-- <a href="/admin/deleteproduct?_id=""><i class="bi bi-trash3-fill mx-2" style="font-size: 1.2rem;"></i></a> -->
 
-                <%if(productData[i].isProductUnlist||productData[i].isCategoryUnlist ){ %>
-                  <button
-                    onclick="listUnList('<%=productData[i]._id%>', 'list')"
-                    style="min-width: 100px"
-                    class="btn btn-success userListButton"
-                  >
-                    List
-                  </button>
-                  <% }else{%>
-                  <button
-                    onclick="listUnList('<%=productData[i]._id%>', 'unlist')"
-                    style="min-width: 100px"
-                    class="btn btn-danger userListButton"
-                  >
-                    Unlist
-                  </button>
-                  <%}%>
+              <!-- <%if(productData[i].isProductUnlist||productData[i].isCategoryUnlist ){ %>
+                <button
+                  onclick="listUnList('<%=productData[i]._id%>', 'list')"
+                  style="min-width: 100px"
+                  class="btn btn-success userListButton"
+                >
+                  List
+                </button>
+                <% }else{%>
+                <button
+                  onclick="listUnList('<%=productData[i]._id%>', 'unlist')"
+                  style="min-width: 100px"
+                  class="btn btn-danger userListButton"
+                >
+                  Unlist
+                </button>
+                <%}%> -->
 
 
-             </td>
+           </td>
+
+
              
             
           </tr>
@@ -102,31 +123,41 @@
 
 
       <script>
-        function listUnList(id, type) {
-          fetch("/admin/productListUnlist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type,
-          id,
-        }),
-      })
-        .then(response => {
-          // Perform any necessary operations with the response
-          // ...
-      
-          // Reload the page
-          location.reload();
-        })
-        .catch(error => {
-          // Handle any errors that occur during the fetch request
-          console.error("Error:", error);
-        });
-            
-           
-        }
+        const  confirmBlockUnblock=(id,todo)=> {
+
+new swal({
+title: "Are you sure to "+ todo+" the product?",
+// text: "Once deleted, you will not be able to recover this imaginary file!",
+icon: "warning",
+buttons: true,
+dangerMode: true,
+})
+.then((willDelete) => {
+if (willDelete) {
+  fetch("/admin/productlistunlist", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        id
+    })
+})
+    .then(response => {
+    })
+    .then(data => {
+        location.reload()
+    })
+    .catch(error => {
+        console.log(error);
+    });
+
+  
+} else {
+  location.reload()
+}
+});
+}
       </script>
 
 </div>

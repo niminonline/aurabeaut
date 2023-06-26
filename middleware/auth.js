@@ -36,6 +36,23 @@ const isUserLogin= async(req,res,next)=>{
         console.log(err.message);
     }
 }
+
+const isUserSession= async(req,res,next)=>{
+    try{
+        if(req.session.user_id){
+            
+            next();
+        }
+        else
+        res.redirect("/login");
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
+
+
+
 const isUserLogout= async(req,res,next)=>{
     try{
 
@@ -50,4 +67,4 @@ const isUserLogout= async(req,res,next)=>{
     }
 }
 
-module.exports={isAdminLogin,isAdminLogout,isUserLogin,isUserLogout}
+module.exports={isAdminLogin,isAdminLogout,isUserLogin,isUserLogout,isUserSession}

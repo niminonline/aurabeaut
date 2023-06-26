@@ -214,7 +214,42 @@ const loadHome = async (req, res) => {
   } catch (err) {
     console.log(err.message);
   }
+}
+
+
+//=================Load Cart Page================================
+
+const loadCart = (req, res) => {
+  try {
+    res.render("cart");
+  } 
+  catch (error) {
+    console.log(error.message);
+  }
 };
+
+//=================Load Wishlist Page================================
+
+const loadWishlist = (req, res) => {
+  try {
+    res.render("wishlist");
+  } 
+  catch (error) {
+    console.log(error.message);
+  }
+};
+
+//=================Load User Dashbard================================
+
+const loadUserDashboard = (req, res) => {
+  try {
+    res.render("userDashboard");
+  } 
+  catch (error) {
+    console.log(error.message);
+  }
+};
+
 
 module.exports = {
   loginLoad,
@@ -231,4 +266,7 @@ module.exports = {
   loadHome,
   loadSignUp,
   loadSignUpOtp,
+  loadCart,
+  loadWishlist,
+  loadUserDashboard
 };
