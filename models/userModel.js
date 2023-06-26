@@ -67,10 +67,20 @@ const userSchema = new mongoose.Schema(
   }],
   wishlist:[{
     product:{
-      type:mongoose.Types.ObjectId,
-      ref:'Product',
-      
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Product",
     }
+  }],
+  cart:[{
+    
+    product:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Product",
+    },
+    quantity:{
+      type:Number,
+      default:1
+    },
   }],
   
  wallet:{

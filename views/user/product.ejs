@@ -105,15 +105,15 @@
                                     <div class="details-filter-row details-row-size">
                                         <label for="qty">Qty:</label>
                                         <div class="product-details-quantity">
-                                            <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                            <input type="number" id="qty" class="form-control" value="1" min="1" max="20" step="1" data-decimals="0" required>
                                         </div><!-- End .product-details-quantity -->
                                     </div><!-- End .details-filter-row -->
-
+                                    
                                     <div class="product-details-action">
-                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <a href="/add-to-cart?_id=<%=productData._id%>" class="btn-product btn-cart"><span>add to cart</span></a>
 
                                         <div class="details-action-wrapper">
-                                            <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                                            <a href="/add-to-wishlist?_id=<%=productData._id%>" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
                                         </div><!-- End .details-action-wrapper -->
                                     </div><!-- End .product-details-action -->
 
@@ -257,9 +257,21 @@
 
     const handleImage= (imageid)=>{
         document.getElementById("product-zoom").src=`/images/uploads/${imageid}`
-
-
     }
+
+  const addToCartBtn = document.getElementById('addToCartBtn');
+  const qtyInput = document.getElementById('qty');
+
+  addToCartBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    const qty = qtyInput.value;
+    const href = addToCartBtn.getAttribute('href');
+
+    addToCartBtn.setAttribute('href', `${href}&quantity=${qty}`);
+
+    window.location.href = addToCartBtn.getAttribute('href');
+  });
 </script>
 
 

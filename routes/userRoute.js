@@ -38,6 +38,8 @@ userRoute.get("/cart", isUserSession,userController.loadCart);
 userRoute.get("/wishlist",isUserSession, userController.loadWishlist);
 userRoute.get("/checkout",isUserSession, orderController.loadCheckout);
 userRoute.get("/user-dashboard",isUserSession, userController.loadUserDashboard);
+userRoute.get("/add-to-cart",isUserSession, userController.addToCart);
+userRoute.get("/add-to-wishlist",isUserSession, userController.addToWishlist);
 
 
 

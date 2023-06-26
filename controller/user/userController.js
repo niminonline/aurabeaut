@@ -1,8 +1,11 @@
+const Product = require("../../models/productModel");
 const User = require("../../models/userModel");
 const Category = require("../../models/categoryModel");
 const bcrypt = require("bcrypt");
 const helper = require("../../helper/helper");
 const nodemailer = require("nodemailer");
+const { ObjectId } = require("mongodb");
+
 
 //=================Load Login Page================================
 const loginLoad = async (req, res) => {
@@ -141,16 +144,17 @@ const insertUser = async (req, res) => {
       if (userData) {
         delete req.session.tempUserData;
 
-        res.redirect("login");
-      } else res.render("verifyEmailOtp", { message: "Invalid OTP" });
+        res.redirect("/home");
+      } else 
+      res.render("verifyEmailOtp", { message: "Invalid OTP" });
     }
 
-    const userData = await user.save();
-    if (userData) {
-      res.render("signup", { message: "Registration Successfull" });
-    } else {
-      res.render("signup", { message: "Registration Failed" });
-    }
+    // const userData = await user.save();
+    // if (userData) {
+    //   res.render("signup", { message: "Registration Successfull" });
+    // } else {
+    //   res.render("signup", { message: "Registration Failed" });
+    // }
   } catch (err) {
     console.log(err);
   }
@@ -203,7 +207,6 @@ const loadHome = async (req, res) => {
     //       },
     //   ]);
     const categoryData = await Category.find({ isUnList: false });
-
     if (req.session.user_id) {
       const userData = await User.findOne({ _id: req.session.user_id });
 
@@ -214,27 +217,26 @@ const loadHome = async (req, res) => {
   } catch (err) {
     console.log(err.message);
   }
-}
-
+};
 
 //=================Load Cart Page================================
 
-const loadCart = (req, res) => {
+const loadCart = async (req, res) => {
   try {
-    res.render("cart");
-  } 
-  catch (error) {
+    const userData = await User.findOne({ _id: req.session.user_id });
+    res.render("cart", { userData: userData });
+  } catch (error) {
     console.log(error.message);
   }
 };
 
 //=================Load Wishlist Page================================
 
-const loadWishlist = (req, res) => {
+const loadWishlist = async (req, res) => {
   try {
-    res.render("wishlist");
-  } 
-  catch (error) {
+    const userData = await User.findOne({ _id: req.session.user_id });
+    res.render("wishlist", { userData: userData });
+  } catch (error) {
     console.log(error.message);
   }
 };
@@ -244,13 +246,41 @@ const loadWishlist = (req, res) => {
 const loadUserDashboard = (req, res) => {
   try {
     res.render("userDashboard");
-  } 
-  catch (error) {
+  } catch (error) {
     console.log(error.message);
   }
 };
 
+//===============================Add to Cart==========================
+const addToCart =async (req, res) => {
+  try {
+    const {_id}= req.query;
+    const user_id= req.session.user_id;
 
+    if(req.query.quantity){
+      const quantity= req.query.quantity;
+      const userData= await User.findById(user_id);
+      const addCartData = await User.findOneAndUpdate({ _id: new ObjectId(user_id)},{ $push: { cart:{product: new ObjectId(_id), quantity: quantity }} },
+        { new: true });
+    }
+    else{
+      const addCartData = await User.findOneAndUpdate({ _id: new ObjectId(user_id)},{ $push:{cart: {product: new ObjectId(_id)}}}, { new: true });
+    }
+    res.redirect(req.headers.referer);
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//===============================Add to Wishlist==========================
+const addToWishlist = (req, res) => {
+  try {
+    res.render("userDashboard");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 module.exports = {
   loginLoad,
   forgetPasswordLoad,
@@ -268,5 +298,7 @@ module.exports = {
   loadSignUpOtp,
   loadCart,
   loadWishlist,
-  loadUserDashboard
+  loadUserDashboard,
+  addToCart,
+  addToWishlist
 };

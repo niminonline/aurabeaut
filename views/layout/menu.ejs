@@ -93,28 +93,28 @@
             <div class="header-center">
                 <nav class="main-nav">
                     <ul class="menu sf-arrows">
-                        <li class="megamenu-container active">
+                        <li class="megamenu-container ">
                             <a href="/" class="">Home</a>
 
                         </li>
-                        <li>
+                        <li onclick="highlight()" >
                             <a href="/allproducts" class="">Products</a>
 
                         </li>
-                        <li>
+                        <li onclick="highlight()">
                             <a href="#" class="">Offers</a>
 
                         </li>
-                        <li>
+                        <li onclick="highlight()">
                             <a href="/wishlist" class="">Wishlist</a>
 
                             </li>
-                        <li>
+                        <li onclick="highlight()">
                             <a href="cart" class="">Cart</a>
 
                             
                         </li>
-                        <li>
+                        <li onclick="highlight()">
                             <a href="elements-list.html" class="">About</a>
 
                          
@@ -127,3 +127,13 @@
         </div><!-- End .container -->
     </div><!-- End .header-bottom -->
 </header>
+<script>
+const highlight=()=>{
+    const anchorElement = document.querySelector('li a');
+
+anchorElement.addEventListener('click', function() {
+  const liElement = this.parentNode;
+  liElement.classList.add('active');
+});
+}
+</script>

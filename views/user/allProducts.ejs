@@ -55,9 +55,10 @@
                                 <%if(typeof productData !='undefined'){productData.map((item)=>{%>
                                     <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3">
                                 <div class="product">
+                                  
                                 <figure class="product-media">
                                     <!-- <span class="product-label label-sale">30% off</span> -->
-                                    <div class="image-card bg-primary " style="width:100% ;height:200px">
+                                    <div class="image-card bg-primary " style="width:100% ;height:300px">
 
                                         <a href="/product?_id=<%=item._id%>">
                                             <img src="/images/uploads/<%= item.imageUrl[0]%>"  alt="Product image" style="width:100% ;height:100%" class="prsoduct-image img-fluid">
@@ -65,11 +66,12 @@
                                     </div>
 
                                     <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                        <a href="/add-to-wishlist?id=<%item._id%>" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
                                     </div><!-- End .product-action -->
 
                                     <div class="product-action action-icon-top">
-                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <a href="/add-to-cart?_id=<%=item._id%>" class="btn-product btn-cart"><span>add to cart</span></a>
+                                       <p><%item._id%></p>
                                         <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
                                         <!-- <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a> -->
                                     </div><!-- End .product-action -->

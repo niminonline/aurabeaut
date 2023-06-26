@@ -35,7 +35,7 @@
                         <div class="icon">
                             <i class="icon-user"></i>
                         </div>
-                        <p>User options</p>
+                        <p><%=userData.name%></p>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
@@ -55,7 +55,7 @@
                     <a href="/wishlist" title="Wishlist">
                         <div class="icon">
                             <i class="icon-heart-o"></i>
-                            <span class="wishlist-count badge">0</span>
+                            <span class="wishlist-count badge"><%=userData.wishlist.length%></span>
                         </div>
                         <p>Wishlist</p>
                     </a>
@@ -66,7 +66,7 @@
                     <a href="/cart" title="cart">
                         <div class="icon">
                             <i class="icon-shopping-cart"></i>
-                            <span class="wishlist-count badge">0</span>
+                            <span class="wishlist-count badge"><%=userData.cart.length%></span>
                         </div>
                         <p>Cart</p>
                     </a>
@@ -121,7 +121,7 @@
                             <a href="/allproducts" class="">Products</a>
 
                         </li>
-                        <li>
+                        <li >
                             <a href="#" class="">Offers</a>
 
                         </li>
@@ -147,3 +147,22 @@
         </div><!-- End .container -->
     </div><!-- End .header-bottom -->
 </header>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuItems = document.querySelectorAll('.menu .menu-item');
+    
+        for (var i = 0; i < menuItems.length; i++) {
+            menuItems[i].addEventListener('click', function() {
+                // Remove active class from all menu items
+                for (var j = 0; j < menuItems.length; j++) {
+                    menuItems[j].classList.remove('active');
+                }
+    
+                // Add active class to the clicked menu item
+                this.classList.add('active');
+            });
+        }
+    });
+    </script>
