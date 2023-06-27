@@ -223,7 +223,24 @@ const loadHome = async (req, res) => {
 
 const loadCart = async (req, res) => {
   try {
-    const userData = await User.findOne({ _id: req.session.user_id });
+    const id= new ObjectId(req.session.user_id);
+    const userData= await User.findOne({_id:req.session.user_id}).populate('cart.product').lean();
+  // const userData = await User.aggregate([{
+  //       $match: { _id: id}
+  //     },
+  //   {
+  //     $lookup: {
+  //       from: 'products',
+  //       localField: 'cart.product',
+  //       foreignField: '_id',
+  //       as: 'product'
+  //     }
+  //   }
+  // ])
+    const productData = await Product.find(); 
+
+    console.log('user===========',userData.cart);
+
     res.render("cart", { userData: userData });
   } catch (error) {
     console.log(error.message);

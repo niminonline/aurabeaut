@@ -21,29 +21,32 @@
 
                             <tbody>
                                 <tr>
+                                    <!-- ------------------------Loop--------------------- -->
+                                    <%userData.cart.map((item)=>{%>
                                     <td class="product-col">
                                         <div class="product">
                                             <figure class="product-media">
                                                 <a href="#">
-                                                    <img src="assets/images/products/table/product-1.jpg" alt="Product image">
+                                                    <img src="item.imageUrl[0]" alt="Product image">
                                                 </a>
                                             </figure>
 
                                             <h3 class="product-title">
-                                                <a href="#">productname</a>
-                                            </h3><!-- End .product-title -->
+                                                <a href="#"><%=item.product.name%></a>
+                                            </h3><!-- End .product-title -->    
                                         </div><!-- End .product -->
                                     </td>
-                                    <td class="price-col">price</td>
+                                    <td class="price-col"><%=item.product.price%></td>
                                     <td class="quantity-col">
                                         <div class="cart-product-quantity">
-                                            <input type="number" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                            <input type="number" class="form-control" id="updateField" value="<%=item.quantity%>" onchange="updateQuantity()" min="1" max="10" step="1" data-decimals="0" required>
                                         </div><!-- End .cart-product-quantity -->
                                     </td>
-                                    <td class="total-col">price*Quantity</td>
+                                    <td class="total-col"><%=item.quantity*item.product.price%></td>
                                     <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
                                 </tr>
-                                
+                            <%})%>
+                            <!-- --------------------------------Loop--------------------------- -->
                             
                         </table><!-- End .table table-wishlist -->
 
@@ -70,6 +73,7 @@
                                 <tbody>
                                     <tr class="summary-subtotal">
                                         <td>Subtotal:</td>
+                                        
                                         <td>subtotal</td>
                                     </tr><!-- End .summary-subtotal -->
                                     <tr class="summary-shipping">
@@ -131,7 +135,11 @@
 </main>
 
 
+<script>
+    const updateQuantity=()=>{
 
+    }
+</script>
 
 
     <%-include("../layout/footer.ejs")%>
