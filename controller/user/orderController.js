@@ -31,8 +31,14 @@ const loadCheckout = async (req, res) => {
       sum+=(item.product.price* item.quantity);
       return sum
     }
-    )
+    ) 
+
+    if(userData.cart.length>0){
     res.render("checkout", { userData: userData ,subTotal:sum});
+  }
+  else{
+    res.render("cart", { userData: userData ,subTotal:sum,errorMessage:"Your cart is empty"});
+  }
   } catch (error) {
     console.log(error.message);
   }
