@@ -56,20 +56,20 @@ const userSchema = new mongoose.Schema(
         required: false,
       },
     
-      pin: {
+      pincode: {
         type: String,
         required: false,
       },
-      is_default: {
-        type: Boolean,
+      landmark: {
+        type: String,
         required: false,
       },
   }],
   wishlist:[{
-    product:{
+    
       type:mongoose.Schema.Types.ObjectId,
       ref:"Product",
-    }
+    
   }],
   cart:[{
     

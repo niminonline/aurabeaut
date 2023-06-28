@@ -2,11 +2,62 @@
 
 
 <div class="mainBody">
+    <nav class="navbar bg-light mx-auto bg-primary">
+  
+  
+  
+      <div class="container-fluid justify-content-center">
+        <!-- <form class="d-flex" role="search">
+          <input
+            class="form-control me-2"
+            type="search"
+            name="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form> -->
+      </div>
+    </nav>
+  
+    <div class="table-responsive my-4">
+      <table class="table table-hover">
+        <tr class="heading-row">
+          <th>Sl No.</th>
+          <!-- <th>Order Id</th> -->
+          <th>Name</th>
+          <th>Address</th>
+          <th>Product</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>More</th>
 
+          <!-- <th>View</th> -->
+        </tr>
+  
+        <tr>
+          
+          <% if(orderData==""){ %>
+            <h5 class="text-center text-white">No results found</h5>
+             <%}else{%>
+  
+             <% for(let i=0;i<orderData.length;i++){%>
+          <td><%=i+1%></td>
+          <!-- <td><%=orderData[i]._id%></td> -->
+          <td><%=orderData[i].name%></td>
+          <td><%=orderData[i].address%></td>
+          <td><%=orderData[i].product[0].name%> + <%=orderData[i].product.length%> items </td>
 
-
-    
-</div>
+          
+          <td><%=orderData[i].status%></td>
+          <td><%=orderData[i].date%></td>
+          <td> <a href="/admin/order-details?_id=<%=orderData[i]._id%>"  class="btn btn-primary">Details</a></td>
+  
+        </tr>
+      <%}}%>
+      </table>
+    </div>
+  </div>
 
 
 

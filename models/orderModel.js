@@ -14,17 +14,19 @@ const orderSchema = new mongoose.Schema(
         id: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
         name: { type: String },
         price: { type: Number },
-        quantity: { type: Number },
+        quantity: { type: Number},
         image: { type: String },
         total: { type: Number },
-        description: { type: String },
       },
     ],
     address: {
       type: String,
       
     },
-    total: {
+    mobile:{
+      type: Number,
+    },
+    totalAmount: {
       type: Number,
     },
     paymentMethod: {
@@ -32,6 +34,8 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+      default: 'Pending',
+    enum: ['Pending','Confirmed', 'Shipped','Delivered','Returned'],
     },
     coupon: {
       type: String,

@@ -13,3 +13,6 @@ Submit button
 <input type="submit" class="login100-form-btn" value="Send OTP">
 
 ₹
+
+res.redirect(req.headers.referer)
+

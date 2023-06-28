@@ -1,0 +1,80 @@
+<%-include("../layout/header.ejs")%> <%if(typeof userData != 'undefined'){%>
+    <%-include("../layout/menuUser.ejs")%> <%}else{%>
+    <%-include("../layout/menu.ejs")%> <%}%>
+
+
+
+
+
+
+<!-- -----------------Orders list------------------------ -->
+<div class="page-content container">
+<%if(typeof orderData !='undefined'){%>
+
+    <div class="table-responsive my-4">
+        <table class="table table-hover">
+          <tr class="heading-row">
+            <th>Sl No.</th>
+            <!-- <th>Order Id</th> -->
+            <th>Name</th>
+            <!-- <th>Address</th> -->
+            <th>Product</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+  
+            <!-- <th>View</th> -->
+          </tr>
+    
+          <tr>
+            
+            <% if(orderData==""){ %>
+              <h5 class="text-center text-white">No results found</h5>
+               <%}else{%>
+    
+               <% for(let i=0;i<orderData.length;i++){%>
+            <td><%=i+1%></td>
+            <!-- <td><%=orderData[i]._id%></td> -->
+            <td><%=orderData[i].name%></td>
+            <!-- <td><%=orderData[i].address%></td> -->
+            <td><%=orderData[i].product[0].name%> + <%=orderData[i].product.length%> items </td>
+  
+            
+            <td><%=orderData[i].status%></td>
+            <td><%=orderData[i].date%></td>
+         
+            <td>
+        
+            
+                <a href="/order-details?_id=<%=orderData[i].id%>" class="btn btn-primary"> Details</a>
+             
+              
+              
+        </td>
+        
+          </tr>
+        <%}}%>
+        </table>
+      </div>
+        
+        <%}else{%>
+            <p>No orders yet</p>
+        <%}%>
+
+
+        
+    
+
+    
+</div>
+</div>
+</div>
+
+</div>
+<!-- .End e -->
+</div>
+<!-- -----------------Orders list------------------------ -->
+
+
+
+<%-include("../layout/footer.ejs")%>

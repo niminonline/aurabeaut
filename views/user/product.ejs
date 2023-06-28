@@ -44,7 +44,7 @@
                                 <div class="product-gallery product-gallery-vertical">
                                     <div class="row">
                                         <figure class="product-main-image">
-                                            <img id="product-zoom" src="/images/uploads/<%= productData.imageUrl[0]%>" data-zoom-image="/images/uploads/<%= productData.imageUrl[0]%>" alt="product image">
+                                            <img id="product-zoom" src="<%= productData.imageUrl[0]%>" data-zoom-image="<%= productData.imageUrl[0]%>" alt="product image">
 
                                             <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                                 <i class="icon-arrows"></i>
@@ -52,14 +52,14 @@
                                         </figure><!-- End .product-main-image -->
 
                                         <div id="product-zoom-gallery" class="product-image-gallery">
-                                            <a class="product-gallery-item active" href="#" data-image="/images/uploads/<%= productData.imageUrl[0]%>" data-zoom-image="/images/uploads/<%= productData.imageUrl[0]%>">
-                                                <img src="/images/uploads/<%= productData.imageUrl[0]%>" alt="product side">
+                                            <a class="product-gallery-item active" href="#" data-image="<%= productData.imageUrl[0]%>" data-zoom-image="<%= productData.imageUrl[0]%>">
+                                                <img src="<%= productData.imageUrl[0]%>" alt="product side">
                                             </a>
 
                                             <%if(productData.imageUrl.length>1){%>
                                                 <% for(let i=1;i<productData.imageUrl.length;i++){%>
-                                            <p onclick="handleImage('<%= productData.imageUrl[i]%>')" class="product-gallery-item" href="#" data-image="/images/uploads/<%= productData.imageUrl[i]%>" data-zoom-image="/images/uploads/<%= productData.imageUrl[i]%>">
-                                                <img src="/images/uploads/<%= productData.imageUrl[i]%>" alt="product back">
+                                            <p onclick="handleImage('<%= productData.imageUrl[i]%>')" class="product-gallery-item" href="#" data-image="<%= productData.imageUrl[i]%>" data-zoom-image="<%= productData.imageUrl[i]%>">
+                                                <img src="<%= productData.imageUrl[i]%>" alt="product back">
                                             </p>
                                         <%}}%>
 
@@ -103,11 +103,11 @@
 
                                     
                                     <div class="details-filter-row details-row-size">
-                                        <label for="qty">Qty:</label>
-                                        <div class="product-details-quantity">
-                                            <input type="number" id="qty" class="form-control" value="1" min="1" max="20" step="1" data-decimals="0" required>
-                                        </div><!-- End .product-details-quantity -->
-                                    </div><!-- End .details-filter-row -->
+                                        <!-- <label for="qty">Qty:</label> -->
+                                        <!-- <div class="product-details-quantity"> -->
+                                            <!-- <input type="number" id="qty" class="form-control" value="1" min="1" max="20" step="1" data-decimals="0" required> -->
+                                        </div>
+                                    </div>
                                     
                                     <div class="product-details-action">
                                         <a href="/add-to-cart?_id=<%=productData._id%>" class="btn-product btn-cart"><span>add to cart</span></a>
@@ -256,7 +256,7 @@
 <script>
 
     const handleImage= (imageid)=>{
-        document.getElementById("product-zoom").src=`/images/uploads/${imageid}`
+        document.getElementById("product-zoom").src=`${imageid}`
     }
 
   const addToCartBtn = document.getElementById('addToCartBtn');

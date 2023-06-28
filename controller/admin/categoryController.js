@@ -46,7 +46,7 @@ const addCategory = async (req, res) => {
         folder: "image_uploads",
       });
       //-----End Cloudinary Upload-----
-
+      // console.log("msg cloudinary",result);
       if (result) {
         const category = new Category({
           category: categoryName,
