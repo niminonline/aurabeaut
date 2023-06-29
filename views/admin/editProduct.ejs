@@ -132,7 +132,7 @@
                 multiple
                 placeholder="Add Image"
                 onchange="previewImages(event)"
-                required
+                
               />
               <label for="image">Image</label>
             </div>
@@ -174,16 +174,60 @@
                   <div class="accordion-body">
                     <!-- -------------------Start image delete Card--------------------- -->
                     <div class="container">
+
                       <div class="scrolling-div">
                         <div class="row">
                           <div class="col-sm-12 col-md-6 col-lg-4">
                             <div class="image-preview-block d-flex col">
+<!-- ----------------------Start Main image ------------------ -->
+                              <div
+                                class="card m-4 category-cards main-image"
+                                style="min-width: 15rem; height: 20rem "
+                              >
+                           
+                                <div class="image-container container-fluid pt-2 " style="width: 15rem;height: 15rem;">
+                                  <img
+                                    src=" <%=productData.mainImage%>"
+                                    class="card-img-top img-fluid w-100 h-100 "
+                                    alt="saved Images"
+                                    style="overflow: none"
+                                  />
+                                </div>
+                                <div class="card-body">
+                                  <h5 class="card-title">Main Image</h5>
+                                  
+                                </div>
+                              
+                                <div class="card-body">
+                                 
+                               
+                                </div>
+                              </div>
+
+<!-- ----------------------End Main image ------------------ -->
+
                               <%productData.imageUrl.map((item)=>{%>
                               <div
                                 class="card m-4 category-cards"
-                                style="min-width: 15rem; height: 20rem"
+                                style="min-width: 15rem; height: 20rem "
                               >
-                                <div class="image-container container-fluid pt-2 " style="width: 15rem;height: 15rem;">
+
+                              <div class="row justify-content-end m-2">
+                                <div class="col-auto">
+
+                                <a
+                                onclick="imageDelConfirmation( '<%=productData._id%>', '<%=item%>')">
+                                    
+                                  <i class="bi bi-x-square-fill" style="font-size: 1.2rem; color: rgb(201, 30, 30);"></i>
+                                  </a>                                  
+
+                                  
+                                </div>
+                              </div>
+                              
+
+
+                                <div class="image-container container-fluid pt-2 " style="width: 10rem;height: 10rem;">
                                   <img
                                     src=" <%=item%>"
                                     class="card-img-top img-fluid w-100 h-100 "
@@ -192,11 +236,14 @@
                                   />
                                 </div>
                                 <div class="card-body">
+
+                          
+                                  
                                   <a
-                                    href="/admin/delete-product-image?id=<%=productData._id%>&imageurl=<%=item%>"
-                                    class="btn btn-danger btn-block"
-                                    >Delete</a
-                                  >
+                                  href="/admin/set-product-main-image?id=<%=productData._id%>&imageurl=<%=item%>"
+                                  class="btn btn-primary btn-block mt-3"
+                                  >Set as main image</a
+                                >
                                 </div>
                               </div>
                               <%})%>
@@ -227,6 +274,36 @@
   </div>
 
   <script src="/javascripts/imagePreviewMultiple.js"></script>
+<script>
+ const imageDelConfirmation= (id,imageurl)=>{
+  new swal({
+  
+  text: "Are your sure want to delete this image",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    fetch(`/admin/delete-product-image?id=${id}&imageurl=${imageurl}`,{
+    method:"GET",
+  }).then(response=>{
+    if(response.ok){
+      new swal("Image has been removed successfully", {
+      button: "OK",
+}).then(()=>{
+  window.location.reload()
+})
+    }
+    else{
+      new swal("Image deletion failed")
+    }
+  })
+  } 
+});
+ }
 
+
+</script>
   <%-include("../layout/adminFooter.ejs")%>
 </div>

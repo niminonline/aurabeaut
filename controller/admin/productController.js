@@ -110,6 +110,7 @@ const addProduct = async (req, res) => {
           price: req.body.price,
           description: req.body.description,
           category: req.body.category,
+          mainImage: imageUrl[0],
           imageUrl: imageUrl,
           brand: req.body.brand,
           stock: req.body.stock,
@@ -136,6 +137,8 @@ const addProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
   try {
+    console.log("image",req.file);
+    console.log("bodyyy",req.body);
     const productName = req.body.category.toUpperCase();
     const id = req.body._id;
     // console.log(req.body);
@@ -291,10 +294,27 @@ const deleteProductImage = async (req, res) => {
       await Product.findByIdAndUpdate(
         { _id: id },
         { $pull: { imageUrl: imageurl } }
-      ).then(res.redirect(req.headers.referer));
+      ).then(()=>{
+        res.sendStatus(200); 
+        
+      });
     } else {
-      console.log("Image deletion failed");
+      res.sendstatus(500);
     }
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+
+
+// ====================================Set Product main Image==========================
+
+const setProductMainImage = async (req, res) => {
+  try {
+    const { id, imageurl } = req.query;
+    await Product.findByIdAndUpdate(new ObjectId(id),{$set:{mainImage:imageurl}},{ new: true })
+    res.redirect(req.headers.referer);
   } catch (err) {
     console.log(err.message);
   }
@@ -319,4 +339,5 @@ module.exports = {
   editProduct,
   productListUnlist,
   deleteProductImage,
+  setProductMainImage
 };

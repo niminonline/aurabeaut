@@ -62,6 +62,7 @@ const placeOrder = async (req, res) => {
       image: item.product.imageUrl[0],
       total: item.product.price * item.quantity,
     }));
+
     const selectedAddress=userData.address[addressIndex]
     const address= selectedAddress.address+", "+selectedAddress.city+", "+selectedAddress.state+", Pincode: "+selectedAddress.pincode+", "+selectedAddress.landmark;
 
@@ -77,8 +78,29 @@ const placeOrder = async (req, res) => {
       date: new Date().toISOString().split('T')[0],
       notes: notes
     });
+
+console.log("Cart prducts",cartProducts);
+    
+
+cartProducts.map((item=>{
+  
+}))
+
+
+
+//////////////////////
+
+
+
     const saveOrder= await order.save();
+
     if(saveOrder){
+
+
+
+
+
+
        const userData= await User.findOne({_id:req.session.user_id})
       userData.cart=[];
       await userData.save();

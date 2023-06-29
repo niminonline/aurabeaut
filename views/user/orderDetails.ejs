@@ -92,6 +92,49 @@
   
                   </td>
                </tr>
+
+
+               <tr>
+                <th> </th>
+                <th >
+                        Products  
+                          </th>
+<table class="table table-bordered">
+                          <tr>
+                            <th> Product Name</th>
+                            <th> Price</th>
+                            <th> Quantity</th>
+                            <th> Total Price</th>
+                          </tr>
+
+                          <tr>
+                       <%   orderData.product.map((item)=>{%>
+                         
+
+                <td>
+                    <%=item.name%>
+                </td>
+                <td>
+                    <%=item.price%>
+                </td>
+                <td>
+                    <%=item.quantity%>
+                </td>
+                <td>
+                    <%=item.total%>
+                </td>
+                
+            </tr>
+      
+           <% })%>
+
+           <tr>
+            <th>Total Amount</th>
+            <td></td>
+            <td></td>
+            <th>  <%=orderData.totalAmount%></th>
+           </tr>
+        </table>
   
               </table>
             

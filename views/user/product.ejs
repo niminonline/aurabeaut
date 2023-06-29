@@ -43,46 +43,68 @@
                             <div class="col-md-6">
                                 <div class="product-gallery product-gallery-vertical">
                                     <div class="row">
-                                        <figure class="product-main-image">
-                                            <img id="product-zoom" src="<%= productData.imageUrl[0]%>" data-zoom-image="<%= productData.imageUrl[0]%>" alt="product image">
+                                       
+                             
+                                        <figure class="product-main-image" >
+                                            <img id="product-zoom"  src="<%= productData.mainImage%>" data-zoom-image="<%= productData.mainImage%>" alt="product image">
 
                                             <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                                 <i class="icon-arrows"></i>
                                             </a>
                                         </figure><!-- End .product-main-image -->
 
-                                        <div id="product-zoom-gallery" class="product-image-gallery">
-                                            <a class="product-gallery-item active" href="#" data-image="<%= productData.imageUrl[0]%>" data-zoom-image="<%= productData.imageUrl[0]%>">
-                                                <img src="<%= productData.imageUrl[0]%>" alt="product side">
+
+
+                                        <div id="product-zoom-gallery" class="product-image-gallery" style="max-height: 1.5rem">
+                                            <a class="product-gallery-item active" href="#" data-image="<%= productData.mainImage%>" data-zoom-image="<%= productData.mainImage%>" >
+                                                <img src="<%= productData.mainImage%>" alt="product side" >
                                             </a>
 
-                                            <%if(productData.imageUrl.length>1){%>
-                                                <% for(let i=1;i<productData.imageUrl.length;i++){%>
-                                            <p onclick="handleImage('<%= productData.imageUrl[i]%>')" class="product-gallery-item" href="#" data-image="<%= productData.imageUrl[i]%>" data-zoom-image="<%= productData.imageUrl[i]%>">
-                                                <img src="<%= productData.imageUrl[i]%>" alt="product back">
-                                            </p>
-                                        <%}}%>
+                                        <%productData.imageUrl.map((item)=>{%>
+
+                                           <%if(item!=productData.mainImage){%>
+                                               <a class="product-gallery-item" href="#" data-image="<%= item%>" data-zoom-image="<%=item%>">
+                                                    <img src="<%= item%>" alt="product cross">
+                                                </a>
+                                                <% }%>
+    
+                                       <% })%>
 
 
 
-                                            <!-- <a class="product-gallery-item" href="#" data-image="assets/images/products/single/2.jpg" data-zoom-image="assets/images/products/single/2-big.jpg">
-                                                <img src="assets/images/products/single/2-small.jpg" alt="product cross">
-                                            </a> -->
 
-                                            <!-- <a class="product-gallery-item" href="#" data-image="assets/images/products/single/3.jpg" data-zoom-image="assets/images/products/single/3-big.jpg">
-                                                <img src="assets/images/products/single/3-small.jpg" alt="product with model">
-                                            </a> -->
 
-                                            
 
-                                        </div><!-- End .product-image-gallery -->
-                                    </div><!-- End .row -->
-                                </div><!-- End .product-gallery -->
-                            </div><!-- End .col-md-6 -->
+                                        <!-- <%if(productData.imageUrl.length>0){%>
+                                            <% for(let i=0;i<productData.imageUrl.length;i++){%>
+
+                                        <div id="product-zoom-gallery" class="product-image-gallery">
+                                            <a class="product-gallery-item active" href="#" data-image="<%= productData.mainImage%>" data-zoom-image="<%= productData.mainImage%>">
+                                                <img src="<%= productData.mainImage%>" alt="product side">
+                                            </a>
+
+
+                                           <a class="product-gallery-item" href="#" data-image="<%= productData.imageUrl[i]%>" data-zoom-image="<%= productData.imageUrl[i]%>">
+                                                <img src="<%= productData.imageUrl[i]%>" alt="product cross">
+                                            </a>
+
+
+
+
+                                            <%}}%> -->
+
+                                  
+                                        </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                          
 
                             <div class="col-md-6">
                                 <div class="product-details">
-                                    <h1 class="product-title"><%=productData.name%></h1><!-- End .product-title -->
+                                    <h1 class="product-title"><%=productData.name%></h1>
 
                                     <!-- <div class="ratings-container">
                                         <div class="ratings">
@@ -129,6 +151,9 @@
                                         </div>
                                     </div><!-- End .product-details-footer -->
                                 </div><!-- End .product-details -->
+                            </div>
+
+
                             </div><!-- End .col-md-6 -->
                         </div><!-- End .row -->
                     </div><!-- End .product-details-top -->
@@ -255,23 +280,23 @@
 
 <script>
 
-    const handleImage= (imageid)=>{
-        document.getElementById("product-zoom").src=`${imageid}`
-    }
+//     const handleImage= (imageid)=>{
+//         document.getElementById("product-zoom").src=`${imageid}`
+//     }
 
-  const addToCartBtn = document.getElementById('addToCartBtn');
-  const qtyInput = document.getElementById('qty');
+//   const addToCartBtn = document.getElementById('addToCartBtn');
+//   const qtyInput = document.getElementById('qty');
 
-  addToCartBtn.addEventListener('click', (event) => {
-    event.preventDefault();
+//   addToCartBtn.addEventListener('click', (event) => {
+//     event.preventDefault();
 
-    const qty = qtyInput.value;
-    const href = addToCartBtn.getAttribute('href');
+//     const qty = qtyInput.value;
+//     const href = addToCartBtn.getAttribute('href');
 
-    addToCartBtn.setAttribute('href', `${href}&quantity=${qty}`);
+//     addToCartBtn.setAttribute('href', `${href}&quantity=${qty}`);
 
-    window.location.href = addToCartBtn.getAttribute('href');
-  });
+//     window.location.href = addToCartBtn.getAttribute('href');
+//   });
 </script>
 
 

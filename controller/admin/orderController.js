@@ -37,7 +37,6 @@ const updateOrder = async (req, res) => {
     try {
    
        const{_id,status}=req.body;
-       console.log(req.body);
         const statusUpdate = await Order.findByIdAndUpdate(
             { _id: _id },
             { $set: { status: status } }

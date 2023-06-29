@@ -466,10 +466,8 @@ const removeCartItem = async (req, res) => {
 //===============================Quantity update==========================
 const quantityUpdate = async (req, res) => {
   try {
-    console.log("ddddddddd:",req.body);
     const { prodId, method } = req.body;
     const userId = req.session.user_id;
-console.log("userrr",userId);
     const productStock = await Product.findById(prodId);
 
     const CartProductStock = await User.findOne({
@@ -527,7 +525,7 @@ console.log("userrr",userId);
         res.json('success');
       } else {
 
-        console.log("------",quant.cart, subTotal);
+        // console.log("------",quant.cart, subTotal);
         res.json({
 
           quantity: quant.cart,

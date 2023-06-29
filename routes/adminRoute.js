@@ -45,6 +45,7 @@ adminRoute.get("/editcategory",isAdminLogout,categoryController.editCategoryLoad
 adminRoute.get("/editcarousel",isAdminLogout,carouselController.editCarouselLoad);
 adminRoute.get("/delete-product-image", isAdminLogout,productController.deleteProductImage);
 adminRoute.get("/order-details",isAdminLogout, orderController.orderDetailsLoad);
+adminRoute.get("/set-product-main-image",isAdminLogout, productController.setProductMainImage);
 
 
 // =================== Admin Log in/log out=========================================
