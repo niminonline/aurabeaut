@@ -1,9 +1,10 @@
 const Product = require("../../models/productModel");
 const User = require("../../models/userModel");
 const Order = require("../../models/orderModel");
-const Category = require("../../models/categoryModel");
 const { ObjectId } = require("mongodb");
-
+const {generateInvoice}= require("../../helper/pdf-lib")
+const path = require("path");
+const fs = require('fs');
 
 //=================Load Checkout Page================================
 
@@ -152,7 +153,6 @@ const orderDetailsLoad = async (req, res) => {
     const {_id}= req.query;
     const userData = await User.findOne({ _id: req.session.user_id });
     const orderData = await Order.findById({_id});    
-    console.log("orrrrrrrrr",orderData);
     res.render("orderDetails",{orderData:orderData,userData:userData})
 
     
@@ -161,6 +161,27 @@ const orderDetailsLoad = async (req, res) => {
     console.log(error.message);
   }
 };
+//=================Download Invoice================================
+
+const downloadInvoice = async (req, res) => {
+  try {
+    const contents="Contents qqqqq"
+    const pdfBytes = await generateInvoice(contents);
+    const filePath = path.join(__dirname, 'invoice001.pdf');
+    fs.writeFileSync(filePath, pdfBytes);
+    res.download(filePath, 'invoice001.pdf', (error) => {
+      if (error) {
+        console.error('Error downloading invoice:', error);
+        res.status(500).send('Error downloading invoice');
+      }
+      fs.unlinkSync(filePath); 
+    });
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    res.status(500).send('Error generating invoice');
+  }
+};
 
 
-module.exports = {loadCheckout,placeOrder,orderDetailsLoad,ordersLoad};
+
+module.exports = {loadCheckout,placeOrder,orderDetailsLoad,ordersLoad,downloadInvoice};
