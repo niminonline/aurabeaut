@@ -16,3 +16,8 @@ a {
 .red-text{
   color: red;
 }
+
+p{
+  font-size: .8rem;
+  line-height: .8rem;
+}

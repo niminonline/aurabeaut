@@ -2,58 +2,61 @@ const Product = require("../../models/productModel");
 const User = require("../../models/userModel");
 const Order = require("../../models/orderModel");
 const { ObjectId } = require("mongodb");
-const {generateInvoice}= require("../../helper/pdf-lib")
+const { generateInvoicePDF } = require("../../helper/html-pdf");
 const path = require("path");
-const fs = require('fs');
+const fs = require("fs");
+const { createInvoiceHtml } = require("../../helper/invoiceFormat");
 
 //=================Load Checkout Page================================
 
 const loadCheckout = async (req, res) => {
   try {
-    const id= new ObjectId(req.session.user_id);
-    const userData= await User.findOne({_id:req.session.user_id}).populate('cart.product').lean();
-  // const userData = await User.aggregate([{
-  //       $match: { _id: id}
-  //     },
-  //   {
-  //     $lookup: {
-  //       from: 'products',
-  //       localField: 'cart.product',
-  //       foreignField: '_id',
-  //       as: 'product'
-  //     }
-  //   }
-  // ])
-    const productData = await Product.find(); 
+    const id = new ObjectId(req.session.user_id);
+    const userData = await User.findOne({ _id: req.session.user_id })
+      .populate("cart.product")
+      .lean();
+    // const userData = await User.aggregate([{
+    //       $match: { _id: id}
+    //     },
+    //   {
+    //     $lookup: {
+    //       from: 'products',
+    //       localField: 'cart.product',
+    //       foreignField: '_id',
+    //       as: 'product'
+    //     }
+    //   }
+    // ])
+    const productData = await Product.find();
 
-    let sum=0;
-    const subTotal= userData.cart.map((item)=>{
-     
-      sum+=(item.product.price* item.quantity);
-      return sum
+    let sum = 0;
+    const subTotal = userData.cart.map((item) => {
+      sum += item.product.price * item.quantity;
+      return sum;
+    });
+
+    if (userData.cart.length > 0) {
+      res.render("checkout", { userData: userData, subTotal: sum });
+    } else {
+      res.render("cart", {
+        userData: userData,
+        subTotal: sum,
+        errorMessage: "Your cart is empty",
+      });
     }
-    ) 
-
-    if(userData.cart.length>0){
-    res.render("checkout", { userData: userData ,subTotal:sum});
-  }
-  else{
-    res.render("cart", { userData: userData ,subTotal:sum,errorMessage:"Your cart is empty"});
-  }
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
 //=================Place Order================================
 
 const placeOrder = async (req, res) => {
   try {
-    
-
-    const {notes,paymentMode,addressIndex,totalAmount}=req.body;
-    const userData= await User.findOne({_id:req.session.user_id}).populate('cart.product').lean();
+    const { notes, paymentMode, addressIndex, totalAmount } = req.body;
+    const userData = await User.findOne({ _id: req.session.user_id })
+      .populate("cart.product")
+      .lean();
 
     const cartProducts = userData.cart.map((item) => ({
       id: item.product._id,
@@ -64,58 +67,50 @@ const placeOrder = async (req, res) => {
       total: item.product.price * item.quantity,
     }));
 
-    const selectedAddress=userData.address[addressIndex]
-    const address= selectedAddress.address+", "+selectedAddress.city+", "+selectedAddress.state+", Pincode: "+selectedAddress.pincode+", "+selectedAddress.landmark;
+    const selectedAddress = userData.address[addressIndex];
+    const address =
+      selectedAddress.address +
+      ", " +
+      selectedAddress.city +
+      ", " +
+      selectedAddress.state +
+      ", Pincode: " +
+      selectedAddress.pincode +
+      ", " +
+      selectedAddress.landmark;
 
-
-       const order= new Order({
-       userId: new ObjectId(req.session.user_id),
-       name: userData.address[addressIndex].name,
-       product: cartProducts,
-       mobile: userData.address[addressIndex].mobile,
-      address:address,
-      totalAmount:  totalAmount ,
-      paymentMethod:paymentMode,
-      date: new Date().toISOString().split('T')[0],
-      notes: notes
+    const order = new Order({
+      userId: new ObjectId(req.session.user_id),
+      name: userData.address[addressIndex].name,
+      product: cartProducts,
+      mobile: userData.address[addressIndex].mobile,
+      address: address,
+      totalAmount: totalAmount,
+      paymentMethod: paymentMode,
+      date: new Date().toISOString().split("T")[0],
+      notes: notes,
     });
 
-console.log("Cart prducts",cartProducts);
-    
+    console.log("Cart prducts", cartProducts);
 
-cartProducts.map((item=>{
-  
-}))
+    cartProducts.map((item) => {});
 
+    //////////////////////
 
+    const saveOrder = await order.save();
 
-//////////////////////
-
-
-
-    const saveOrder= await order.save();
-
-    if(saveOrder){
-
-
-
-
-
-
-       const userData= await User.findOne({_id:req.session.user_id})
-      userData.cart=[];
+    if (saveOrder) {
+      const userData = await User.findOne({ _id: req.session.user_id });
+      userData.cart = [];
       await userData.save();
 
       console.log("Data added successfully");
 
       res.status(200).json({ message: "Order placed successfully!" });
-    }
-    else{
-      console.log("Failed to add data")
+    } else {
+      console.log("Failed to add data");
     }
 
-
-    
     // const userDataSave = user.save();
     // console.log("New order=========",order);
     // console.log("Address=========",order.address);
@@ -124,39 +119,26 @@ cartProducts.map((item=>{
   }
 };
 
-
 //=================Orders Load================================
 
 const ordersLoad = async (req, res) => {
   try {
-
-
-
     const userData = await User.findOne({ _id: req.session.user_id });
-    const orderData = await Order.find({userId:req.session.user_id});
-    res.render("orders",{orderData:orderData,userData:userData})
-    
-
+    const orderData = await Order.find({ userId: req.session.user_id });
+    res.render("orders", { orderData: orderData, userData: userData });
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
-
-
 //=================Order Details Load================================
 
 const orderDetailsLoad = async (req, res) => {
   try {
-
-    const {_id}= req.query;
+    const { _id } = req.query;
     const userData = await User.findOne({ _id: req.session.user_id });
-    const orderData = await Order.findById({_id});    
-    res.render("orderDetails",{orderData:orderData,userData:userData})
-
-    
-
+    const orderData = await Order.findById({ _id });
+    res.render("orderDetails", { orderData: orderData, userData: userData });
   } catch (error) {
     console.log(error.message);
   }
@@ -165,23 +147,39 @@ const orderDetailsLoad = async (req, res) => {
 
 const downloadInvoice = async (req, res) => {
   try {
-    const contents="Contents qqqqq"
-    const pdfBytes = await generateInvoice(contents);
-    const filePath = path.join(__dirname, 'invoice001.pdf');
-    fs.writeFileSync(filePath, pdfBytes);
-    res.download(filePath, 'invoice001.pdf', (error) => {
-      if (error) {
-        console.error('Error downloading invoice:', error);
-        res.status(500).send('Error downloading invoice');
+    const { _id } = req.query;
+    const orderDetails = await Order.findById(_id);
+    console.log(orderDetails);
+    const invoiceHtml = createInvoiceHtml({
+      invoiceNumber: orderDetails._id,
+      date: orderDetails.date,
+      recipient: orderDetails.name,
+      address: orderDetails.address,
+      mobile:orderDetails.mobile,
+      items: orderDetails.product,
+      total: orderDetails.totalAmount,
+    });
+
+    const outputFilePath = path.join(__dirname, "invoice001.pdf");
+    await generateInvoicePDF(invoiceHtml, outputFilePath);
+
+    res.download(outputFilePath, "invoice.pdf", (downloadError) => {
+      if (downloadError) {
+        console.error("Error downloading invoice PDF:", downloadError);
+        res.status(500).send("Error downloading invoice PDF");
       }
-      fs.unlinkSync(filePath); 
+      fs.unlinkSync(outputFilePath); // Delete the temporary file after download
     });
   } catch (error) {
-    console.error('Error generating invoice:', error);
-    res.status(500).send('Error generating invoice');
+    console.error("Error generating invoice PDF:", error);
+    res.status(500).send("Error generating invoice PDF");
   }
 };
 
-
-
-module.exports = {loadCheckout,placeOrder,orderDetailsLoad,ordersLoad,downloadInvoice};
+module.exports = {
+  loadCheckout,
+  placeOrder,
+  orderDetailsLoad,
+  ordersLoad,
+  downloadInvoice,
+};
