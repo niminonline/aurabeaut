@@ -148,16 +148,16 @@ const orderDetailsLoad = async (req, res) => {
 const downloadInvoice = async (req, res) => {
   try {
     const { _id } = req.query;
-    const orderDetails = await Order.findById(_id);
-    console.log(orderDetails);
+    const orderData = await Order.findById(_id);
     const invoiceHtml = createInvoiceHtml({
-      invoiceNumber: orderDetails._id,
-      date: orderDetails.date,
-      recipient: orderDetails.name,
-      address: orderDetails.address,
-      mobile:orderDetails.mobile,
-      items: orderDetails.product,
-      total: orderDetails.totalAmount,
+      invoiceNumber: orderData._id,
+      date: orderData.date,
+      recipient: orderData.name,
+      address: orderData.address,
+      mobile:orderData.mobile,
+      paymentMethod: orderData.paymentMethod,
+      items: orderData.product,
+      total: orderData.totalAmount,
     });
 
     const outputFilePath = path.join(__dirname, "invoice001.pdf");
@@ -168,7 +168,7 @@ const downloadInvoice = async (req, res) => {
         console.error("Error downloading invoice PDF:", downloadError);
         res.status(500).send("Error downloading invoice PDF");
       }
-      fs.unlinkSync(outputFilePath); // Delete the temporary file after download
+      fs.unlinkSync(outputFilePath);
     });
   } catch (error) {
     console.error("Error generating invoice PDF:", error);
