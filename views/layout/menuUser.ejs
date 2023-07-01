@@ -55,7 +55,10 @@
                     <a href="/wishlist" title="Wishlist">
                         <div class="icon">
                             <i class="icon-heart-o"></i>
-                            <span class="wishlist-count badge"><%=userData.wishlist.length%></span>
+                            <span class="wishlist-count badge">
+                                <%= typeof userData.wishlist !='undefined' ? userData.wishlist.length : userData[0].wishlist.length %>
+                           
+                            </span>
                         </div>
                         <p>Wishlist</p>
                     </a>
@@ -66,7 +69,9 @@
                     <a href="/cart" title="cart">
                         <div class="icon">
                             <i class="icon-shopping-cart"></i>
-                            <span class="wishlist-count badge"><%=userData.cart.length%></span>
+                            <span class="wishlist-count badge">
+                                <%= typeof userData.cart !='undefined' ? userData.cart.length : userData[0].cart.length %>
+                            </span>
                         </div>
                         <p>Cart</p>
                     </a>

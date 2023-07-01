@@ -49,6 +49,7 @@ const verifyLogin = async (req, res) => {
 
         if (passwordMatch) {
           req.session.user_id = userData._id;
+          req.session.user_name= userData.name;
           res.redirect("/home");
         } else {
           res.render("login", { message: "Incorrect Password" });
@@ -261,11 +262,22 @@ const loadWishlist = async (req, res) => {
   try {
      
     const user= req.session.user_id;
-    const userData = await User.findById(user);
-    const wishlistProducts = await Product.findById(user.wishlist)
-    console.log(wishlistProducts);
+    // const userData = await User.findById(user);
+    const userData= await User.aggregate([
+      {$match:{_id:new ObjectId(user)}},
+      {$lookup:{
+        from:'products',
+        localField:'wishlist',
+        foreignField:'_id',
+        as: 'productData'
+        
+      }}
+    ])
+    console.log("Userdata", userData);
+    // const wishlistProducts = await Product.findById(user.wishlist)
+    // console.log(wishlistProducts);
   
-    res.render('wishlist', {wishlistProducts:wishlistProducts,userData:userData});
+    res.render('wishlist', {userData: userData});
 
 
     //     const id= new ObjectId(req.session.user_id);
@@ -340,8 +352,9 @@ const loadUserDashboard =async (req, res) => {
 const addToCart =async (req, res) => {
   try {
     const {_id}= req.query;
+   
     const user_id= req.session.user_id;
-
+    // if(req.query.wishlist){}
     if(req.query.quantity){
       const quantity= req.query.quantity;
       const userData= await User.findById(user_id);
@@ -544,6 +557,23 @@ const quantityUpdate = async (req, res) => {
 
 
 
+//===============================Update address==========================
+const updateAddress = async (req, res) => {
+  try {
+    const{name,mobile,address,pincode,city,state,landmark,index}  =req.body;
+    const userData= await User.findByIdAndUpdate(req.session.user_id,{$set:{[`address.${index}`]:{name:name,mobile:mobile,
+      address:address,pincode:pincode,city:city,state:state,landmark:landmark}}})
+      res.redirect(req.headers.referer);
+  } catch (error) { 
+    console.log(error.message);
+  }
+};
+
+
+
+
+
+
 
 module.exports = {
   loginLoad,
@@ -568,5 +598,7 @@ module.exports = {
   addAddress,
   addAddressLoad,
   removeCartItem,
-  quantityUpdate
+  quantityUpdate,
+  updateAddress,
+  
 };

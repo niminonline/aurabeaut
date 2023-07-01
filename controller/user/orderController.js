@@ -49,9 +49,9 @@ const loadCheckout = async (req, res) => {
   }
 };
 
-//=================Place Order================================
+//=================cod Order================================
 
-const placeOrder = async (req, res) => {
+const codOrder = async (req, res) => {
   try {
     const { notes, paymentMode, addressIndex, totalAmount } = req.body;
     const userData = await User.findOne({ _id: req.session.user_id })
@@ -176,10 +176,38 @@ const downloadInvoice = async (req, res) => {
   }
 };
 
+//===============================Payment Gateway==========================
+const paymentGateway =async (req, res) => {
+
+  try{
+
+    const amount = req.body.amount;
+    
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+//===============================PG order==========================
+const pgOrder =async (req, res) => {
+
+  try{
+
+    const amount = req.body.amount;
+    
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 module.exports = {
   loadCheckout,
-  placeOrder,
   orderDetailsLoad,
   ordersLoad,
   downloadInvoice,
+  codOrder,
+  paymentGateway,
+  pgOrder
 };

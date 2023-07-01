@@ -29,8 +29,16 @@
             <div class="container">
                 <div class="row">
 
-                    
+                    <%if(!userData.cart.length>0){%>
+                        <div class="no-cart-items text-center  w-100">
+                        <h5 class="m-4">Your cart is empty</h5>
+                        <a href="/all-products" class="btn btn-primary  m-4"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
 
+                    </div>
+
+
+                   <% }else{%>
+                        <!-- =============================Cart item block================ -->
 
                     <div class="col-lg-9">
                         <table class="table table-cart table-mobile">
@@ -64,7 +72,7 @@
                                     <td class="price-col"><%=item.product.price%></td>
                                     <td class="quantity-col">
 
-<div class="quantity-block d-flex">
+                                    <div class="quantity-block d-flex">
                                     <button class="mx-2"  onclick="handlequantity('<%=item.product._id%>','decrement')">-</button>
                                             <p class="mx-2" id="quantitynumber<%= item.product._id %>">
                                                 <%= item.quantity%> </p>
@@ -81,15 +89,15 @@
                                     <td class="total-col"><%=item.quantity*item.product.price%></td>
                                     <td> <a href="/remove-cart-item?_id=<%=item.product._id%>" class="btn-remove"><i class="icon-close"></i></a> </td>
                                     <!-- <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td> -->
-                                </tr>
-                            <%})%>
-                            <!-- --------------------------------Loop--------------------------- -->
+                                  </tr>
+                                 <%})%>
+                                 <!-- --------------------------------Loop--------------------------- -->
                             
-                        </table><!-- End .table table-wishlist -->
+                                 </table><!-- End .table table-wishlist -->
 
-                        <div class="cart-bottom">
-                            <div class="cart-discount">
-                                <!-- <form action="#">
+                                  <div class="cart-bottom">
+                                        <div class="cart-discount">
+                                  <!-- <form action="#">
                                     <div class="input-group">
                                         <input type="text" class="form-control" required placeholder="coupon code">
                                         <div class="input-group-append">
@@ -124,8 +132,15 @@
                             <a href="   /checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
                         </div><!-- End .summary -->
 
-                        <a href="/all-products" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
-                    </aside><!-- End .col-lg-3 -->
+                    </aside>
+                    
+                    
+                    <!-- =====================End cart item block================== -->
+                    
+                   <% }%>
+                    
+                    
+                    <!-- End .col-lg-3 -->
                 </div><!-- End .row -->
             </div><!-- End .container -->
         </div><!-- End .cart -->

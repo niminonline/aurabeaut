@@ -56,8 +56,12 @@ userRoute.post("/verifyResetPassOtp", userController.submitOTP);
 userRoute.post("/resetpassword", userController.resetPassword);
 userRoute.post("/verifySignUpOtp", userController.insertUser);
 userRoute.post("/add-address",isUserSession, userController.addAddress);
-userRoute.post("/place-order",isUserSession, orderController.placeOrder);
+userRoute.post("/update-address",isUserSession, userController.updateAddress);
 userRoute.post("/quantity-update",isUserSession, userController.quantityUpdate);
+userRoute.post("/cod-order",isUserSession, orderController.codOrder);
+// userRoute.post("/place-order",isUserSession, orderController.placeOrder);
+userRoute.post("/payment-gateway",isUserSession, orderController.paymentGateway);
+userRoute.post("/pg-order",isUserSession, orderController.pgOrder);
 
 
 

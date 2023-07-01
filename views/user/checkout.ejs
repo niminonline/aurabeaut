@@ -69,7 +69,104 @@
                                                         <p>city : <%=item.city%></p>
                                                         <p>state : <%=item.state%></p>
                                                         <p>pin : <%=item.pincode%></p>
-                                                        <!-- <a href="#">Edit <i class="icon-edit"></i></a></p> -->
+                                                        
+                                                        
+
+
+
+<!-- ==------------------------------Start Modal-------------------------------------- -->
+
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-secndary" data-toggle="modal" data-target="#addressBoxModal">
+    Edit
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="addressBoxModal" tabindex="-1" role="dialog" aria-labelledby="addressBoxModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addressBoxModalTitle">Edit address</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         
+            <form action="/update-address" class="form-floating m-4" method="post">
+
+                <input type="text" name="index" value="<%=index%>" hidden>
+                <div class="row g-2">
+                <div class="form-floating col-md-6">
+                <label for="floatingInputValue">Name</label>
+                <input type="text" class="form-control" name="name" placeholder="Enter Name" value="<%=item.name%>" required>
+             </div>
+             <div class="form-floating col-md-6">
+                <label for="floatingInputValue">Mobile number</label>
+                <input type="text" class="form-control" name="mobile" placeholder="Enter Mobile number" value="<%=item.mobile%>" required>
+             </div>
+            </div>
+        
+            <div class="row">
+                
+                <div class="form-floating col-md-12">
+                   <label for="floatingInputValue">Address</label>
+                   <input type="text" class="form-control" name="address" placeholder="Enter Address" value="<%=item.address%>" required>
+                </div>
+                </div>
+        
+             <div class="row g-2">
+                <div class="form-floating col-md-6">
+                <label for="floatingInputValue">Pincode</label>
+                <input type="text" class="form-control" name="pincode" placeholder="Enter Pincode" value="<%=item.pincode%>" required>
+             </div>
+             <div class="form-floating col-md-6">
+                <label for="floatingInputValue">City</label>
+                <input type="text" class="form-control" name="city" placeholder="Enter City" value="<%=item.city%>" required>
+             </div>
+             </div>
+        
+             <div class="row g-2">
+             <div class="form-floating col-md-6">
+             <label for="floatingInputValue">State</label>
+             <input type="text" class="form-control" name="state" placeholder="Enter State" value="<%=item.state%>" required>
+          </div>
+          <div class="form-floating col-md-6">
+             <label for="floatingInputValue">Landmark</label>
+             <input type="text" class="form-control" name="landmark" placeholder="Enter Landmark" value="<%=item.landmark%>" >
+          </div>
+          </div>
+          
+        
+
+
+         
+        </div>
+        <div class="modal-footer">
+            <input type="submit" value="Save" class="btn btn-primary">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+<!-- ==------------------------------End  Modal-------------------------------------- -->
+
+
+
+
+
+
                                                     </div>
                                                 </div><!-- End .card-dashboard -->
                                             </div>
