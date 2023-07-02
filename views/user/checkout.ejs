@@ -208,13 +208,10 @@
                                                 <td>Subtotal:</td>
                                                 <td><%=subTotal%></td>
                                             </tr><!-- End .summary-subtotal -->
-                                            <tr>
-                                                <td>COD charges:</td>
-                                                <td> ₹100</td>
-                                            </tr>
+                                           
                                             <tr class="summary-total">
                                                 <td>Total:</td>
-                                                <td id="totalAmount"><%=subTotal+100%></td>
+                                                <td id="totalAmount"><%=subTotal%></td>
                                             </tr><!-- End .summary-total -->
                                         </tbody>
                                     </table><!-- End .table table-summary -->
@@ -234,7 +231,7 @@
                                               <label for="cod">Cash On Delivery</label>     
                                              </div>
                                              <div class="paymentItem my-4" >
-                                                <input type="radio" name="paymentMode" id="creditCard" value="Debit/Credit Card"  onchange="paymentMode()"> 
+                                                <input type="radio" name="paymentMode" id="creditCard" value="Razorpay"  onchange="paymentMode()"> 
                                                 <label for="creditCard">Credit/debit Card</label>     
                                                </div>
 
@@ -243,13 +240,17 @@
                                                 <label for="upi">UPI</label>     
                                                </div>
   
-
+                                           
                                                     
                                                 
                                             </div><!-- End .card-header -->
                                         </div><!-- End .card -->
 
                                         <!-- End .card -->
+
+
+
+                                        
 
                                     <button  onclick="checkout()"  class="btn btn-outline-primary-2 btn-order btn-block">
                                         <span class="btn-text">Place Order</span>
@@ -268,8 +269,7 @@
 
 
     <script>
-// document.getElementById('myForm').addEventListener('submit', function(event) {
-//   event.preventDefault();
+
 let addressIndex = null;
 let selectedPaymentMode = null;
   const handleAddress=()=>{
@@ -308,6 +308,75 @@ if(addressIndex==null){
 else if(selectedPaymentMode==null){
     new swal("Please select a payment mode");
 }
+else if(selectedPaymentMode=='Razorpay'){
+
+// =========================Start RazorPay=============//
+
+    fetch("/payment-gateway",{
+    method:"POST",
+    headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer token123'
+  },
+  body:
+    JSON.stringify({
+        notes:  notes,
+        paymentMode: selectedPaymentMode,
+        addressIndex:addressIndex,
+        totalAmount:totalAmount
+  })
+}).then(function(response) {
+   return response.json();
+  })
+  .then(function(data) {
+   console.log('data',data)
+    // const options = {
+    //   key: 'rzp_test_9zHydJZu7xq9lh',
+    //   amount: data.amount,
+    //   currency: 'INR',
+    //   name: 'aurabeaut',
+    //   description: 'Payment for aurabeaut',
+    //   order_id: data.id,
+    //   handler: function(response) {
+    //     console.log(response);
+    //   },
+    //   prefill: {
+    //     email: 'user@example.com',
+    //     contact: '9999999999'
+    //   }
+    // };
+    
+    var options = {
+    key: 'rzp_test_9zHydJZu7xq9lh', 
+    amount: data.amount,
+    currency: "INR",
+    name: "auraBeaute",
+    description: "auraBeaute Payment Gateway",
+    image: "/images/aurabeaut-logo.png",
+    order_id: data.id,
+    callback_url: "/pg-order?order_id="+data.id,
+    prefill: {
+        name: data.userName,
+        email: data.userEmail,
+        contact: data.userMobile
+    },
+    notes: {
+        "address": "auraBeaute Kerala"
+    },
+    theme: {
+        "color": "#497004"
+    }
+};
+    const razorpayInstance = new Razorpay(options);
+    razorpayInstance.open();
+  })
+  .catch(function(error) {
+    console.error(error);
+  });
+}
+
+
+// =========================End Start RazorPay=============//
 else{
 
 fetch("/place-order",{
@@ -333,18 +402,17 @@ fetch("/place-order",{
      
     } else {
       console.log('Request failed');
-      // Handle the error case
     }
   })
   .catch(error => {
     console.error('An error occurred:', error);
   });
-
-  // Use the selectedOptionId as needed
 }
 }
-    </script>
+</script>
 
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <%-include("../layout/footer.ejs")%>
 
 

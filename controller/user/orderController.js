@@ -6,6 +6,9 @@ const { generateInvoicePDF } = require("../../helper/html-pdf");
 const path = require("path");
 const fs = require("fs");
 const { createInvoiceHtml } = require("../../helper/invoiceFormat");
+const razorpay = require("../../helper/razorpay");
+const crypto = require("../../helper/crypto");
+const {  validatePaymentVerification,validateWebhookSignature,} = require("../../node_modules/razorpay/dist/utils/razorpay-utils.js");
 
 //=================Load Checkout Page================================
 
@@ -30,13 +33,18 @@ const loadCheckout = async (req, res) => {
     const productData = await Product.find();
 
     let sum = 0;
+    //totalAmount = 0;
     const subTotal = userData.cart.map((item) => {
       sum += item.product.price * item.quantity;
+      // totalAmount += sum;
       return sum;
     });
 
     if (userData.cart.length > 0) {
-      res.render("checkout", { userData: userData, subTotal: sum });
+      res.render("checkout", {
+        userData: userData,
+        subTotal: sum,
+      });
     } else {
       res.render("cart", {
         userData: userData,
@@ -154,7 +162,7 @@ const downloadInvoice = async (req, res) => {
       date: orderData.date,
       recipient: orderData.name,
       address: orderData.address,
-      mobile:orderData.mobile,
+      mobile: orderData.mobile,
       paymentMethod: orderData.paymentMethod,
       items: orderData.product,
       total: orderData.totalAmount,
@@ -177,30 +185,69 @@ const downloadInvoice = async (req, res) => {
 };
 
 //===============================Payment Gateway==========================
-const paymentGateway =async (req, res) => {
+const paymentGateway = async (req, res) => {
+  try {
+    const { notes, paymentMode, addressIndex } = req.body;
+    console.log("pg-body", req.body);
+    const totalAmount = req.body.totalAmount * 100;
+    const userData = await User.findById(req.session.user_id);
 
-  try{
-
-    const amount = req.body.amount;
-    
-
+    const payment = await razorpay.orders.create(
+      {
+        amount: totalAmount,
+        currency: "INR",
+        receipt: "receipt_id",
+        payment_capture: 1,
+      },
+      function (error, order) {
+        if (error) {
+          console.log(error);
+          res.status(500).json({ error: "Failed to create Razorpay order" });
+        } else {
+          order.userName = userData.name;
+          order.userEmail = userData.email;
+          order.userMobile = userData.mobile;
+          res.json(order);
+        }
+      }
+    );
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
+    res.status(500).send("Payment creation failed");
   }
-}
+};
 
 //===============================PG order==========================
-const pgOrder =async (req, res) => {
+const pgOrder = async (req, res) => {
+  try {
+    const { order_id } = req.query;
+    const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
+      req.body;
 
-  try{
+    const generated_signature = await crypto.generateHmacSha256(
+      order_id + "|" + razorpay_payment_id,
+      process.env.razorPaySecret
+    );
+    console.log("gen sign", generated_signature);
+    console.log("rp sign", razorpay_signature);
+    if (generated_signature == razorpay_signature) {
+      console.log("payment is successful");
 
-    const amount = req.body.amount;
-    
+      
+      validatePaymentVerification(
+        { order_id: razorpay_order_id, payment_id: razorpay_payment_id },
+        razorpay_signature,
+        process.env.razorPaySecret
+      );
+      console.log("Val payment verifivcation=",validatePaymentVerification);
+    } else {
+      console.log("Payment failed");
+    }
 
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
 module.exports = {
   loadCheckout,
@@ -209,5 +256,5 @@ module.exports = {
   downloadInvoice,
   codOrder,
   paymentGateway,
-  pgOrder
+  pgOrder,
 };

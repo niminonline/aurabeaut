@@ -260,7 +260,7 @@ const loadCart = async (req, res) => {
 
 const loadWishlist = async (req, res) => {
   try {
-     
+    
     const user= req.session.user_id;
     // const userData = await User.findById(user);
     const userData= await User.aggregate([

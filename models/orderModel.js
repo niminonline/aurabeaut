@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
+      type:mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
-    name: {
-      type: String,
+    invoiceNumber:{
+      type:String,
     },
     product: [
       {
@@ -19,13 +19,42 @@ const orderSchema = new mongoose.Schema(
         total: { type: Number },
       },
     ],
-    address: {
-      type: String,
-      
-    },
-    mobile:{
-      type: Number,
-    },
+    address:[{
+      name: {
+        type: String,
+        required: false,
+      },
+    
+      mobile: {
+        type: String,
+        required: false,
+      },
+    
+      address: {
+        type: String,
+        required: false,
+      },
+    
+      city: {
+        type: String,
+        required: false,
+      },
+    
+      state: {
+        type: String,
+        required: false,
+      },
+    
+      pincode: {
+        type: String,
+        required: false,
+      },
+      landmark: {
+        type: String,
+        required: false,
+      },
+  }],
+
     totalAmount: {
       type: Number,
     },
