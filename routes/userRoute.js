@@ -45,6 +45,8 @@ userRoute.get("/orders",isUserSession, orderController.ordersLoad);
 userRoute.get("/order-details",isUserSession, orderController.orderDetailsLoad);
 userRoute.get("/remove-cart-item",isUserSession, userController.removeCartItem);
 userRoute.get("/download-invoice",isUserSession, orderController.downloadInvoice);
+userRoute.get("/order-success",isUserSession, orderController.orderSuccess);
+userRoute.get("/order-failure",isUserSession, orderController.orderFailure);
 
 
 
@@ -58,7 +60,7 @@ userRoute.post("/verifySignUpOtp", userController.insertUser);
 userRoute.post("/add-address",isUserSession, userController.addAddress);
 userRoute.post("/update-address",isUserSession, userController.updateAddress);
 userRoute.post("/quantity-update",isUserSession, userController.quantityUpdate);
-userRoute.post("/cod-order",isUserSession, orderController.codOrder);
+userRoute.post("/place-order",isUserSession, orderController.placeOrder);
 // userRoute.post("/place-order",isUserSession, orderController.placeOrder);
 userRoute.post("/payment-gateway",isUserSession, orderController.paymentGateway);
 userRoute.post("/pg-order",isUserSession, orderController.pgOrder);

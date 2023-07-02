@@ -25,23 +25,23 @@
                     User Name
                 </th>
                 <td>
-                    <%=orderData.name%>
+                    <%=orderData.address.name%>
                 </td>
              </tr>
              <tr>
                 <th>
                     Address
                 </th>
-                <td>
-                    <%=orderData.address%>
-                </td>
+                    <td><%=orderData.address.address%> <br>  
+                        <%=orderData.address.city%> <%=orderData.address.state%>  <%=orderData.address.pincode%> <br> <%=orderData.address.landmark%> </td>
+                        
              </tr>
              <tr>
                 <th>
                     Mobile Number
                 </th>
                 <td>
-                    <%=orderData.mobile%>
+                    <%=orderData.address.mobile%>
                 </td>
              </tr>
              <tr>

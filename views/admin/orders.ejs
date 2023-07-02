@@ -44,8 +44,10 @@
              <% for(let i=0;i<orderData.length;i++){%>
           <td><%=i+1%></td>
           <!-- <td><%=orderData[i]._id%></td> -->
-          <td><%=orderData[i].name%></td>
-          <td><%=orderData[i].address%></td>
+          <td><%=orderData[i].address.name%></td>
+          <td><%=orderData[i].address.address%> <br>  
+          <%=orderData[i].address.city%> <%=orderData[i].address.state%>  <%=orderData[i].address.pincode%> <br> <%=orderData[i].address.landmark%> </td>
+          
           <td><%=orderData[i].product[0].name%> + <%=orderData[i].product.length%> items </td>
 
           

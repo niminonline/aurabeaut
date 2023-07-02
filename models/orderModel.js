@@ -19,7 +19,7 @@ const orderSchema = new mongoose.Schema(
         total: { type: Number },
       },
     ],
-    address:[{
+    address:{
       name: {
         type: String,
         required: false,
@@ -53,7 +53,7 @@ const orderSchema = new mongoose.Schema(
         type: String,
         required: false,
       },
-  }],
+  },
 
     totalAmount: {
       type: Number,

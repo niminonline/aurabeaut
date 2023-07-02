@@ -8,7 +8,10 @@ const fs = require("fs");
 const { createInvoiceHtml } = require("../../helper/invoiceFormat");
 const razorpay = require("../../helper/razorpay");
 const crypto = require("../../helper/crypto");
-const {  validatePaymentVerification,validateWebhookSignature,} = require("../../node_modules/razorpay/dist/utils/razorpay-utils.js");
+const {
+  validatePaymentVerification,
+  validateWebhookSignature,
+} = require("../../node_modules/razorpay/dist/utils/razorpay-utils.js");
 
 //=================Load Checkout Page================================
 
@@ -57,14 +60,16 @@ const loadCheckout = async (req, res) => {
   }
 };
 
-//=================cod Order================================
+//=================Place Order================================
 
-const codOrder = async (req, res) => {
+const placeOrder = async (req, res) => {
   try {
     const { notes, paymentMode, addressIndex, totalAmount } = req.body;
     const userData = await User.findOne({ _id: req.session.user_id })
       .populate("cart.product")
       .lean();
+    const lastOrder= await  Order.find().sort({_id:-1}).limit(1);
+    const invoiceNumber= lastOrder.invoiceNumber+1;
 
     const cartProducts = userData.cart.map((item) => ({
       id: item.product._id,
@@ -76,34 +81,20 @@ const codOrder = async (req, res) => {
     }));
 
     const selectedAddress = userData.address[addressIndex];
-    const address =
-      selectedAddress.address +
-      ", " +
-      selectedAddress.city +
-      ", " +
-      selectedAddress.state +
-      ", Pincode: " +
-      selectedAddress.pincode +
-      ", " +
-      selectedAddress.landmark;
 
     const order = new Order({
       userId: new ObjectId(req.session.user_id),
-      name: userData.address[addressIndex].name,
+      invoiceNumber: 10005 ,
+      name: userData.name,
       product: cartProducts,
       mobile: userData.address[addressIndex].mobile,
-      address: address,
+      address: selectedAddress,
       totalAmount: totalAmount,
       paymentMethod: paymentMode,
       date: new Date().toISOString().split("T")[0],
       notes: notes,
     });
 
-    console.log("Cart prducts", cartProducts);
-
-    cartProducts.map((item) => {});
-
-    //////////////////////
 
     const saveOrder = await order.save();
 
@@ -113,11 +104,16 @@ const codOrder = async (req, res) => {
       await userData.save();
 
       console.log("Data added successfully");
+      const orderData= await Order.findOne({invoiceNumber:invoiceNumber});
 
-      res.status(200).json({ message: "Order placed successfully!" });
+        res.json(orderData);
+      // res.render("orderSuccess",{userData:userData,orderData})
+      // res.status(200).json({ message: "Order placed successfully!" });
     } else {
       console.log("Failed to add data");
     }
+    
+    
 
     // const userDataSave = user.save();
     // console.log("New order=========",order);
@@ -228,33 +224,61 @@ const pgOrder = async (req, res) => {
       order_id + "|" + razorpay_payment_id,
       process.env.razorPaySecret
     );
-    console.log("gen sign", generated_signature);
-    console.log("rp sign", razorpay_signature);
     if (generated_signature == razorpay_signature) {
       console.log("payment is successful");
 
-      
-      validatePaymentVerification(
+      const validate = validatePaymentVerification(
         { order_id: razorpay_order_id, payment_id: razorpay_payment_id },
         razorpay_signature,
         process.env.razorPaySecret
       );
-      console.log("Val payment verifivcation=",validatePaymentVerification);
+      if (validate) {
+      } else {
+        console.log("Payment validation failed");
+      }
     } else {
       console.log("Payment failed");
     }
-
   } catch (error) {
     console.log(error.message);
   }
 };
+
+//=============================== order Success ==========================
+const orderSuccess = async (req, res) => {
+  try {
+
+   
+   res.render("orderSuccess");
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+//=============================== order Failure ==========================
+const orderFailure = async (req, res) => {
+  try {
+   
+   res.render("orderFailure");
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+
+
+
+
 
 module.exports = {
   loadCheckout,
   orderDetailsLoad,
   ordersLoad,
   downloadInvoice,
-  codOrder,
+  placeOrder,
   paymentGateway,
   pgOrder,
+  orderSuccess,
+  orderFailure
 };

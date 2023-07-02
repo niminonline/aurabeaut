@@ -272,13 +272,11 @@
 
 let addressIndex = null;
 let selectedPaymentMode = null;
-  const handleAddress=()=>{
-
- 
-  let options = document.getElementsByName('options');
-
+const totalAmount= document.getElementById("totalAmount").innerText;
+const notes= document.getElementById("notes").value;
   
-  
+const handleAddress=()=>{
+let options = document.getElementsByName('options');
   for (var i = 0; i < options.length; i++) {
     if (options[i].checked) {
       addressIndex = options[i].id;
@@ -292,16 +290,14 @@ const paymentMode =()=>{
 for (var i = 0; i < radioButtons.length; i++) {
   if (radioButtons[i].checked) {
      selectedPaymentMode = radioButtons[i].value;
-    // Use the selectedPaymentMode value as needed
   }
 }
 }
 
 
-
 const checkout= ()=>{
-const notes= document.getElementById("notes").value;
-const totalAmount= document.getElementById("totalAmount").innerText
+
+
 if(addressIndex==null){
     new swal("Please select an address");
 }
@@ -373,11 +369,19 @@ else if(selectedPaymentMode=='Razorpay'){
   .catch(function(error) {
     console.error(error);
   });
+  placeOrder();
 }
 
 
 // =========================End Start RazorPay=============//
-else{
+else if(selectedPaymentMode=='Cash on Delivery'){
+    placeOrder();
+
+}
+}
+
+// =======================Start Place Order======================
+const placeOrder=()=>{
 
 fetch("/place-order",{
     method:"POST",
@@ -392,23 +396,41 @@ fetch("/place-order",{
         addressIndex:addressIndex,
         totalAmount:totalAmount
   })
-}).then(response => {
-    console.log(response);
-    if (response.statusText=="OK"
-) {
-    swal("Congrats", "Your order has been placed", "success").then((value) => {
-        window.location.href="/home"
-    })
+
+}).then(response=>{
+    return response.json;
+}).then((data)=>{
+    fetch("/order-success",{
+        method:"GET",
+        headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer token123'
+  },body:
+    JSON.stringify({
+        orderData:data
+  })})
+
+})
+}
+// }).then(response => {
+//     console.log(response);
+//     if (response.statusText=="OK"
+// ) {
+//     swal("Congrats", "Your order has been placed", "success").then((value) => {
+//         window.location.href="/home"
+//     })
      
-    } else {
-      console.log('Request failed');
-    }
-  })
-  .catch(error => {
-    console.error('An error occurred:', error);
-  });
-}
-}
+//     } else {
+//       console.log('Request failed');
+//     }
+//   })
+//   .catch(error => {
+//     console.error('An error occurred:', error);
+//   });
+
+
+
+// =======================End  Place Order======================
 </script>
 
 
