@@ -11,7 +11,9 @@
                 <img src="/images/order-failure.png"   class="img-fluid mx-auto"  width="100px" height="100px" alt="success-image">
         
             <h3 class=" text-danger text center"> Your order has been failed</h3>
-           
+           <%if(typeof errorMessage != 'undefined'){%>
+            <h5 class="text-danger text center"> errorMessage</h5>
+           <%}%>
 
             <a href="/all-products" class="btn btn-primary  m-4"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
 

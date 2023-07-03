@@ -30,23 +30,24 @@
                     Recipient
                   </th>
                   <td>
-                      <%=orderData.name%>
+                    <%=orderData.address.name%>
                   </td>
                </tr>
                <tr>
                   <th>
                       Address
                   </th>
-                  <td>
-                      <%=orderData.address%>
-                  </td>
+                   
+                    <td><%=orderData.address.address%> <br>  
+                        <%=orderData.address.city%> <%=orderData.address.state%>  <%=orderData.address.pincode%> <br> <%=orderData.address.landmark%>
+                     </td>
                </tr>
                <tr>
                   <th>
                       Mobile Number
                   </th>
                   <td>
-                      <%=orderData.mobile%>
+                    <%=orderData.address.mobile%>
                   </td>
                </tr>
                <tr>
@@ -136,7 +137,7 @@
             <th>  <%=orderData.totalAmount%></th>
            </tr>
 
-           <a href="/download-invoice?_id=<%=orderData._id%>">Download Invoice</a>
+           <a href="/download-invoice?_id=<%=orderData._id%> " class="btn btn-warning my-3 "><i class="bi bi-download" style="font-size: 2rem;"></i>  Download Invoice</a>
         </table>
   
               </table>

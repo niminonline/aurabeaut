@@ -21,25 +21,11 @@ const loadCheckout = async (req, res) => {
     const userData = await User.findOne({ _id: req.session.user_id })
       .populate("cart.product")
       .lean();
-    // const userData = await User.aggregate([{
-    //       $match: { _id: id}
-    //     },
-    //   {
-    //     $lookup: {
-    //       from: 'products',
-    //       localField: 'cart.product',
-    //       foreignField: '_id',
-    //       as: 'product'
-    //     }
-    //   }
-    // ])
     const productData = await Product.find();
 
     let sum = 0;
-    //totalAmount = 0;
     const subTotal = userData.cart.map((item) => {
       sum += item.product.price * item.quantity;
-      // totalAmount += sum;
       return sum;
     });
 
@@ -69,22 +55,23 @@ const placeOrder = async (req, res) => {
       .populate("cart.product")
       .lean();
     const lastOrder= await  Order.find().sort({_id:-1}).limit(1);
-    const invoiceNumber= lastOrder.invoiceNumber+1;
+    const invoiceNumber=  parseInt(lastOrder[0].invoiceNumber.match(/\d+/)[0]) + 1
 
-    const cartProducts = userData.cart.map((item) => ({
-      id: item.product._id,
-      name: item.product.name,
-      price: item.product.price,
-      quantity: item.quantity,
-      image: item.product.imageUrl[0],
-      total: item.product.price * item.quantity,
-    }));
-
+    const cartProducts = userData.cart.map(item => 
+         ({
+    id: item.product._id,
+    name: item.product.name,
+    price: item.product.price,
+    quantity: item.quantity,
+    image: item.product.imageUrl[0],
+    total: item.product.price * item.quantity
+      }));
+      
     const selectedAddress = userData.address[addressIndex];
 
     const order = new Order({
       userId: new ObjectId(req.session.user_id),
-      invoiceNumber: 10005 ,
+      invoiceNumber: invoiceNumber,
       name: userData.name,
       product: cartProducts,
       mobile: userData.address[addressIndex].mobile,
@@ -96,6 +83,7 @@ const placeOrder = async (req, res) => {
     });
 
 
+
     const saveOrder = await order.save();
 
     if (saveOrder) {
@@ -105,19 +93,11 @@ const placeOrder = async (req, res) => {
 
       console.log("Data added successfully");
       const orderData= await Order.findOne({invoiceNumber:invoiceNumber});
-
         res.json(orderData);
-      // res.render("orderSuccess",{userData:userData,orderData})
-      // res.status(200).json({ message: "Order placed successfully!" });
     } else {
       console.log("Failed to add data");
     }
     
-    
-
-    // const userDataSave = user.save();
-    // console.log("New order=========",order);
-    // console.log("Address=========",order.address);
   } catch (error) {
     console.log(error.message);
   }
@@ -154,11 +134,12 @@ const downloadInvoice = async (req, res) => {
     const { _id } = req.query;
     const orderData = await Order.findById(_id);
     const invoiceHtml = createInvoiceHtml({
-      invoiceNumber: orderData._id,
+      invoiceNumber: orderData.invoiceNumber,
       date: orderData.date,
-      recipient: orderData.name,
-      address: orderData.address,
-      mobile: orderData.mobile,
+      recipient: orderData.address.name,
+      addressLine1: orderData.address.address,
+      addressLine2:orderData.address.city+", "+orderData.address.state+" - "+orderData.address.pincode,
+      mobile: orderData.address.mobile,
       paymentMethod: orderData.paymentMethod,
       items: orderData.product,
       total: orderData.totalAmount,
@@ -184,7 +165,6 @@ const downloadInvoice = async (req, res) => {
 const paymentGateway = async (req, res) => {
   try {
     const { notes, paymentMode, addressIndex } = req.body;
-    console.log("pg-body", req.body);
     const totalAmount = req.body.totalAmount * 100;
     const userData = await User.findById(req.session.user_id);
 
@@ -216,14 +196,17 @@ const paymentGateway = async (req, res) => {
 //===============================PG order==========================
 const pgOrder = async (req, res) => {
   try {
-    const { order_id } = req.query;
+    const { order_id } = req.body;
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
-      req.body;
+      req.body.response;
+
+console.log("orderid",order_id,"rpp id",razorpay_payment_id," rporid,",razorpay_order_id," rp sign-",razorpay_signature);
 
     const generated_signature = await crypto.generateHmacSha256(
       order_id + "|" + razorpay_payment_id,
       process.env.razorPaySecret
     );
+    console.log("gen signature",generated_signature);
     if (generated_signature == razorpay_signature) {
       console.log("payment is successful");
 
@@ -233,11 +216,16 @@ const pgOrder = async (req, res) => {
         process.env.razorPaySecret
       );
       if (validate) {
+        console.log("validation- success.....");
+        res.sendStatus(200);
+
       } else {
         console.log("Payment validation failed");
+        res.sendStatus(500);
       }
     } else {
       console.log("Payment failed");
+      res.sendStatus(500);
     }
   } catch (error) {
     console.log(error.message);
@@ -247,9 +235,10 @@ const pgOrder = async (req, res) => {
 //=============================== order Success ==========================
 const orderSuccess = async (req, res) => {
   try {
-
+    const {invoiceNumber,orderId} =req.query;
+    const userData= await User.findById(req.session.user_id)
    
-   res.render("orderSuccess");
+   res.render("orderSuccess",{invoiceNumber:invoiceNumber,orderId:orderId,userData:userData});
   } catch (error) {
     console.log(error.message);
   }
@@ -258,15 +247,13 @@ const orderSuccess = async (req, res) => {
 //=============================== order Failure ==========================
 const orderFailure = async (req, res) => {
   try {
+    const userData= User.findOneById(req.session.user_id)
    
-   res.render("orderFailure");
+   res.render("orderFailure",{userData:userData});
   } catch (error) {
     console.log(error.message);
   }
 }
-
-
-
 
 
 

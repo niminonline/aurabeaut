@@ -45,8 +45,8 @@ userRoute.get("/orders",isUserSession, orderController.ordersLoad);
 userRoute.get("/order-details",isUserSession, orderController.orderDetailsLoad);
 userRoute.get("/remove-cart-item",isUserSession, userController.removeCartItem);
 userRoute.get("/download-invoice",isUserSession, orderController.downloadInvoice);
-userRoute.get("/order-success",isUserSession, orderController.orderSuccess);
 userRoute.get("/order-failure",isUserSession, orderController.orderFailure);
+userRoute.get("/order-success",isUserSession, orderController.orderSuccess);
 
 
 

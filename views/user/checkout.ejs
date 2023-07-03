@@ -25,26 +25,11 @@
             <div class="checkout">
                 <div class="container">
                     <div class="checkout-discount">
-                        <!-- <form action="#">
-                            <input type="text" class="form-control" required id="checkout-discount-input">
-                            <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
-                        </form> -->
                     </div><!-- End .checkout-discount -->
                     <!-- <form action="#"> -->
                         <div class="row">
                             <div class="col-lg-9">
                                 <h4 >Billing Details</h4><!-- End .checkout-title -->
-                                    <!-- <div class="row"> -->
-                                        <!-- <div class="table-responsive my-4">
-                                            <table class="table table-hover">
-
-                                                <td></td>
-
-                                                    </table>
-                                                </div> -->
-
-
-                                    <!-- </div>End .row -->
 
 
                                     
@@ -350,7 +335,10 @@ else if(selectedPaymentMode=='Razorpay'){
     description: "auraBeaute Payment Gateway",
     image: "/images/aurabeaut-logo.png",
     order_id: data.id,
-    callback_url: "/pg-order?order_id="+data.id,
+    // callback_url: "/pg-order?order_id="+data.id,
+    handler: function(response){
+        sendResponse(response,data.id);
+    },
     prefill: {
         name: data.userName,
         email: data.userEmail,
@@ -366,10 +354,7 @@ else if(selectedPaymentMode=='Razorpay'){
     const razorpayInstance = new Razorpay(options);
     razorpayInstance.open();
   })
-  .catch(function(error) {
-    console.error(error);
-  });
-  placeOrder();
+  
 }
 
 
@@ -381,52 +366,65 @@ else if(selectedPaymentMode=='Cash on Delivery'){
 }
 
 // =======================Start Place Order======================
-const placeOrder=()=>{
-
-fetch("/place-order",{
-    method:"POST",
+const placeOrder = () => {
+  fetch("/place-order", {
+    method: "POST",
     headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer token123'
-  },
-  body:
-    JSON.stringify({
-        notes:  notes,
-        paymentMode: selectedPaymentMode,
-        addressIndex:addressIndex,
-        totalAmount:totalAmount
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123'
+    },
+    body: JSON.stringify({
+      notes: notes,
+      paymentMode: selectedPaymentMode,
+      addressIndex: addressIndex,
+      totalAmount: totalAmount
+    })
   })
-
-}).then(response=>{
-    return response.json;
-}).then((data)=>{
-    fetch("/order-success",{
-        method:"GET",
+    .then(response => response.json())
+    .then(data => {
+      console.log("data", data);
+      window.location.href = `/order-success?orderId=${data._id}&invoiceNumber=${data.invoiceNumber}`;
+      fetch(`/order-success?orderId=${data._id}&invoiceNumber=${data.invoiceNumber}`, {
+        method: "get",
         headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer token123'
-  },body:
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer token123'
+        }
+      });
+    })
+    .catch(error => {
+      console.log("An error occurred:", error);
+    });
+};
+// ============Send response============
+const sendResponse=(response,data)=>{
+    // fetch(`/pg-order?order_id="+${data}`,{method:"post",headers: {
+    fetch(`/pg-order`,{method:"post",headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123'
+    }, body:
     JSON.stringify({
-        orderData:data
-  })})
-
-})
-}
-// }).then(response => {
-//     console.log(response);
-//     if (response.statusText=="OK"
-// ) {
-//     swal("Congrats", "Your order has been placed", "success").then((value) => {
-//         window.location.href="/home"
-//     })
+        response:  response,
+        order_id: data,
+  })}).then(response => {
+    console.log(response);
+    if (response.statusText=="OK"
+) {
+    swal("Congrats", "Your order has been placed", "success").then((value) => {
+        placeOrder();
+        // window.location.href="/home"
+    })
      
-//     } else {
-//       console.log('Request failed');
-//     }
-//   })
-//   .catch(error => {
-//     console.error('An error occurred:', error);
-//   });
+    } else {
+      console.log('Request failed');
+    }
+  })
+  .catch(error => {
+    console.log('An error occurred:', error);
+  });
+
+}
+
 
 
 
