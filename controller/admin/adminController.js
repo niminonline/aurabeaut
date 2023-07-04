@@ -85,7 +85,7 @@ const userBlockUnblock = async (req, res) => {
     const {id} = req.body;
     
     const userData= await User.findOne({_id:id});
-    console.log(userData);
+    // console.log(userData);
     if(userData.isBlocked == true){
       await User.findByIdAndUpdate(
         { _id: new ObjectId(id) },

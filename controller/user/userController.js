@@ -273,7 +273,7 @@ const loadWishlist = async (req, res) => {
         
       }}
     ])
-    console.log("Userdata", userData);
+    // console.log("Userdata", userData);
     // const wishlistProducts = await Product.findById(user.wishlist)
     // console.log(wishlistProducts);
   
@@ -338,7 +338,7 @@ const loadUserDashboard =async (req, res) => {
   try {
     const user_id= req.session.user_id;
     const orderData = await Order.find({userId:user_id});
-    console.log(orderData);
+    // console.log(orderData);
     
 
     const userData = await User.findOne({ _id: req.session.user_id });
@@ -354,22 +354,32 @@ const addToCart =async (req, res) => {
     const {_id}= req.query;
    
     const user_id= req.session.user_id;
+    const userData= await User.findById(user_id);
     // if(req.query.wishlist){}
     if(req.query.quantity){
       const quantity= req.query.quantity;
-      const userData= await User.findById(user_id);
       const addCartData = await User.findOneAndUpdate({ _id: new ObjectId(user_id)},{ $push: { cart:{product: new ObjectId(_id), quantity: quantity }} },
         { new: true });
     }
     else{
+      console.log("else cart");
+      const productInCart = await User.findOne({ _id: req.session.user_id, "cart.product": { $in: [new ObjectId(_id)] } });
+    if (productInCart) {
+      const addCartData = await User.findOneAndUpdate({_id: new ObjectId(user_id),"cart.product": new ObjectId(_id)},{ $inc: { "cart.$.quantity": 1 } } );
+            
+
+      } else {
+    
+      
       const addCartData = await User.findOneAndUpdate({ _id: new ObjectId(user_id)},{ $push:{cart: {product: new ObjectId(_id)}}}, { new: true });
     }
+
     res.redirect(req.headers.referer);
-    
+  }
   } catch (error) {
     console.log(error.message);
   }
-};
+}
 
 //===============================Add to Wishlist==========================
 const addToWishlist =async (req, res) => {

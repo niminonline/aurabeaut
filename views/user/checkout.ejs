@@ -307,9 +307,16 @@ else if(selectedPaymentMode=='Razorpay'){
         totalAmount:totalAmount
   })
 }).then(function(response) {
+  console.log(response);
    return response.json();
   })
   .then(function(data) {
+    if(data == "noStock"){
+      console.log("nostock");
+      window.location.href = `/order-failure?error=out of stock`;
+
+    }else
+    {
    console.log('data',data)
     // const options = {
     //   key: 'rzp_test_9zHydJZu7xq9lh',
@@ -353,7 +360,9 @@ else if(selectedPaymentMode=='Razorpay'){
 };
     const razorpayInstance = new Razorpay(options);
     razorpayInstance.open();
-  })
+  }}
+  )
+  
   
 }
 
@@ -382,6 +391,9 @@ const placeOrder = () => {
   })
     .then(response => response.json())
     .then(data => {
+      if(data.status !='out of stock'){
+
+      
       console.log("data", data);
       window.location.href = `/order-success?orderId=${data._id}&invoiceNumber=${data.invoiceNumber}`;
       fetch(`/order-success?orderId=${data._id}&invoiceNumber=${data.invoiceNumber}`, {
@@ -391,6 +403,10 @@ const placeOrder = () => {
           'Authorization': 'Bearer token123'
         }
       });
+    }
+    else{
+      window.location.href = `/order-failure?error=out of stock`;
+    }
     })
     .catch(error => {
       console.log("An error occurred:", error);
@@ -410,10 +426,10 @@ const sendResponse=(response,data)=>{
     console.log(response);
     if (response.statusText=="OK"
 ) {
-    swal("Congrats", "Your order has been placed", "success").then((value) => {
-        placeOrder();
-        // window.location.href="/home"
-    })
+  placeOrder();
+    // swal("Congrats", "Your order has been placed", "success").then((value) => {
+    //     placeOrder();
+    // })
      
     } else {
       console.log('Request failed');
