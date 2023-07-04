@@ -228,7 +228,7 @@ const productListUnlist = async (req, res) => {
     const {id} = req.body;
     
     const productData= await Product.findOne({_id:id});
-    console.log(productData);
+    // console.log(productData);
     if(productData.isProductUnlist == true){
       await Product.findByIdAndUpdate(
         { _id: new ObjectId(id) },

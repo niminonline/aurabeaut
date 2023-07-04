@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 const mongoose = require('mongoose');
 
 const coupon = mongoose.Schema({
@@ -6,7 +5,7 @@ const coupon = mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
+  expiryDate: {
     type: String,
     required: true,
   },
@@ -18,7 +17,7 @@ const coupon = mongoose.Schema({
     type: String,
     default: 'Active',
   },
-  coupontype: {
+  couponType: {
     type: String,
   },
   userId: {

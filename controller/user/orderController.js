@@ -57,15 +57,38 @@ const placeOrder = async (req, res) => {
     const lastOrder= await  Order.find().sort({_id:-1}).limit(1);
     const invoiceNumber=  parseInt(lastOrder[0].invoiceNumber.match(/\d+/)[0]) + 1
 
+    // const cartProducts = userData.cart.map(item => 
+    //      ({
+    // id: item.product._id,
+    // name: item.product.name,
+    // price: item.product.price,
+    // quantity: item.quantity,
+    // image: item.product.imageUrl[0],
+    // total: item.product.price * item.quantity
+    //   }));
     const cartProducts = userData.cart.map(item => 
-         ({
-    id: item.product._id,
-    name: item.product.name,
-    price: item.product.price,
-    quantity: item.quantity,
-    image: item.product.imageUrl[0],
-    total: item.product.price * item.quantity
-      }));
+      {
+        if(item.product.stock>=item.quantity)
+        {
+       
+        return {
+ id: item.product._id,
+ name: item.product.name,
+ price: item.product.price,
+ quantity: item.quantity,
+ image: item.product.imageUrl[0],
+ total: item.product.price * item.quantity
+      }
+    }
+    else{
+      console.log("Else block");
+      res.json({status:'out of stock'})
+    }
+   });
+
+
+
+
       
     const selectedAddress = userData.address[addressIndex];
 
@@ -82,6 +105,7 @@ const placeOrder = async (req, res) => {
       notes: notes,
     });
 
+console.log("placeorder-userdata",userData)
 
 
     const saveOrder = await order.save();
@@ -97,11 +121,10 @@ const placeOrder = async (req, res) => {
     } else {
       console.log("Failed to add data");
     }
-    
   } catch (error) {
     console.log(error.message);
   }
-};
+}
 
 //=================Orders Load================================
 
@@ -247,9 +270,10 @@ const orderSuccess = async (req, res) => {
 //=============================== order Failure ==========================
 const orderFailure = async (req, res) => {
   try {
-    const userData= User.findOneById(req.session.user_id)
-   
-   res.render("orderFailure",{userData:userData});
+    errorMessage= req.query.error;
+    const userData= await User.findById(req.session.user_id)
+   console.log("orderfail",userData);
+   res.render("orderFailure",{userData:userData,errorMessage:errorMessage});
   } catch (error) {
     console.log(error.message);
   }

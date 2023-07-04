@@ -21,6 +21,7 @@ const orderController = require("../controller/user/orderController");
 const { isUserLogin, isUserLogout,isUserSession } = require("../middleware/auth");
 const upload = require("../middleware/multer");
 const { noCache } = require("../middleware/routingMW");
+const { stockCheck } = require("../middleware/stockCheck");
 
 //========================Get Routes=============================
 userRoute.get("/", noCache, userController.loadHome);
@@ -62,8 +63,8 @@ userRoute.post("/update-address",isUserSession, userController.updateAddress);
 userRoute.post("/quantity-update",isUserSession, userController.quantityUpdate);
 userRoute.post("/place-order",isUserSession, orderController.placeOrder);
 // userRoute.post("/place-order",isUserSession, orderController.placeOrder);
-userRoute.post("/payment-gateway",isUserSession, orderController.paymentGateway);
-userRoute.post("/pg-order",isUserSession, orderController.pgOrder);
+userRoute.post("/payment-gateway",isUserSession,stockCheck, orderController.paymentGateway);
+userRoute.post("/pg-order",isUserSession,stockCheck, orderController.pgOrder);
 
 
 
