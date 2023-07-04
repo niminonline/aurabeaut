@@ -1,0 +1,57 @@
+<%-include("../layout/header.ejs")%> <%if(typeof userData != 'undefined'){%>
+    <%-include("../layout/menuUser.ejs")%> <%}else{%>
+    <%-include("../layout/menu.ejs")%> <%}%>
+
+<div class="container">
+
+
+    <form class="form-floating m-4" method="post">
+
+        <div class="row g-2">
+        <div class="form-floating col-md-6">
+        <label for="floatingInputValue">Name</label>
+        <input type="text" class="form-control" name="name" placeholder="Enter Name" required>
+     </div>
+     <div class="form-floating col-md-6">
+        <label for="floatingInputValue">Mobile number</label>
+        <input type="text" class="form-control" name="mobile" placeholder="Enter Mobile number" required>
+     </div>
+    </div>
+
+    <div class="row">
+        
+        <div class="form-floating col-md-12">
+           <label for="floatingInputValue">Address</label>
+           <input type="text" class="form-control" name="address" placeholder="Enter Address" required>
+        </div>
+        </div>
+
+     <div class="row g-2">
+        <div class="form-floating col-md-6">
+        <label for="floatingInputValue">Pincode</label>
+        <input type="text" class="form-control" name="pincode" placeholder="Enter Pincode" required>
+     </div>
+     <div class="form-floating col-md-6">
+        <label for="floatingInputValue">City</label>
+        <input type="text" class="form-control" name="city" placeholder="Enter City" required>
+     </div>
+     </div>
+
+     <div class="row g-2">
+     <div class="form-floating col-md-6">
+     <label for="floatingInputValue">State</label>
+     <input type="text" class="form-control" name="state" placeholder="Enter State" required>
+  </div>
+  <div class="form-floating col-md-6">
+     <label for="floatingInputValue">Landmark</label>
+     <input type="text" class="form-control" name="landmark" placeholder="Enter Landmark" >
+  </div>
+  </div>
+  <input type="submit" class="btn btn-primary" value="Add Address">
+
+      </form>
+
+
+    </div>
+
+    <%-include("../layout/footer.ejs")%>

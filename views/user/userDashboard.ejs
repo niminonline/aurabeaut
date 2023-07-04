@@ -1,0 +1,243 @@
+<%-include("../layout/header.ejs")%> <%if(typeof userData != 'undefined'){%>
+    <%-include("../layout/menuUser.ejs")%> <%}else{%>
+    <%-include("../layout/menu.ejs")%> <%}%>
+
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">My Account<span>Shop</span></h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">My Account</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="dashboard">
+                <div class="container">
+                    <div class="row">
+                        <aside class="col-md-4 col-lg-3">
+                            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Dashboard</a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Address</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Change password</a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" href="/logout">Sign Out</a>
+                                </li> -->
+                            </ul>
+                        </aside><!-- End .col-lg-3 -->
+
+                        <div class="col-md-8 col-lg-9">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+                                    <p>Welcome <span class="font-weight-normal text-dark"> User</span></p>
+                                    <br>
+                                    
+                                </div><!-- .End .tab-pane -->
+
+                                <!-- .End .tab-pane -->
+
+                                <div class="tab-pane fade" id="tab-downloads" role="tabpanel" aria-labelledby="tab-downloads-link">
+                                    <p>No downloads available yet.</p>
+                                    <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                                </div><!-- .End .tab-pane -->
+
+                                <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+
+                                    <a href="/add-address?location=/user-dashboard" class="btn btn-primary m-4">Add Address</a>
+                                    <div class="row">
+                                        
+                                              <%  userData.address.map((item,index)=>{%>
+                                               
+                                                <div class="col-lg-6">
+                                                    <div class="card card-dashboard">
+                                                <div class="card-body m-4">
+
+                                                    <p>Name : <%=item.name%> </p>
+                                                    <p>mobile : <%=item.mobile%></p>
+                                                    <p>address : <%=item.address%></p>
+                                                    <p>city : <%=item.city%></p>
+                                                    <p>state : <%=item.state%></p>
+                                                    <p>pin : <%=item.pincode%></p>
+                                                    <!-- <a href="#">Edit <i class="icon-edit"></i></a></p> -->
+                                              
+
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-secndary" data-toggle="modal" data-target="#addressBoxModal">
+    Edit
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="addressBoxModal" tabindex="-1" role="dialog" aria-labelledby="addressBoxModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addressBoxModalTitle">Edit address</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         
+            <form action="/update-address" class="form-floating m-4" method="post">
+
+                <input type="text" name="index" value="<%=index%>" hidden>
+                <div class="row g-2">
+                <div class="form-floating col-md-6">
+                <label for="floatingInputValue">Name</label>
+                <input type="text" class="form-control" name="name" placeholder="Enter Name" value="<%=item.name%>" required>
+             </div>
+             <div class="form-floating col-md-6">
+                <label for="floatingInputValue">Mobile number</label>
+                <input type="text" class="form-control" name="mobile" placeholder="Enter Mobile number" value="<%=item.mobile%>" required>
+             </div>
+            </div>
+        
+            <div class="row">
+                
+                <div class="form-floating col-md-12">
+                   <label for="floatingInputValue">Address</label>
+                   <input type="text" class="form-control" name="address" placeholder="Enter Address" value="<%=item.address%>" required>
+                </div>
+                </div>
+        
+             <div class="row g-2">
+                <div class="form-floating col-md-6">
+                <label for="floatingInputValue">Pincode</label>
+                <input type="text" class="form-control" name="pincode" placeholder="Enter Pincode" value="<%=item.pincode%>" required>
+             </div>
+             <div class="form-floating col-md-6">
+                <label for="floatingInputValue">City</label>
+                <input type="text" class="form-control" name="city" placeholder="Enter City" value="<%=item.city%>" required>
+             </div>
+             </div>
+        
+             <div class="row g-2">
+             <div class="form-floating col-md-6">
+             <label for="floatingInputValue">State</label>
+             <input type="text" class="form-control" name="state" placeholder="Enter State" value="<%=item.state%>" required>
+          </div>
+          <div class="form-floating col-md-6">
+             <label for="floatingInputValue">Landmark</label>
+             <input type="text" class="form-control" name="landmark" placeholder="Enter Landmark" value="<%=item.landmark%>" >
+          </div>
+          </div>
+
+         
+        </div>
+        <div class="modal-footer">
+            <input type="submit" value="Save" class="btn btn-primary">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+</div><!-- End .card-dashboard -->
+</div>
+
+
+
+
+<!--------------------------------End  Modal-------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                           <% })%>
+                                                <!-- End .card-body -->
+                                          <!-- End .col-lg-6 -->
+
+                                    </div><!-- End .row -->
+                                </div><!-- .End .tab-pane -->
+
+                                <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+                                    <form action="#">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>First Name *</label>
+                                                <input type="text" class="form-control" required>
+                                            </div><!-- End .col-sm-6 -->
+
+                                            <div class="col-sm-6">
+                                                <label>Last Name *</label>
+                                                <input type="text" class="form-control" required>
+                                            </div><!-- End .col-sm-6 -->
+                                        </div><!-- End .row -->
+
+                                        <label>Display Name *</label>
+                                        <input type="text" class="form-control" required>
+                                        <small class="form-text">This will be how your name will be displayed in the account section and in reviews</small>
+
+                                        <label>Email address *</label>
+                                        <input type="email" class="form-control" required>
+
+                                        <label>Current password (leave blank to leave unchanged)</label>
+                                        <input type="password" class="form-control">
+
+                                        <label>New password (leave blank to leave unchanged)</label>
+                                        <input type="password" class="form-control">
+
+                                        <label>Confirm new password</label>
+                                        <input type="password" class="form-control mb-2">
+
+                                        <button type="submit" class="btn btn-outline-primary-2">
+                                            <span>SAVE CHANGES</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+                                    </form>
+                                </div><!-- .End .tab-pane -->
+                            </div>
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .dashboard -->
+        </div><!-- End .page-content -->
+    </main><
+
+
+
+
+
+
+
+    <%-include("../layout/footer.ejs")%>
+
+

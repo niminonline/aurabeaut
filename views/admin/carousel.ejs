@@ -1,0 +1,69 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+
+
+<div class="mainBody">
+  <div class="row justify-content-center">
+    <div class="col-sm-12 col-md-6 col-lg-6  ">
+<!-- Add Carousel block -->
+    <div class="shadow-div container rounded text-center">
+        <p>
+        
+            <button class="btn btn-primary m-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              Add Carousel
+            </button>
+          </p>
+          <div class="collapse container" id="collapseExample">
+            <form class="form-floating" method="post" enctype="multipart/form-data">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="title" name= "title" placeholder="Enter title">
+                <label for="title">Title</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="subtitle" name= "subtitle" placeholder="Enter sub title">
+                <label for="subtitle">Sub title</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="buttonText" name= "buttonText" placeholder="Enter button text">
+                <label for="buttonText">Button Text</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="buttonLink" name= "buttonLink" placeholder="Enter Button link">
+                <label for="buttonLink">Button link</label>
+              </div>
+
+              
+              <div class="form-floating">
+                <input type="file" class="form-control" id="file" name= "imageUrl" placeholder="Choose Image">
+                <label for="file">Slider image</label>
+                <input type="submit" class="btn btn-primary m-4 mx-auto" value="Add ">
+                <a class="btn btn-danger mx-4" href="/admin/carousel">Cancel</a>
+
+              </div>
+            </form>
+          </div>
+    </div>   
+
+    <!-- List Carousel  -->
+    <div class="card text-center category-cards rounded" style="width: 20rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Carousel Title</h5>
+          <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+          <a href="/admin/editcategory" class="btn btn-warning">Edit</a>
+        </div>
+      </div>
+
+
+    
+</div>
+</div>
+</div>
+
+
+
+
+<%-include("../layout/adminFooter.ejs")%>

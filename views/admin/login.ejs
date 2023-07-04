@@ -1,0 +1,68 @@
+<%-include("../layout/loginHeader.ejs")%>
+
+<div class="limiter">
+  <div class="container-login100">
+    <!-- <div class="container-fluid bg-primary">
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+     -->
+   
+    <div class="wrap-login100">
+     
+      <div
+        class="login100-pic js-tilt"
+        data-tilt=""
+        style="
+          will-change: transform;
+          transform: perspective(300px) rotateX(0deg) rotateY(0deg);
+        "
+      >
+        <img src="/login/img-01.webp" alt="IMG" />
+      </div>
+      <form action="/admin/login" class="login100-form validate-form" method="post">
+        <span class="login100-form-title"> Admin Login </span>
+        <div
+          class="wrap-input100 validate-input"
+          data-validate="Valid email is required: ex@abc.xyz"
+        >
+          <input
+            class="input100"
+            type="text"
+            name="email"
+            placeholder="Email"
+          />
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+          </span>
+        </div>
+        <div
+          class="wrap-input100 validate-input"
+          data-validate="Password is required"
+        >
+          <input
+            class="input100"
+            type="password"
+            name="pass"
+            placeholder="Password"
+          />
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+            <i class="fa fa-lock" aria-hidden="true"></i>
+          </span>
+        </div>
+
+        <%if(typeof message!= 'undefined'){%>
+          <p><%=message%></p>
+        <%}%>
+        <div class="container-login100-form-btn">
+          <input type="submit" class="login100-form-btn" value="Login" />
+        </div>
+        <div class="text-center p-t-12"></div>
+        <div class="text-center p-t-136"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%-include("../layout/loginFooter.ejs")%>

@@ -1,0 +1,270 @@
+<%-include("../layout/header.ejs")%> <%if(typeof userData != 'undefined'){%>
+    <%-include("../layout/menuUser.ejs")%> <%}else{%>
+    <%-include("../layout/menu.ejs")%> <%}%>
+
+
+    <div class="page-content">
+
+
+        <%if(typeof errorMessage!= 'undefined'){%>
+
+
+            <div class="alert alert-danger alert-dismissible fade show text-center m-4 container" role="alert">
+                <strong>Error:</strong> <%=errorMessage%> <br>
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <br>
+              </div>
+
+              
+        
+            <%}%> 
+
+
+
+
+        <div class="cart">
+            <div class="container">
+                <div class="row">
+
+                    <%if(!userData.cart.length>0){%>
+                        <div class="no-cart-items text-center  w-100">
+                        <h5 class="m-4">Your cart is empty</h5>
+                        <a href="/all-products" class="btn btn-primary  m-4"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+
+                    </div>
+
+
+                   <% }else{%>
+                        <!-- =============================Cart item block================ -->
+
+                    <div class="col-lg-9">
+                        <table class="table table-cart table-mobile">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <!-- ------------------------Loop--------------------- -->
+                                    <%userData.cart.map((item)=>{%>
+                                    <td class="product-col">
+                                        <div class="product">
+                                            <figure class="product-media">
+                                                <a href="#">
+                                                    <img src="<%=item.product.imageUrl[0]%>" alt="Product image">
+                                                </a>
+                                            </figure>
+
+                                            <h3 class="product-title">
+                                                <a href="/product?_id=<%=item.product._id%>"><%=item.product.name%></a>
+                                            </h3><!-- End .product-title -->    
+                                        </div><!-- End .product -->
+                                    </td>
+                                    <td class="price-col"><%=item.product.price%></td>
+                                    <td class="quantity-col">
+
+                                    <div class="quantity-block d-flex">
+                                    <button class="mx-2"  onclick="handlequantity('<%=item.product._id%>','decrement')">-</button>
+                                            <p class="mx-2" id="quantitynumber<%= item.product._id %>">
+                                                <%= item.quantity%> </p>
+                                            
+                                            
+                                            <button class="mx-2" onclick="handlequantity('<%=item.product._id%>','increment')">+</button>
+
+                                            </div>
+                                        <div class="cart-produc3t-quantity">
+
+                                              
+                                        </div><!-- End .cart-product-quantity -->
+                                    </td>
+                                    <td class="total-col"><%=item.quantity*item.product.price%></td>
+                                    <td> <a href="/remove-cart-item?_id=<%=item.product._id%>" class="btn-remove"><i class="icon-close"></i></a> </td>
+                                    <!-- <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td> -->
+                                  </tr>
+                                 <%})%>
+                                 <!-- --------------------------------Loop--------------------------- -->
+                            
+                                 </table><!-- End .table table-wishlist -->
+
+                                  <div class="cart-bottom">
+                                        <div class="cart-discount">
+                                  <!-- <form action="#">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" required placeholder="coupon code">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
+                                        </div>
+                                    </div>
+                                </form> -->
+                            </div>
+
+                            <!-- <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a> -->
+                        </div><!-- End .cart-bottom -->
+                    </div><!-- End .col-lg-9 -->
+                    <aside class="col-lg-3">
+                        <div class="summary summary-cart">
+                            <h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
+
+                            <table class="table table-summary">
+                                <tbody>
+                                    <tr class="summary-subtotal">
+                                        <td>Subtotal:</td>
+                                      
+                                        <td id="productSubtotal"><%=subTotal%></td>
+                                    </tr>
+
+                                    <tr class="summary-total">
+                                        <td>Total:</td>
+                                        <td id="productTotal"><%=subTotal%></td>
+                                    </tr><!-- End .summary-total -->
+                                </tbody>
+                            </table><!-- End .table table-summary -->
+
+                            <a href="   /checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+                        </div><!-- End .summary -->
+
+                    </aside>
+                    
+                    
+                    <!-- =====================End cart item block================== -->
+                    
+                   <% }%>
+                    
+                    
+                    <!-- End .col-lg-3 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .cart -->
+    </div><!-- End .page-content -->
+</main>
+
+
+<script>
+
+
+
+
+
+
+
+
+const freeShippingRadio = document.getElementById('free-shipping');
+const standardShippingRadio = document.getElementById('standart-shipping');
+const expressShippingRadio = document.getElementById('express-shipping');
+const subTotal= document.getElementById('subTotal').textContent;
+const totalAmount = document.getElementById('totalAmount');
+
+// Add event listener to each radio button
+freeShippingRadio.addEventListener('change', handleShippingMethod);
+standardShippingRadio.addEventListener('change', handleShippingMethod);
+expressShippingRadio.addEventListener('change', handleShippingMethod);
+
+// Event handler function
+function handleShippingMethod() {
+    
+  if (freeShippingRadio.checked) {
+    totalAmount.textContent = parseInt(subTotal);
+    // Perform any necessary actions for free shipping
+  } else if (standardShippingRadio.checked) {
+    totalAmount.textContent = parseInt(subTotal)+100;
+    // Perform any necessary actions for standard shipping
+  } else if (expressShippingRadio.checked) {
+    totalAmount.textContent = parseInt(subTotal)+300;
+    // Perform any necessary actions for express shipping
+  }
+}
+
+
+const checkCart= ()=>{
+    if(totalAmount<0){
+
+    }
+
+}
+
+const proceedToCheckOut = () => {
+  const shippingCharge = document.getElementById('totalAmount').textContent;
+  fetch('/checkout?shippingCharge=' + shippingCharge, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123'
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        // Handle error response
+        throw new Error('Error: ' + response.status);
+      }
+      // Check the response content type
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        return response.json();
+      } else {
+        throw new Error('Invalid response format: ' + contentType);
+      }
+    })
+    .then(data => {
+      // Process the retrieved data
+      console.log(data);
+    })
+    .catch(error => {
+      // Handle any errors
+      console.error(error);
+    });
+};
+
+async  function handlequantity(id,val){
+var quantityId=document.getElementById(`quantitynumber${id}`)
+await fetch('/quantity-update', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(
+{
+prodId:id,
+method:val,
+}
+)
+})
+.then(response => response.json())
+.then((data)=>{
+if(data=='success'){
+window.location.reload()
+
+}
+// else if(data.stocklimit=="stocklimit"){
+//  const stocklimit= document.getElementById(`stocklimit+${id}`).innerHTML="stock limit"
+//  setTimeout(()=>{
+//   const stocklimit= document.getElementById(`stocklimit+${id}`).innerHTML=""
+//  },3000)
+// }
+
+else{
+quantityId.innerHTML=data.quantity[0].quantity
+document.getElementById("productSubtotal").innerHTML=data.subTotal
+document.getElementById("productTotal").innerHTML=data.subTotal
+totalamount.innerHTML=data.lastprice
+
+}
+
+})
+.catch(error => console.error(error));
+}
+
+</script>
+
+
+    <%-include("../layout/footer.ejs")%>
+
+

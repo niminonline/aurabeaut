@@ -1,0 +1,310 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+<div class="mainBody">
+  <div class="row justify-content-center">
+    <div class="col-sm-12 col-md-6 col-lg-6">
+      <div class="shadow-div container text-center">
+        <h3 class="my-4">Edit Product</h3>
+
+        <%if(typeof errorMessage!= 'undefined'){%>
+
+        <div
+          class="alert alert-warning alert-dismissible fade show"
+          role="alert"
+        >
+          <strong>Error:</strong> <%=errorMessage%>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <%}%> <%if(typeof successMessage!= 'undefined'){%>
+
+        <div
+          class="alert alert-success alert-dismissible fade show"
+          role="alert"
+        >
+          <strong></strong> <%=successMessage%>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <%}%>
+
+        <div class="form-div container">
+          <%if(typeof productData!= 'undefined'){%>
+
+          <form
+            class="form-floating"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input type="hidden" name="_id" value="<%=productData._id%>" />
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="productName"
+                name="name"
+                placeholder="Product Name"
+                value="<%=productData.name%>"
+                required
+              />
+              <label for="productName">Product Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                name="price"
+                placeholder="Price"
+                value="<%=productData.price%>"
+                required
+              />
+              <label for="price">Price</label>
+            </div>
+
+            <div class="form-floating my-4">
+              <select class="form-select" name="category" required>
+                <%categoryDetails.map((item)=>{%>
+
+                  <option value="<%= item._id %>"
+                     <% if (item._id == productData.category) { %>
+                     selected <% } %>> <%= item.category %> </option>
+                <!-- <option value=<%=item._id%>> <%=item.category%></option> -->
+                <% })%>
+              </select>
+
+              <label for="floatingSelect">Category</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="description"
+                placeholder="Description"
+                name="description"
+                value="<%=productData.description%>"
+                required
+              />
+              <label for="description">Description</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="stock"
+                placeholder="Stock"
+                name="stock"
+                value="<%=productData.stock%>"
+                required
+              />
+              <label for="stock">Stock</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="brand"
+                placeholder="Brand"
+                name="brand"
+                value="<%=productData.brand%>"
+                required
+              />
+              <label for="brand">Brand</label>
+            </div>
+
+            <div class="form-floating">
+              <input
+                type="file"
+                class="form-control"
+                id="image"
+                name="image"
+                accept="image/jpeg, image/png,image/jpg,image/webp,image/svg image/gif"
+                multiple
+                placeholder="Add Image"
+                onchange="previewImages(event)"
+                
+              />
+              <label for="image">Image</label>
+            </div>
+
+            <!-- =====================Selected Image preview=================  -->
+            <div class="container">
+              <div class="row">
+                <div class="col-12">
+                  <div class="scrolling-div">
+                    <div id="image-previews"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- =====================End Selected Image preview=================  -->
+
+            <!-- -------Saved image display--------------- -->
+
+            <div class="accordion my-3" id="savedImagesDisplay">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    Show saved images
+                  </button>
+                </h2>
+                <div
+                  id="collapseOne"
+                  class="accordion-collapse collapse show"
+                  data-bs-parent="#savedImagesDisplay"
+                >
+                  <div class="accordion-body">
+                    <!-- -------------------Start image delete Card--------------------- -->
+                    <div class="container">
+
+                      <div class="scrolling-div">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-6 col-lg-4">
+                            <div class="image-preview-block d-flex col">
+<!-- ----------------------Start Main image ------------------ -->
+                              <div
+                                class="card m-4 category-cards main-image"
+                                style="min-width: 15rem; height: 20rem "
+                              >
+                           
+                                <div class="image-container container-fluid pt-2 " style="width: 15rem;height: 15rem;">
+                                  <img
+                                    src=" <%=productData.mainImage%>"
+                                    class="card-img-top img-fluid w-100 h-100 "
+                                    alt="saved Images"
+                                    style="overflow: none"
+                                  />
+                                </div>
+                                <div class="card-body">
+                                  <h5 class="card-title">Main Image</h5>
+                                  
+                                </div>
+                              
+                                <div class="card-body">
+                                 
+                               
+                                </div>
+                              </div>
+
+<!-- ----------------------End Main image ------------------ -->
+
+                              <%productData.imageUrl.map((item)=>{%>
+                              <div
+                                class="card m-4 category-cards"
+                                style="min-width: 15rem; height: 20rem "
+                              >
+
+                              <div class="row justify-content-end m-2">
+                                <div class="col-auto">
+
+                                <a
+                                onclick="imageDelConfirmation( '<%=productData._id%>', '<%=item%>')">
+                                    
+                                  <i class="bi bi-x-square-fill" style="font-size: 1.2rem; color: rgb(201, 30, 30);"></i>
+                                  </a>                                  
+
+                                  
+                                </div>
+                              </div>
+                              
+
+
+                                <div class="image-container container-fluid pt-2 " style="width: 10rem;height: 10rem;">
+                                  <img
+                                    src=" <%=item%>"
+                                    class="card-img-top img-fluid w-100 h-100 "
+                                    alt="saved Images"
+                                    style="overflow: none"
+                                  />
+                                </div>
+                                <div class="card-body">
+
+                          
+                                  
+                                  <a
+                                  href="/admin/set-product-main-image?id=<%=productData._id%>&imageurl=<%=item%>"
+                                  class="btn btn-primary btn-block mt-3"
+                                  >Set as main image</a
+                                >
+                                </div>
+                              </div>
+                              <%})%>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- -------------------End image delete Card--------------------- -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <input
+              type="submit"
+              class="btn btn-primary m-4 mx-auto"
+              value="Save "
+            />
+            <%}%>
+
+            <a class="btn btn-danger mx-4" href="/admin/products">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/javascripts/imagePreviewMultiple.js"></script>
+<script>
+ const imageDelConfirmation= (id,imageurl)=>{
+  new swal({
+  
+  text: "Are your sure want to delete this image",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    fetch(`/admin/delete-product-image?id=${id}&imageurl=${imageurl}`,{
+    method:"GET",
+  }).then(response=>{
+    if(response.ok){
+      new swal("Image has been removed successfully", {
+      button: "OK",
+}).then(()=>{
+  window.location.reload()
+})
+    }
+    else{
+      new swal("Image deletion failed")
+    }
+  })
+  } 
+});
+ }
+
+
+</script>
+  <%-include("../layout/adminFooter.ejs")%>
+</div>

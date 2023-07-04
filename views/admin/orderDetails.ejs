@@ -1,0 +1,176 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+
+
+<div class="mainBody">
+    <div class="row justify-content-center">
+      <div class="col-sm-12 col-md-6 col-lg-6  ">
+      <div class="shadow-div container rounded ">
+          
+        <h4 class="my-4 text-center">Order details</h4>
+
+        <div class="table-responsive table table-striped align-left table-hover">
+            <table class="table">
+             <tr>
+                <th>
+                    Id
+                </th>
+                <td>
+                    <%=orderData._id%>
+                </td>
+             </tr>
+
+             <tr>
+                <th>
+                    User Name
+                </th>
+                <td>
+                    <%=orderData.address.name%>
+                </td>
+             </tr>
+             <tr>
+                <th>
+                    Address
+                </th>
+                    <td><%=orderData.address.address%> <br>  
+                        <%=orderData.address.city%> <%=orderData.address.state%>  <%=orderData.address.pincode%> <br> <%=orderData.address.landmark%>
+                     </td>
+                        
+             </tr>
+             <tr>
+                <th>
+                    Mobile Number
+                </th>
+                <td>
+                    <%=orderData.address.mobile%>
+                </td>
+             </tr>
+             <tr>
+                <th>
+                    Total Amount
+                </th>
+                <td>
+                    <%=orderData.totalAmount%>
+                </td>
+             </tr>
+             <tr>
+                <th>
+                    Payment method
+                </th>
+                <td>
+                    <%=orderData.paymentMethod%>
+                </td>
+             </tr>
+             <tr>
+                <th>
+                    Ordered Date
+                </th>
+                <td>
+                    <%=orderData.date%>
+                </td>
+             </tr>
+             <tr>
+                <th>
+                   Delivery notes
+                </th>
+                <td>
+                    <%=orderData.notes%>
+                </td>
+             </tr>
+           
+           
+             <tr>
+                <th> </th>
+                <th >
+                        Products  
+                          </th>
+<table class="table table-bordered">
+                          <tr>
+                            <th> Product Name</th>
+                            <th> Price</th>
+                            <th> Quantity</th>
+                            <th> Total Price</th>
+                          </tr>
+
+                          <tr>
+                       <%   orderData.product.map((item)=>{%>
+                         
+
+                <td>
+                    <%=item.name%>
+                </td>
+                <td>
+                    <%=item.price%>
+                </td>
+                <td>
+                    <%=item.quantity%>
+                </td>
+                <td>
+                    <%=item.total%>
+                </td>
+                
+            </tr>
+      
+           <% })%>
+
+           <tr>
+            <th>Total Amount</th>
+            <td></td>
+            <td></td>
+            <th>  <%=orderData.totalAmount%></th>
+           </tr>
+        </table>
+
+
+             <tr>
+                <th>
+                    Status
+                </th>
+                
+
+
+                <td>
+                <form class="form-floating " method="post">
+                    <select class="form-select" name="status" required>
+                      <%statusData.map((item)=>{%>
+      
+                      <option value=<%=item%>>  <%=item%></option> 
+                      <% })%>
+                    </select>
+      
+                    <label for="floatingSelect"></label>
+
+                    <input type="text" name="_id" value=  <%=orderData._id%> hidden>
+
+
+                    <div class="buttons-row text-center my-4">
+                       
+                        <input type="submit" class="btn btn-success mx-3 mx-auto"  value="Save "/>
+
+                        <a href="/admin/orders"class="btn btn-danger mx-3">Cancel</a>
+                    </div>
+                </form>
+
+
+                </td>
+             </tr>
+
+            </table>
+          
+          </div>
+          
+
+
+          
+      
+  
+      
+  </div>
+  </div>
+  </div>
+  </div>
+
+
+
+
+<%-include("../layout/adminFooter.ejs")%>

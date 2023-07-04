@@ -1,0 +1,181 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+<div class="mainBody">
+  <nav class="navbar bg-light mx-auto bg-primary">
+
+
+
+    <div class="container-fluid justify-content-center">
+      <!-- <form class="d-flex" role="search">
+        <input
+          class="form-control me-2"
+          type="search"
+          name="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form> -->
+    </div>
+  </nav>
+
+  <div class="table-responsive my-4">
+    <table class="table table-hover">
+      <tr class="heading-row">
+        <th>Sl No.</th>
+        <th>Name</th>
+        <th>Email address</th>
+        <th>Mobile Number</th>
+        <th>Status</th>
+        <!-- <th>View</th> -->
+      </tr>
+
+      <tr>
+        
+        <% if(userData==""){ %>
+          <h5 class="text-center text-white">No results found</h5>
+           <%}else{%>
+
+           <% for(let i=0;i<userData.length;i++){%>
+        <td><%=i+1%></td>
+        <td><%=userData[i].name%></td>
+        <td><%=userData[i].email%></td>
+        <td><%=userData[i].mobile%></td>
+       
+
+
+
+
+
+        <!-- <td>
+          <%if(userData[i].isBlocked){ %>
+            <div class="form-check form-switch" onclick="BlockUnblock('<%=userData[i]._id%>')" style="width: 50px;">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Blocked</label>
+            </div>
+            
+              <% }else{%>
+                <div class="form-check form-switch" onclick="BlockUnblock('<%=userData[i]._id%>')" style="width: 50px;">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                  <label class="form-check-label" for="flexSwitchCheckChecked">Active</label>
+                </div>
+                <%}%>
+      </td> -->
+     
+
+      <td>
+        <%if(userData[i].isBlocked){ %>
+          <div class="form-check form-switch" onclick="confirmBlockUnblock('<%=userData[i]._id%>','unblock')" style="width: 50px;">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Blocked</label>
+          </div>
+          
+            <% }else{%>
+              <div class="form-check form-switch" onclick="confirmBlockUnblock('<%=userData[i]._id%>','block')" style="width: 50px;">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                <label class="form-check-label" for="flexSwitchCheckChecked">Active</label>
+              </div>
+              <%}%>
+    </td>
+
+
+          <!-- <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked<%=i%>" checked />
+            <label class="form-check-label" for="flexSwitchCheckChecked" id="switchLabel<%=i%>"></label>
+          </div> -->
+          
+
+
+
+          <!-- <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckChecked"
+              checked
+            />
+            <label
+              class="form-check-label"
+              for="flexSwitchCheckChecked"
+            ></label>
+          </div> -->
+        
+        <!-- <td><button class="btn btn-primary">View Details</button></td> -->
+      </tr>
+    <%}}%>
+    </table>
+  </div>
+</div>
+
+<script>
+
+const  confirmBlockUnblock=(id,todo)=> {
+
+  new swal({
+  title: "Are you sure to "+ todo+" the user?",
+  // text: "Once deleted, you will not be able to recover this imaginary file!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    fetch("/admin/blockUnblockUser", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          id
+      })
+  })
+      .then(response => {
+      })
+      .then(data => {
+          location.reload()
+      })
+      .catch(error => {
+          console.log(error);
+      });
+
+    
+  } else {
+    location.reload()
+  }
+});
+}
+
+
+  //   fetch("/admin/blockUnblockUser", {
+  //     method: "POST",
+  //     headers: {
+  //         "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify({
+  //         id
+  //     })
+  // })
+  //     .then(response => {
+  //     })
+  //     .then(data => {
+  //         location.reload()
+  //     })
+  //     .catch(error => {
+  //         console.log(error);
+  //     });
+// }
+
+    
+  //  else {
+  //   new swal("Your imaginary file is safe!");
+  // }
+// });
+
+
+
+  
+</script>
+
+
+<%-include("../layout/adminFooter.ejs")%>

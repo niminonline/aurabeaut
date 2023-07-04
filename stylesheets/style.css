@@ -1,0 +1,13 @@
+/* Custom styles */
+
+
+
+.image-card{
+    width: 100%;
+    height: 200px;
+    border:10px solid black;
+}
+.image-card img{
+    width: 100%;
+    height: 100%;
+}

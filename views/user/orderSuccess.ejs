@@ -1,0 +1,33 @@
+<%-include("../layout/header.ejs")%> <%if(typeof userData != 'undefined'){%>
+    <%-include("../layout/menuUser.ejs")%> <%}else{%>
+    <%-include("../layout/menu.ejs")%> <%}%>
+
+
+
+    <div class="page-content">
+        <div class="container text-center my-4">
+          
+        
+                <img src="/images/green-tick2.gif"   class="img-fluid mx-auto"  width="300px" height="300px" alt="success-image">
+        
+            <h3 class=" text-primary text center"> Your order has been successfully placed</h3>
+            <h4>Your order id is <%=invoiceNumber%></h4>
+            <a href="/download-invoice?_id=<%=orderId%>" class="btn btn-primary mx-2">Download Invoice</a>
+            <a href="/all-products" class="btn btn-primary  m-4"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+
+
+
+
+
+
+
+        </div><!-- End .container -->
+    </div><!-- End .page-content -->
+
+
+
+
+
+    <%-include("../layout/footer.ejs")%>
+
+

@@ -1,0 +1,169 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+
+
+<div class="mainBody">
+    <nav class="navbar bg-light mx-auto bg-primary">
+        <div class="container-fluid justify-content-around">
+          <form class="d-flex" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+          <a class="btn btn-primary" href="/admin/addproduct">Add Products</a>
+        </div>
+      </nav>
+    
+      <div class="table-responsive my-4">
+        <table class="table table-hover">
+          <tr class="heading-row">
+            <th>Sl No:</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Description </th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Brand</th>
+            <th>Status</th>
+            <th>Action</th>
+            <!-- <th>View</th> -->
+          </tr>
+    
+
+          <% if(typeof productData ==undefined){ %>
+            <h5 class="text-center text-white">No results found</h5>
+             <%}else{%>
+  
+             <% for(let i=0;i<productData.length;i++){%>
+          <td><%=i+1%></td>
+
+          <td>
+            <img src="<%= productData[i].mainImage%>" class="card-img-top w-50"
+                id="card_image<%= i %>" alt="Product Image" width="50px" height="50px">
+        </td>
+        <style>
+            .table-cell {
+                width: 50px;
+                height:50px;
+
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        </style>
+          
+
+          <td><%=productData[i].name%></td>
+          <td><%=productData[i].categoryDetails.category%></td>
+          <td><%=productData[i].description%></td>
+          <td><%=productData[i].price%></td>
+          <td><%=productData[i].stock%></td>
+          <td><%=productData[i].brand%></td>
+          
+           
+            
+
+              <td class="mx-2">
+                <%if(productData[i].isProductUnlist){ %>
+                  <div class="form-check form-switch" onclick="confirmBlockUnblock('<%=productData[i]._id%>','list')" style="width: 55px;">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Unlisted</label>
+                  </div>
+                  
+                    <% }else{%>
+                      <div class="form-check form-switch" onclick="confirmBlockUnblock('<%=productData[i]._id%>','unlist')" style="width: 55px;">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Listed</label>
+                      </div>
+                      <%}%>
+            </td>
+
+            <td>
+              <a href="/admin/editproduct?_id=<%=productData[i]._id%>"><i class="bi bi-pencil-square mx-2" style="font-size: 1.2rem; "></i></i></a>
+              <!-- <a href="/admin/deleteproduct?_id=""><i class="bi bi-trash3-fill mx-2" style="font-size: 1.2rem;"></i></a> -->
+
+              <!-- <%if(productData[i].isProductUnlist||productData[i].isCategoryUnlist ){ %>
+                <button
+                  onclick="listUnList('<%=productData[i]._id%>', 'list')"
+                  style="min-width: 100px"
+                  class="btn btn-success userListButton"
+                >
+                  List
+                </button>
+                <% }else{%>
+                <button
+                  onclick="listUnList('<%=productData[i]._id%>', 'unlist')"
+                  style="min-width: 100px"
+                  class="btn btn-danger userListButton"
+                >
+                  Unlist
+                </button>
+                <%}%> -->
+
+
+           </td>
+
+
+             
+            
+          </tr>
+          <%}}%>
+        </table>
+      </div>
+
+
+
+
+
+
+
+      <script>
+        const  confirmBlockUnblock=(id,todo)=> {
+
+new swal({
+title: "Are you sure to "+ todo+" the product?",
+// text: "Once deleted, you will not be able to recover this imaginary file!",
+icon: "warning",
+buttons: true,
+dangerMode: true,
+})
+.then((willDelete) => {
+if (willDelete) {
+  fetch("/admin/productlistunlist", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        id
+    })
+})
+    .then(response => {
+    })
+    .then(data => {
+        location.reload()
+    })
+    .catch(error => {
+        console.log(error);
+    });
+
+  
+} else {
+  location.reload()
+}
+});
+}
+      </script>
+
+</div>
+
+
+
+
+
+<%-include("../layout/adminFooter.ejs")%>

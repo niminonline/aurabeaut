@@ -1,0 +1,107 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+<div class="mainBody">
+  <div class="row justify-content-center">
+    <div class="col-sm-12 col-md-6 col-lg-6  ">
+  <div class="shadow-div container rounded text-center">
+    <h3 class="m-4">Edit Category</h3>
+    <%if(typeof errorMessage!= 'undefined'){%>
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Error:</strong> <%=errorMessage%>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <%}%> <%if(typeof successMessage!= 'undefined'){%>
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong></strong> <%=successMessage%>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+
+    <%}%> <%if(typeof categoryData!= 'undefined'){%>
+
+    <form
+      class="form-floating container"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="hidden" name="_id" value="<%=categoryData._id%>" />
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="floatingInput"
+          name="category"
+          placeholder="Category Name"
+          value="<%=categoryData.category%>"
+          required
+        />
+        <label for="floatingInput">Category Name</label>
+      </div>
+      
+     <!-- --------------- Start Image upload and preview------- -->
+      <div class="image-section d-flex gap-3 align-items-center">
+      <div class="thumbnail-image-container border border-secondary-subtle  rounded p-3 " id="image-container">
+        <img class= "image-fluid w-100 h-100" src="<%=categoryData.imageUrl%>" id="image" alt="uploaded thumbnail">
+      </div>
+      <div class="form-floating">
+        <input
+          type="file"
+          class="form-control"
+          id="image_upload"
+          name="image"
+          placeholder="Add Image"
+          onchange="loadThumbnail()"
+        />
+        <label for="image"></label>
+    </div>
+  </div>
+
+  <!-- --------------- End Image upload and preview------- -->
+        <input
+          type="submit"
+          class="btn btn-primary m-4 mx-auto"
+          value="Save "
+        />
+        <%}%>
+
+        <a class="btn btn-danger mx-4" href="/admin/category">Cancel</a>
+      
+    </form>
+  </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+<script>
+const loadThumbnail=()=>{
+  const input = document.getElementById('image_upload');
+  const img = document.getElementById('image');
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    img.src = e.target.result;
+  };
+  if (input.files && input.files[0]) {
+    reader.readAsDataURL(input.files[0]);
+  }
+
+
+}
+
+</script>
+
+<%-include("../layout/adminFooter.ejs")%>

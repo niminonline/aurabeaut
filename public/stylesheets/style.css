@@ -1,0 +1,19 @@
+body {
+  width: 100%;
+
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+
+.section-title{
+
+  margin:50px;
+}
+.red-text{
+  color: red;
+}
+

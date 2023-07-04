@@ -1,0 +1,197 @@
+<%-include("../layout/header.ejs")%> <%if(typeof userData != 'undefined'){%>
+    <%-include("../layout/menuUser.ejs")%> <%}else{%>
+    <%-include("../layout/menu.ejs")%> <%}%>
+
+    
+<!-- -----------------Orders list------------------------ -->
+
+<div class="page-content container">
+
+
+
+    <div class="row justify-content-center">
+        <div class="shadow-div container rounded ">
+            
+          <h4 class="my-4 text-center">Order details</h4>
+  
+          <div class="table-responsive table table-striped align-left table-hover">
+              <table class="table">
+               <!-- <tr>
+                  <th>
+                      Id
+                  </th>
+                  <td>
+                      <%=orderData._id%>
+                  </td>
+               </tr> -->
+  
+               <tr>
+                  <th>
+                    Recipient
+                  </th>
+                  <td>
+                    <%=orderData.address.name%>
+                  </td>
+               </tr>
+               <tr>
+                  <th>
+                      Address
+                  </th>
+                   
+                    <td><%=orderData.address.address%> <br>  
+                        <%=orderData.address.city%> <%=orderData.address.state%>  <%=orderData.address.pincode%> <br> <%=orderData.address.landmark%>
+                     </td>
+               </tr>
+               <tr>
+                  <th>
+                      Mobile Number
+                  </th>
+                  <td>
+                    <%=orderData.address.mobile%>
+                  </td>
+               </tr>
+               <tr>
+                  <th>
+                      Total Amount
+                  </th>
+                  <td>
+                      <%=orderData.totalAmount%>
+                  </td>
+               </tr>
+               <tr>
+                  <th>
+                      Payment method
+                  </th>
+                  <td>
+                      <%=orderData.paymentMethod%>
+                  </td>
+               </tr>
+               <tr>
+                  <th>
+                      Ordered Date
+                  </th>
+                  <td>
+                      <%=orderData.date%>
+                  </td>
+               </tr>
+               <tr>
+                  <th>
+                     Delivery notes
+                  </th>
+                  <td>
+                      <%=orderData.notes%>
+                  </td>
+               </tr>
+               <tr>
+                  <th>
+                      Status
+                  </th>
+  
+                  <td>
+                  
+                    <%=orderData.status%>
+  
+                  </td>
+               </tr>
+
+
+               <tr>
+                <th> </th>
+                <th >
+                        Products  
+                          </th>
+<table class="table table-bordered">
+                          <tr>
+                            <th> Product Name</th>
+                            <th> Price</th>
+                            <th> Quantity</th>
+                            <th> Total Price</th>
+                          </tr>
+
+                          <tr>
+                       <%   orderData.product.map((item)=>{%>
+                         
+
+                <td>
+                    <%=item.name%>
+                </td>
+                <td>
+                    <%=item.price%>
+                </td>
+                <td>
+                    <%=item.quantity%>
+                </td>
+                <td>
+                    <%=item.total%>
+                </td>
+                
+            </tr>
+      
+           
+           <% })%>
+
+           <tr>
+            <th>Total Amount</th>
+            <td></td>
+            <td></td>
+            <th>  <%=orderData.totalAmount%></th>
+           </tr>
+
+           <a href="/download-invoice?_id=<%=orderData._id%> " class="btn btn-warning my-3 "><i class="bi bi-download" style="font-size: 2rem;"></i>  Download Invoice</a>
+        </table>
+  
+              </table>
+            
+            </div>
+            
+  
+  
+        
+    
+        
+    </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- -----------------Orders list------------------------ -->
+
+
+
+
+
+
+
+    <%-include("../layout/footer.ejs")%>
+
+

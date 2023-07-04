@@ -1,0 +1,184 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+<div class="mainBody">
+  <div class="row justify-content-center">
+    <div class="col-sm-12 col-md-6 col-lg-6  ">
+  <!-- Add category block -->
+
+
+  <div class="shadow-div container rounded text-center">
+    <%if(typeof errorMessage!= 'undefined'){%>
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Error:</strong> <%=errorMessage%>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+
+    <%}%> <%if(typeof successMessage!= 'undefined'){%>
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong></strong> <%=successMessage%>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+
+    <%}%>
+
+    <p>
+      <button
+        class="btn btn-primary m-4"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseExample"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+      >
+        Add Category
+      </button>
+    </p>
+    <div class="collapse container" id="collapseExample">
+      <form class="form-floating" method="post"   enctype="multipart/form-data">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="floatingInput"
+            name="category"
+            placeholder="Category Name"
+            required
+          />
+          <label for="floatingInput">Category Name</label>
+        </div>
+             <!-- --------------- Start Image upload and preview------- -->
+      <div class="image-section d-flex gap-3 align-items-center">
+        
+        <div class="form-floating">
+          <input
+            type="file"
+            class="form-control"
+            id="image_upload"
+            name="image"
+            placeholder="Add Image"
+            onchange="loadThumbnail()"
+          />
+          <label for="image"></label>
+      </div>
+   
+  
+    <div class="thumbnail-image-container border border-secondary-subtle  rounded p-3 " id="image-container" style="display: none;">
+      <img class= "image-fluid w-100 h-100" src="" id="image" alt="uploaded thumbnail" >
+    </div>
+  </div>
+    <!-- --------------- End Image upload and preview------- -->
+          <input
+            type="submit"
+            class="btn btn-primary m-4 mx-auto"
+            value="Add "
+          />
+          <a class="btn btn-danger mx-4" href="/admin/category">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- List category  -->
+  <div class=" container-fluid d-flex flex-wrap align-self-start justify-content-center">
+    <% if(typeof categoryData!= 'undefined'){categoryData.map((item)=>{%>
+
+    <div class="card text-center category-cards rounded" style="width: 15rem">
+      <img
+        src="<%=item.imageUrl%>"
+        class="card-img-top"
+        alt="category image"
+        width="200px"
+        height="200px"
+      />
+      <div class="card-body">
+        <h5 class="card-title"><%=item.category%></h5>
+        <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+        <a href="/admin/editcategory?_id=<%=item._id%>" class="btn btn-warning mx-2"
+          >Edit</a
+        >
+
+        <%if(item.isUnList){ %>
+        <button
+          onclick="listUnList('<%=item._id%>', 'list')"
+          style="min-width: 100px"
+          class="btn btn-success userListButton"
+        >
+          List
+        </button>
+        <% }else{%>
+        <button
+          onclick="listUnList('<%=item._id%>', 'unlist')"
+          style="min-width: 100px"
+          class="btn btn-danger userListButton"
+        >
+          Unlist
+        </button>
+        <%}%>
+      </div>
+    </div>
+
+    <%})}%>
+  </div>
+  </div>
+</div>
+
+
+
+<script>
+
+const loadThumbnail=()=>{
+  console.log("Load thumbnail exec");
+  const input = document.getElementById('image_upload');
+  const img = document.getElementById('image');
+  const imageContainer= document.getElementById("image-container");
+  imageContainer.style.display = "block";
+  // img.removeAttribute("hidden");
+   const reader = new FileReader();
+  reader.onload = function(e) {
+    img.src = e.target.result;
+  };
+  if (input.files && input.files[0]) {
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+  function listUnList(id, type) {
+    fetch("/admin/listUnlistCategory", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    type,
+    id,
+  }),
+})
+  .then(response => {
+    // Perform any necessary operations with the response
+    // ...
+
+    // Reload the page
+    location.reload();
+  })
+  .catch(error => {
+    // Handle any errors that occur during the fetch request
+    console.error("Error:", error);
+  });
+      
+     
+  }
+</script>
+
+<%-include("../layout/adminFooter.ejs")%>

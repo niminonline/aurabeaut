@@ -1,0 +1,70 @@
+packages
+
+
+npx express-generator
+npm install express mongoose mongodb multer ejs nodemon bcrypt  morgan dotenv  nodemailer path otp-generator 
+
+
+
+cloudinary  cors argon2 node-cron cron razorpay puppeteer 
+
+
+Submit button
+<input type="submit" class="login100-form-btn" value="Send OTP">
+
+₹
+
+res.redirect(req.headers.referer)
+
+
+
+====================pdf lib============
+const { PDFDocument, StandardFonts } = require('pdf-lib');
+
+const  generateInvoice= async(content)=> {
+  try{
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage();
+
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const fontSize = 30
+
+  page.drawText(content, {
+    x: 50,
+    y: page.getHeight() - 50,
+    size: fontSize,
+    font: font,
+  });
+
+  const pdfBytes = await pdfDoc.save();
+  return pdfBytes;
+}
+catch(err){
+
+}}
+
+
+module.exports={generateInvoice}
+
+=============
+
+//=================Download Invoice================================
+
+const downloadInvoice = async (req, res) => {
+  try {
+    const contents="Contents qqqqq"
+    const pdfBytes = await generateInvoice(contents);
+    const filePath = path.join(__dirname, 'invoice001.pdf');
+    fs.writeFileSync(filePath, pdfBytes);
+    res.download(filePath, 'invoice001.pdf', (error) => {
+      if (error) {
+        console.error('Error downloading invoice:', error);
+        res.status(500).send('Error downloading invoice');
+      }
+      fs.unlinkSync(filePath); 
+    });
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    res.status(500).send('Error generating invoice');
+  }
+};
