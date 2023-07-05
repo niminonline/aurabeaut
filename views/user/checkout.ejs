@@ -412,9 +412,11 @@
 
 let addressIndex = null;
 let selectedPaymentMode = null;
+let  discount=0;
 const totalAmount= document.getElementById("totalAmount").innerText;
 const subTotal= document.getElementById("subTotal").innerText;
 const notes= document.getElementById("notes").value;
+ discount= parseInt(document.getElementById("discountDisplay").innerText);
   
 const handleAddress=()=>{
 let options = document.getElementsByName('options');
@@ -460,6 +462,7 @@ else if(selectedPaymentMode=='Razorpay'){
         notes:  notes,
         paymentMode: selectedPaymentMode,
         addressIndex:addressIndex,
+        discount:parseInt(document.getElementById("discountDisplay").innerText),
         totalAmount:totalAmount
   })
 }).then(function(response) {
@@ -532,6 +535,8 @@ else if(selectedPaymentMode=='Cash on Delivery'){
 
 // =======================Start Place Order======================
 const placeOrder = () => {
+  // discount= document.getElementById("discountDisplay").innerText;
+console.log('discount',discount);
   fetch("/place-order", {
     method: "POST",
     headers: {
@@ -542,7 +547,9 @@ const placeOrder = () => {
       notes: notes,
       paymentMode: selectedPaymentMode,
       addressIndex: addressIndex,
-      totalAmount: totalAmount
+      discount: parseInt(document.getElementById("discountDisplay").innerText),
+      totalAmount: parseInt(totalAmount),
+      couponCode: document.getElementById('couponCode').value
     })
   })
     .then(response => response.json())

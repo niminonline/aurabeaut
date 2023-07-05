@@ -5,7 +5,7 @@
 const createInvoiceHtml=(invoiceData)=>{
     console.log(invoiceData);
 
-        const { invoiceNumber, date, recipient, items,mobile,addressLine1,addressLine2, total,paymentMethod } = invoiceData;
+        const { invoiceNumber, date, recipient, items,mobile,addressLine1,addressLine2,subTotal,discount,total,paymentMethod } = invoiceData;
       
         const itemListHTML = items
           .map(
@@ -81,6 +81,8 @@ const createInvoiceHtml=(invoiceData)=>{
             </tbody>
           </table>
           <div class="invoice-footer">
+          <p>Subtotal: ${subTotal}</p>
+          <p>Discount: ${discount}</p>
             <p>Total: ${total}</p>
           </div>
         </body>

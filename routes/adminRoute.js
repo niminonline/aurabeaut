@@ -46,6 +46,7 @@ adminRoute.get("/delete-product-image", isAdminLogout,productController.deletePr
 adminRoute.get("/order-details",isAdminLogout, orderController.orderDetailsLoad);
 adminRoute.get("/set-product-main-image",isAdminLogout, productController.setProductMainImage);
 adminRoute.get("/coupons", isAdminLogout, couponController.couponsLoad);
+adminRoute.get("/delete-coupon", isAdminLogout, couponController.deleteCoupon);
 
 
 // =================== Admin Log in/log out=========================================

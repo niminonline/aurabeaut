@@ -19,7 +19,7 @@ const applyCoupon = async (req, res) => {
     })
     const maxCalcDiscount= Math.floor(parseInt(subtotal)*couponData.percentage*0.01);
     let discount = (maxCalcDiscount<couponData.maxDiscount)?maxCalcDiscount:couponData.maxDiscount;
-    const total=subtotal+discount;
+    const total=subtotal-discount;
       res.json({
         discount:discount,
         total:total

@@ -1,13 +1,16 @@
 const Product = require("../../models/productModel");
 const User = require("../../models/userModel");
-const Category = require("../../models/carouselModel");
+const Category = require("../../models/categoryModel");
+const { ObjectId } = require("mongodb");
 
 //===============================Load All Products==================================
 
 const loadAllProducts = async (req, res) => {
   try {
+    const categoryDetails = await Category.find({});
 
-    const categoryId = req.query._id;
+    const categoryId = req.query.cat;
+    
     if(categoryId){
     const productData = await Product.find({
       category: categoryId,
@@ -16,13 +19,15 @@ const loadAllProducts = async (req, res) => {
     });
     if (req.session.user_id) {
       const userData = await User.findOne({ _id: req.session.user_id });
+     
 
-      res.render("allProducts", { userData: userData, productData: productData });
+      res.render("allProducts", { userData: userData, productData: productData,categoryDetails:categoryDetails });
     } else {
-      res.render("allProducts", { productData: productData });
+      res.render("allProducts", { productData: productData,categoryDetails:categoryDetails });
     }
   }
     else{
+      const categoryData = await Category.find({});
       const productData = await Product.find({
         isProductUnlist: false,
         isCategoryUnlist: false,
@@ -31,9 +36,9 @@ const loadAllProducts = async (req, res) => {
       if (req.session.user_id) {
         const userData = await User.findOne({ _id: req.session.user_id });
   
-        res.render("allProducts", { userData: userData, productData: productData });
+        res.render("allProducts", { userData: userData, productData: productData ,categoryDetails,categoryDetails});
       } else {
-        res.render("allProducts", { productData: productData });
+        res.render("allProducts", { productData: productData,categoryDetails,categoryDetails});
       }
     }
   }

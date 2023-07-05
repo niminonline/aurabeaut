@@ -362,7 +362,6 @@ const addToCart =async (req, res) => {
         { new: true });
     }
     else{
-      console.log("else cart");
       const productInCart = await User.findOne({ _id: req.session.user_id, "cart.product": { $in: [new ObjectId(_id)] } });
     if (productInCart) {
       const addCartData = await User.findOneAndUpdate({_id: new ObjectId(user_id),"cart.product": new ObjectId(_id)},{ $inc: { "cart.$.quantity": 1 } } );

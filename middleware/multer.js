@@ -1,7 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 
-const imageTypes = /jpeg|jpg|png|gif|svg|webp/;
+const imageTypes = /jpeg|jpg|png|gif|svg|svg|webp/;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

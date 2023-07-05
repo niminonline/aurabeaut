@@ -121,6 +121,7 @@
                   <th>Minimum purchase</th>
                   <th>Maximum discount</th>
                   <th>Status</th>
+                  <th>Action</th>
                 </tr>
           
                 <tr>
@@ -151,6 +152,12 @@
                         </div>
                         <%}%>
               </td>
+
+              <td>
+              <button class="btn btn-danger mx-3" onclick="deleteCoupon('<%=couponData[i].id%>')">Delete</button>
+              </td>
+
+
           
           
                 </tr>
@@ -198,6 +205,21 @@
     });
     }
 
+
+
+
+
+    const deleteCoupon=(id)=>{
+      new swal({
+  title: "Are you sure to remove this coupon?",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    window.location.href = `/admin/delete-coupon?id=${id}`;    }});
+  } 
 
   </script>
 

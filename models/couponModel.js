@@ -6,7 +6,7 @@ const coupon = new mongoose.Schema({
     required: true,
   },
   expiryDate: {
-    type: String,
+    type: Date,
     required: true,
   },
   percentage: {

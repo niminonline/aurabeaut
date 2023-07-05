@@ -18,17 +18,23 @@ const {
 
 const loadCheckout = async (req, res) => {
   try {
+
     const id = new ObjectId(req.session.user_id);
     const userData = await User.findOne({ _id: req.session.user_id })
       .populate("cart.product")
       .lean();
-    // const productData = await Product.find();
-    const couponData= await Coupon.find();
+
     let sum = 0;
     const subTotal = userData.cart.map((item) => {
       sum += item.product.price * item.quantity;
       return sum;
     });
+    const cartValue= parseInt(sum);
+    const today = new Date();
+    console.log(today);
+    const couponData= await Coupon.find({expiryDate:{$gte:today},  usersUsed:{$nin:[req.session.user_id]}, minPurchase:{$lte:cartValue}});
+
+  
 
     if (userData.cart.length > 0) {
       res.render("checkout", {
@@ -52,7 +58,19 @@ const loadCheckout = async (req, res) => {
 
 const placeOrder = async (req, res) => {
   try {
-    const { notes, paymentMode, addressIndex, totalAmount } = req.body;
+    const { notes, paymentMode, addressIndex, totalAmount,couponCode } = req.body;
+    let discount =req.body.discount;
+    console.log(req.body);
+
+      if(couponCode!='none'){
+        const userused= await Coupon.findOneAndUpdate({code:couponCode},{$push:{usersUsed: req.session.user_id}})
+
+      }
+      else{
+        discount=0;
+      }
+
+
     const userData = await User.findOne({ _id: req.session.user_id })
       .populate("cart.product")
       .lean();
@@ -101,7 +119,9 @@ const placeOrder = async (req, res) => {
       product: cartProducts,
       mobile: userData.address[addressIndex].mobile,
       address: selectedAddress,
-      totalAmount: totalAmount,
+      subTotal:parseInt(totalAmount),
+      discount:  discount,
+      totalAmount: parseInt(totalAmount)-discount,
       paymentMethod: paymentMode,
       date: new Date().toISOString().split("T")[0],
       notes: notes,
@@ -167,6 +187,8 @@ const downloadInvoice = async (req, res) => {
       mobile: orderData.address.mobile,
       paymentMethod: orderData.paymentMethod,
       items: orderData.product,
+      subTotal: orderData.subTotal,
+      discount: orderData.discount,
       total: orderData.totalAmount,
     });
 
@@ -189,8 +211,9 @@ const downloadInvoice = async (req, res) => {
 //===============================Payment Gateway==========================
 const paymentGateway = async (req, res) => {
   try {
-    const { notes, paymentMode, addressIndex } = req.body;
-    const totalAmount = req.body.totalAmount * 100;
+    console.log("pg-body",req.body)
+    const { notes, paymentMode, addressIndex,discount } = req.body;
+    const totalAmount = (parseInt(req.body.totalAmount)- discount)*100;
     const userData = await User.findById(req.session.user_id);
 
     const payment = await razorpay.orders.create(

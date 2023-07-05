@@ -63,34 +63,6 @@ const couponActions = async (req, res) => {
             )
             
             res.redirect("/admin/coupon-actions");
-          
-
-
-
-    //   if(couponData.isActive == false){
-    //     await Coupon.findByIdAndUpdate(
-    //       { _id: new ObjectId(id) },
-    //       { $set: { isActive: true } }
-    //     )
-        
-    //     res.redirect("/admin/coupon-actions");
-    //   }
-    //   else {
-    //     await Coupon.findByIdAndUpdate(
-    //       { _id: new ObjectId(id) },
-    //       { $set: { isActive: false } }
-    //     ) 
-    //     .then((response) => {
-    //        console.log("Coupon Blocked")
-          
-          
-    //     })
-    //     .catch((err) => {
-    //       console.log(err.message);
-    //     });
-  
-    //   }
-    //   res.redirect("/admin/coupon-actions");
       
     } catch (err) {
       console.log(err.message);
@@ -98,4 +70,18 @@ const couponActions = async (req, res) => {
   };
 
 
-module.exports={couponsLoad,createCoupon, couponActions}
+
+  // =========================Coupon Actions=============
+const deleteCoupon = async (req, res) => {
+  try {
+    const {id}= req.query;
+    await Coupon.findByIdAndDelete(id);
+    res.redirect("/admin/coupons")
+  
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+
+module.exports={couponsLoad,createCoupon, couponActions,deleteCoupon}

@@ -54,7 +54,12 @@ const orderSchema = new mongoose.Schema(
         required: false,
       },
   },
-
+  subTotal: {
+    type: Number,
+  },
+  discount: {
+    type: Number,
+  },
     totalAmount: {
       type: Number,
     },
