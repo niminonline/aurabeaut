@@ -16,6 +16,7 @@ userRoute.set("views", "views/user/");
 const userController = require("../controller/user/userController");
 const productController = require("../controller/user/productController");
 const orderController = require("../controller/user/orderController");
+const couponController = require("../controller/user/couponController");
 
 //==========================Middlewares======================================
 const { isUserLogin, isUserLogout,isUserSession } = require("../middleware/auth");
@@ -65,6 +66,7 @@ userRoute.post("/place-order",isUserSession, orderController.placeOrder);
 // userRoute.post("/place-order",isUserSession, orderController.placeOrder);
 userRoute.post("/payment-gateway",isUserSession,stockCheck, orderController.paymentGateway);
 userRoute.post("/pg-order",isUserSession,stockCheck, orderController.pgOrder);
+userRoute.post("/apply-coupon", couponController.applyCoupon);
 
 
 

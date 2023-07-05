@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const coupon = mongoose.Schema({
+const coupon = new mongoose.Schema({
   code: {
     type: String,
     required: true,
@@ -9,24 +9,24 @@ const coupon = mongoose.Schema({
     type: String,
     required: true,
   },
-  percent: {
+  percentage: {
     type: Number,
     required: true,
   },
-  status: {
-    type: String,
-    default: 'Active',
+  isActive: {
+    type: Boolean,
+    default: true,
   },
   couponType: {
     type: String,
   },
-  userId: {
+  usersUsed: {
     type: [String],
   },
-  minimum: {
+  minPurchase: {
     type: Number,
   },
-  maximum: {
+  maxDiscount: {
     type: Number,
   },
   product: {
@@ -36,4 +36,4 @@ const coupon = mongoose.Schema({
     type: String,
   },
 }, { timestamp: true });
-module.exports = mongoose.model('coupon', coupon);
+module.exports = mongoose.model('Coupon', coupon);

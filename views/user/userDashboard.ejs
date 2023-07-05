@@ -59,7 +59,88 @@
 
                                 <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
 
-                                    <a href="/add-address?location=/user-dashboard" class="btn btn-primary m-4">Add Address</a>
+                                  
+                                    <!-- <a href="/add-address?location=/user-dashboard" class="btn btn-primary m-4">Add Address</a> -->
+                                  
+                                  <!-- -------------------------------Add Address---------------------------------- -->
+                                  
+                                  
+                                  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary my-4" data-toggle="modal" data-target="#addaddressBoxModal">
+    Add Address
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="addaddressBoxModal" tabindex="-1" role="dialog" aria-labelledby="addressBoxModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addressBoxModalTitle">Add address</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         
+            <form action="/add-address?location=/user-dashboard" class="form-floating m-4" method="post">
+
+                <div class="row g-2">
+                <div class="form-floating col-md-6">
+                <label for="floatingInputValue">Name</label>
+                <input type="text" class="form-control" name="name" placeholder="Enter Name"  required>
+             </div>
+             <div class="form-floating col-md-6">
+                <label for="floatingInputValue">Mobile number</label>
+                <input type="text" class="form-control" name="mobile" placeholder="Enter Mobile number"  required>
+             </div>
+            </div>
+        
+            <div class="row">
+                
+                <div class="form-floating col-md-12">
+                   <label for="floatingInputValue">Address</label>
+                   <input type="text" class="form-control" name="address" placeholder="Enter Address"  required>
+                </div>
+                </div>
+        
+             <div class="row g-2">
+                <div class="form-floating col-md-6">
+                <label for="floatingInputValue">Pincode</label>
+                <input type="text" class="form-control" name="pincode" placeholder="Enter Pincode" required>
+             </div>
+             <div class="form-floating col-md-6">
+                <label for="floatingInputValue">City</label>
+                <input type="text" class="form-control" name="city" placeholder="Enter City"  required>
+             </div>
+             </div>
+        
+             <div class="row g-2">
+             <div class="form-floating col-md-6">
+             <label for="floatingInputValue">State</label>
+             <input type="text" class="form-control" name="state" placeholder="Enter State"  required>
+          </div>
+          <div class="form-floating col-md-6">
+             <label for="floatingInputValue">Landmark</label>
+             <input type="text" class="form-control" name="landmark" placeholder="Enter Landmark"  >
+          </div>
+          </div>
+
+         
+        </div>
+        <div class="modal-footer">
+            <input type="submit" value="Add" class="btn btn-primary">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+                                  
+                                  
+                                  <!-- -------------------------------End Add Address---------------------------------- -->
+                                  
+                                  
+                                  
                                     <div class="row">
                                         
                                               <%  userData.address.map((item,index)=>{%>
@@ -80,12 +161,12 @@
 
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-secndary" data-toggle="modal" data-target="#addressBoxModal">
+<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editaddressBoxModal">
     Edit
   </button>
   
   <!-- Modal -->
-  <div class="modal fade" id="addressBoxModal" tabindex="-1" role="dialog" aria-labelledby="addressBoxModalTitle" aria-hidden="true">
+  <div class="modal fade" id="editaddressBoxModal" tabindex="-1" role="dialog" aria-labelledby="addressBoxModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -161,27 +242,8 @@
 
 
 <!--------------------------------End  Modal-------------------------------------- -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                           <% })%>
+<% })%>
+                                          
                                                 <!-- End .card-body -->
                                           <!-- End .col-lg-6 -->
 

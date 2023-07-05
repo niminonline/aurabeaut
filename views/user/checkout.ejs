@@ -36,16 +36,100 @@
                                     
                                     <h6> Delivery Address</h6>
 
-                                    <a href="/add-address?location=/checkout" class="btn btn-primary my-4">Add Address</a>
+                                      <!-- -------------------------------Add Address---------------------------------- -->
+                                  
+                                  
+                                  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary my-4" data-toggle="modal" data-target="#addaddressBoxModal">
+  Add Address
+</button>
 
-                                    <div class="row d-flex justify-content-around">
-                                       
+<!-- Modal -->
+<div class="modal fade" id="addaddressBoxModal" tabindex="-1" role="dialog" aria-labelledby="addressBoxModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addressBoxModalTitle">Add address</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+          <form action="/add-address?location=/checkout" class="form-floating m-4" method="post">
+
+              <div class="row g-2">
+              <div class="form-floating col-md-6">
+              <label for="floatingInputValue">Name</label>
+              <input type="text" class="form-control" name="name" placeholder="Enter Name"  required>
+           </div>
+           <div class="form-floating col-md-6">
+              <label for="floatingInputValue">Mobile number</label>
+              <input type="text" class="form-control" name="mobile" placeholder="Enter Mobile number" inputmode="numeric" pattern="[0-9]*" required>           </div>
+          </div>
+      
+          <div class="row">
+              
+              <div class="form-floating col-md-12">
+                 <label for="floatingInputValue">Address</label>
+                 <input type="text" class="form-control" name="address" placeholder="Enter Address"  required>
+              </div>
+              </div>
+      
+           <div class="row g-2">
+              <div class="form-floating col-md-6">
+              <label for="floatingInputValue">Pincode</label>
+              <input type="text" class="form-control" name="pincode" placeholder="Enter Pincode" required>
+           </div>
+           <div class="form-floating col-md-6">
+              <label for="floatingInputValue">City</label>
+              <input type="text" class="form-control" name="city" placeholder="Enter City"  required>
+           </div>
+           </div>
+      
+           <div class="row g-2">
+           <div class="form-floating col-md-6">
+           <label for="floatingInputValue">State</label>
+           <input type="text" class="form-control" name="state" placeholder="Enter State"  required>
+        </div>
+        <div class="form-floating col-md-6">
+           <label for="floatingInputValue">Landmark</label>
+           <input type="text" class="form-control" name="landmark" placeholder="Enter Landmark"  >
+        </div>
+        </div>
+
+       
+      </div>
+      <div class="modal-footer">
+          <input type="submit" value="Add" class="btn btn-primary">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+                                
+                                
+                                <!-- -------------------------------End Add Address---------------------------------- -->
+
+
+                                    <p>
+                                      
+                                      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                        Saved Addreses
+                                      </button>
+                                    </p>
+                                    <div class="collapse" id="collapseExample">
+                                      <div class="card card-body row  ">
+                                        
 
                                            
                                                 
                                                 <%  userData.address.map((item,index)=>{%>
-                                                    <div class="card">
-                                                        <div class="card card-dashboard">
+
+                                                  <!-- <div class=" card address-card "> -->
+                                                    <!-- <div class="card bg-primary"> -->
+                                                        <div class="card card-dashboard"> 
                                                     <div class="card-body m-4">
                                                         <input type="radio" name="options" id=<%=index%> onchange="handleAddress()" >
                                                         <p>Name : <%=item.name%> </p>
@@ -64,7 +148,7 @@
 
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-secndary" data-toggle="modal" data-target="#addressBoxModal">
+<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addressBoxModal">
     Edit
   </button>
   
@@ -154,20 +238,75 @@
 
                                                     </div>
                                                 </div><!-- End .card-dashboard -->
-                                            </div>
+                                            <!-- </div> -->
+                                          <!-- </div> -->
+                                           
                                                <% })%>
+                                              </div>
 
 
                                          
-                                    </div>
+                                  
+                                  </div>
+                             
 
+                                <div class="row d-flex justify-content-around">
+                                   
+                              
                                     
+
+
 
                                     <label>Order notes (optional)</label>
 
                                     <textarea class="form-control" cols="30" rows="4" id="notes" name="notes" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
                                 </div><!-- End .col-lg-9 -->
-                            <aside class="col-lg-3">
+                              </div>
+                          
+        <!-- =============== Start order summary======================================================                   -->
+                                <aside class="col-lg-3">
+
+
+                                  <div class="coupon-section my-4">
+                                    <h5>Coupons</h5>
+                                   <% if (typeof couponData =='undefined'){ %>
+                                    <p >Sorry, No coupons are available</p>
+                                    
+                                   <% }else{%>
+                                    <div class="input-group">
+                                      <select class="custom-select" style="height: 50px; width: 150px; font-size: 2rem;" id="couponCode" aria-label="">
+                                        <option selected value="none">Choose...</option>
+                                       
+                                       <% couponData.map((item)=>{%>
+
+                                      
+                                        <option value=<%=item.code%>><%=item.code%></option>
+                                     <% })%>
+                                      </select>
+                                     
+                                    
+                                      
+                                      <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" style="min-width: 90px;" onclick="applyCoupon()" type="button">Apply</button>
+                                      </div>
+                                    </div>
+
+                                    <div id="coupon-applied-block" class="my-4 " style="display: none;" >
+                                      <h5 id="appliedCoupon"  class="my-0 text-primary" style="height: 50px;  font-size: 2rem;"></h5>
+                                      <button class="btn btn-outline-secondary" style="min-width: 90px;" onclick="removeCoupon()" type="button">Remove</button>
+
+                                     </div>
+                                  <%}%>
+
+
+
+                                  </div>
+
+
+
+
+
+
                                 <div class="summary">
                                     <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
 
@@ -191,9 +330,19 @@
                                             
                                             <tr class="summary-subtotal">
                                                 <td>Subtotal:</td>
-                                                <td><%=subTotal%></td>
+                                                <td id="subTotal"><%=subTotal%></td>
                                             </tr><!-- End .summary-subtotal -->
                                            
+
+                                            <tr class="summary-subtotal" id="discount-block" style="display: none;">
+                                              <td>Discount:</td>
+                                          
+                                              <td id="discountDisplay" style="text-align: right !important;"> </td>
+                                          </tr>
+
+
+                                       
+
                                             <tr class="summary-total">
                                                 <td>Total:</td>
                                                 <td id="totalAmount"><%=subTotal%></td>
@@ -220,10 +369,10 @@
                                                 <label for="creditCard">Credit/debit Card</label>     
                                                </div>
 
-                                               <div class="paymentItem my-4">
+                                               <!-- <div class="paymentItem my-4">
                                                 <input type="radio" name="paymentMode" id="upi" value="UPI" onchange="paymentMode()"> 
                                                 <label for="upi">UPI</label>     
-                                               </div>
+                                               </div> -->
   
                                            
                                                     
@@ -243,6 +392,12 @@
                                     </button>
                                 </div><!-- End .summary -->
                             </aside><!-- End .col-lg-3 -->
+
+        <!-- =============== End  order summary======================================================                   -->
+
+
+
+
                         </div><!-- End .row -->
                     <!-- </form> -->
                 </div><!-- End .container -->
@@ -258,6 +413,7 @@
 let addressIndex = null;
 let selectedPaymentMode = null;
 const totalAmount= document.getElementById("totalAmount").innerText;
+const subTotal= document.getElementById("subTotal").innerText;
 const notes= document.getElementById("notes").value;
   
 const handleAddress=()=>{
@@ -445,6 +601,48 @@ const sendResponse=(response,data)=>{
 
 
 // =======================End  Place Order======================
+
+//===========Apply Coupon =====================
+
+const applyCoupon=()=>{
+const couponCode= document.getElementById('couponCode').value;
+if(couponCode=="none"){
+  swal ("Please select a coupon");
+}
+else{
+  fetch("/apply-coupon",{method:"POST",
+  headers: {
+          "Content-Type": "application/json"
+      },
+body:
+  JSON.stringify({couponCode
+
+  })
+}).then(response=> (response.json()))
+.then(data=>{
+  console.log(data);
+  document.getElementById('appliedCoupon').innerText=  couponCode+" applied successfully";
+  document.getElementById('coupon-applied-block').style.display='block';
+  document.getElementById('discountDisplay').innerText=data.discount;
+  document.getElementById('discount-block').style.display='block';
+  document.getElementById("totalAmount").innerText=data.total;
+
+
+
+})
+}
+}
+
+const removeCoupon=()=>{
+  document.getElementById('appliedCoupon').innerText=  "";
+  document.getElementById('coupon-applied-block').style.display='none';
+  document.getElementById('discountDisplay').innerText="";
+  document.getElementById('discount-block').style.display='none';
+  document.getElementById("totalAmount").innerText=subTotal;
+
+
+}
+
 </script>
 
 

@@ -38,7 +38,6 @@ adminRoute.get("/orders", isAdminLogout, orderController.ordersLoad);
 adminRoute.get("/category",isAdminLogout,categoryController.categoryLoad);
 adminRoute.get("/products",isAdminLogout,productController.productsLoad);
 adminRoute.get("/carousel",isAdminLogout,carouselController.carouselLoad);
-adminRoute.get("/coupons", isAdminLogout, couponController.couponsLoad);
 adminRoute.get("/editproduct",isAdminLogout,productController.editProductLoad);
 adminRoute.get("/addproduct",isAdminLogout,productController.addProductLoad);
 adminRoute.get("/editcategory",isAdminLogout,categoryController.editCategoryLoad);
@@ -46,6 +45,7 @@ adminRoute.get("/editcarousel",isAdminLogout,carouselController.editCarouselLoad
 adminRoute.get("/delete-product-image", isAdminLogout,productController.deleteProductImage);
 adminRoute.get("/order-details",isAdminLogout, orderController.orderDetailsLoad);
 adminRoute.get("/set-product-main-image",isAdminLogout, productController.setProductMainImage);
+adminRoute.get("/coupons", isAdminLogout, couponController.couponsLoad);
 
 
 // =================== Admin Log in/log out=========================================
@@ -62,6 +62,8 @@ adminRoute.post("/listunlistcategory", categoryController.listUnlistCategory);
 adminRoute.post("/productlistunlist", productController.productListUnlist);
 // adminRoute.get("/deleteproduct", shopController.deleteproduct);
 adminRoute.post("/order-details", orderController.updateOrder);
+adminRoute.post("/coupons", couponController.createCoupon);
+adminRoute.post("/coupon-actions", couponController.couponActions);
 
 
 

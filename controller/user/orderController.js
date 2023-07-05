@@ -1,6 +1,7 @@
 const Product = require("../../models/productModel");
 const User = require("../../models/userModel");
 const Order = require("../../models/orderModel");
+const Coupon = require("../../models/couponModel");
 const { ObjectId } = require("mongodb");
 const { generateInvoicePDF } = require("../../helper/html-pdf");
 const path = require("path");
@@ -21,8 +22,8 @@ const loadCheckout = async (req, res) => {
     const userData = await User.findOne({ _id: req.session.user_id })
       .populate("cart.product")
       .lean();
-    const productData = await Product.find();
-
+    // const productData = await Product.find();
+    const couponData= await Coupon.find();
     let sum = 0;
     const subTotal = userData.cart.map((item) => {
       sum += item.product.price * item.quantity;
@@ -33,6 +34,7 @@ const loadCheckout = async (req, res) => {
       res.render("checkout", {
         userData: userData,
         subTotal: sum,
+        couponData:couponData
       });
     } else {
       res.render("cart", {
