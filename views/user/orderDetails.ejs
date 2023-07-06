@@ -137,12 +137,22 @@
             <th>  <%=orderData.totalAmount%></th>
            </tr>
 
-           <a href="/download-invoice?_id=<%=orderData._id%> " class="btn btn-warning my-3 "><i class="bi bi-download" style="font-size: 2rem;"></i>  Download Invoice</a>
+
         </table>
-  
-              </table>
+        <div class="button-block d-flex justify-content-end ">
+            <%if(orderData.status=="Delivered"){%>
             
+            <a href="/return-order?_id=<%=orderData._id%>" class="btn btn-primary my-3">Return</a>
+        <%}%>
+            <a href="/download-invoice?_id=<%=orderData._id%> " class="btn btn-secondary my-3 mx-4"><i class="bi bi-download" style="font-size: 2rem;"></i>  Download Invoice</a>
+    </div>
+</div>
+
+</table>
+<div class="back-button " style="text-align: right"><a href="/orders" class="btn btn-warning my-3">Back</a></div>
             </div>
+            
+           
             
   
   
@@ -151,40 +161,11 @@
         
     </div>
     </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
 
 
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- -----------------Orders list------------------------ -->
 
 
 

@@ -50,6 +50,7 @@ userRoute.get("/download-invoice",isUserSession, orderController.downloadInvoice
 userRoute.get("/order-failure",isUserSession, orderController.orderFailure);
 userRoute.get("/order-success",isUserSession, orderController.orderSuccess);
 userRoute.get("/delete-address",isUserSession, userController.deleteAddress);
+userRoute.get("/return-order",isUserSession, orderController.returnOrder);
 
 
 
@@ -64,7 +65,6 @@ userRoute.post("/add-address",isUserSession, userController.addAddress);
 userRoute.post("/update-address",isUserSession, userController.updateAddress);
 userRoute.post("/quantity-update",isUserSession, userController.quantityUpdate);
 userRoute.post("/place-order",isUserSession, orderController.placeOrder);
-// userRoute.post("/place-order",isUserSession, orderController.placeOrder);
 userRoute.post("/payment-gateway",isUserSession,stockCheck, orderController.paymentGateway);
 userRoute.post("/pg-order",isUserSession,stockCheck, orderController.pgOrder);
 userRoute.post("/apply-coupon", couponController.applyCoupon);

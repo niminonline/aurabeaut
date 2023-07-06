@@ -146,7 +146,7 @@ const placeOrder = async (req, res) => {
 const ordersLoad = async (req, res) => {
   try {
     const userData = await User.findOne({ _id: req.session.user_id });
-    const orderData = await Order.find({ userId: req.session.user_id });
+    const orderData = await Order.find({ userId: req.session.user_id }).sort({_id:-1});
     res.render("orders", { orderData: orderData, userData: userData });
   } catch (error) {
     console.log(error.message);
@@ -316,6 +316,21 @@ const orderFailure = async (req, res) => {
     console.log(error.message);
   }
 };
+//=============================== Return Order ==========================
+const returnOrder = async (req, res) => {
+  try {
+    const {_id}= req.query;
+    const orderData= await Order.findById(_id);
+    // console.log(order);
+
+    orderData.map(item=>{
+      console.log("prod"+ item.product.quantity)
+    })
+
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 module.exports = {
   loadCheckout,
@@ -327,4 +342,5 @@ module.exports = {
   pgOrder,
   orderSuccess,
   orderFailure,
+  returnOrder
 };

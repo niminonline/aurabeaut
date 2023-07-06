@@ -54,12 +54,12 @@
                                     <td class="quantity-col">
 
                                     <div class="quantity-block d-flex">
-                                    <button class="mx-2"  onclick="handlequantity('<%=item.product._id%>','decrement')">-</button>
-                                            <p class="mx-2" id="quantitynumber<%= item.product._id %>">
-                                                <%= item.quantity%> </p>
+                                        <a class="mx-2 quantity-btn"   onclick="handlequantity('<%=item.product._id%>','decrement')"> <h4 class="bi bi-dash-circle-fill"></h4></a>
+                                            <h5 class="quantity-number mx-3" id="quantitynumber<%= item.product._id %>">
+                                                <%= item.quantity%>  </h5>
                                             
                                             
-                                            <button class="mx-2" onclick="handlequantity('<%=item.product._id%>','increment')">+</button>
+                                            <a class="mx-2 quantity-btn" onclick="handlequantity('<%=item.product._id%>','increment')"><h4 class="bi bi-plus-circle-fill"></h4></a>
 
                                             </div>
                                         <div class="cart-produc3t-quantity">

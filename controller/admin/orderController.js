@@ -3,7 +3,7 @@ const Order = require("../../models/orderModel");
 // =============================================Orders Main Load==============================
 const ordersLoad = async (req, res) => {
   try {
-    const orderData = await Order.find({});
+    const orderData = await Order.find({}).sort({_id:-1});
 
     res.render("orders", { orderData: orderData });
   } catch (err) {
