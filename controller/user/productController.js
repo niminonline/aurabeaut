@@ -8,53 +8,74 @@ const { ObjectId } = require("mongodb");
 const loadAllProducts = async (req, res) => {
   try {
     const categoryDetails = await Category.find({});
+    const search = req.query.search || "";
+    const categoryId = req.query.cat || "";
+    const sort = req.query.sort || "";
+    const query = { isProductUnlist: false, isCategoryUnlist: false };
 
-    const categoryId = req.query.cat||'';
-    const sort= req.query.sort||'';
-
-    const catQuery= {isProductUnlist: false,
-      isCategoryUnlist: false};
-      if (categoryId !== '') {
-        catQuery.category = categoryId;
-      }
-      let sortQuery='';
-      if (sort !== '') {
-        if(sort=='price-l-h'){
-           sortQuery={price:1}
-        }
-        else  if(sort=='price-h-l'){
-           sortQuery={price:-1}
-      } else  if(sort=='new'){
-         sortQuery={_id:-1}
-    }}
-
-
-// Pagination
-const page = req.query.page || 1;
-const limit = 4;
-const skip = (page - 1) * limit;
-
-
-const totalPages = Math.ceil(await Product.countDocuments(catQuery) / limit); 
-// console.log("total", totalPages);
-
-
-
-
-    
-     
-      const productData = await Product.find(catQuery).sort(sortQuery).skip(skip).limit(limit);;
-
-
-      if (req.session.user_id) {
-        const userData = await User.findOne({ _id: req.session.user_id });
-  
-        res.render("allProducts", { userData: userData, productData: productData ,categoryDetails,categoryDetails,sort:sort,totalPages:totalPages});
-      } else {
-        res.render("allProducts", { productData: productData,categoryDetails,categoryDetails,sort:sort,totalPages:totalPages});
+    if (categoryId !== "") {
+      query.category = categoryId;
+    }
+    let sortQuery = "";
+    if (sort !== "") {
+      if (sort == "price-l-h") {
+        sortQuery = { price: 1 };
+      } else if (sort == "price-h-l") {
+        sortQuery = { price: -1 };
+      } else if (sort == "new") {
+        sortQuery = { _id: -1 };
       }
     }
-   catch (error) {
+
+    if (search !== "") {
+      // query.name =  search;
+      query.name = { $regex: ".*" + search + ".*", $options: "i" };
+      console.log("ifff");
+    }
+
+    const page = req.query.page || 1;
+
+    const limit = 4;
+    const totalPages = Math.ceil((await Product.countDocuments(query)) / limit);
+
+    // if(page>totalPages){
+    //   page--;
+    // }else if(page<1){
+    //   page=1;
+
+    // }
+    const skip = (page - 1) * limit;
+    // console.log("total", totalPages);
+
+    const productData = await Product.find(query)
+      .sort(sortQuery)
+      .skip(skip)
+      .limit(limit);
+
+
+    if (req.session.user_id) {
+      const userData = await User.findOne({ _id: req.session.user_id });
+
+      res.render("allProducts", {
+        userData: userData,
+        productData: productData,
+        categoryDetails,
+        categoryDetails,
+        sort: sort,
+        totalPages: totalPages,
+        page: page,
+      });
+    } else {
+      res.render("allProducts", {
+        productData: productData,
+        categoryDetails,
+        categoryDetails,
+        sort: sort,
+        totalPages: totalPages,
+        page: page,
+      });
+    }
+  } catch (error) {
     console.log(error.message);
   }
 };
@@ -73,13 +94,9 @@ const loadProduct = async (req, res) => {
     } else {
       res.render("product", { productData: productData });
     }
-
-    
   } catch (error) {
     console.log(error.message);
   }
 };
-
-
 
 module.exports = { loadAllProducts, loadProduct };

@@ -7,7 +7,6 @@ const helper = require("../../helper/helper");
 const nodemailer = require("nodemailer");
 const { ObjectId } = require("mongodb");
 
-
 //=================Load Login Page================================
 const loginLoad = async (req, res) => {
   try {
@@ -49,7 +48,7 @@ const verifyLogin = async (req, res) => {
 
         if (passwordMatch) {
           req.session.user_id = userData._id;
-          req.session.user_name= userData.name;
+          req.session.user_name = userData.name;
           res.redirect("/home");
         } else {
           res.render("login", { message: "Incorrect Password" });
@@ -143,14 +142,15 @@ const insertUser = async (req, res) => {
         isBlocked: false,
       });
       const userData = user.save();
-      const getUserData  = await User.findOne({ email: req.session.tempUserData.email });
+      const getUserData = await User.findOne({
+        email: req.session.tempUserData.email,
+      });
       if (userData) {
         req.session.user_id = getUserData._id;
         delete req.session.tempUserData;
-       
+
         res.redirect("/home");
-      } else 
-      res.render("verifyEmailOtp", { message: "Invalid OTP" });
+      } else res.render("verifyEmailOtp", { message: "Invalid OTP" });
     }
 
     // const userData = await user.save();
@@ -227,30 +227,30 @@ const loadHome = async (req, res) => {
 
 const loadCart = async (req, res) => {
   try {
-    const id= new ObjectId(req.session.user_id);
-    const userData= await User.findOne({_id:req.session.user_id}).populate('cart.product').lean();
-  // const userData = await User.aggregate([{
-  //       $match: { _id: id}
-  //     },
-  //   {
-  //     $lookup: {
-  //       from: 'products',
-  //       localField: 'cart.product',
-  //       foreignField: '_id',
-  //       as: 'product'
-  //     }
-  //   }
-  // ])
-    // const productData = await Product.find(); 
+    const id = new ObjectId(req.session.user_id);
+    const userData = await User.findOne({ _id: req.session.user_id })
+      .populate("cart.product")
+      .lean();
+    // const userData = await User.aggregate([{
+    //       $match: { _id: id}
+    //     },
+    //   {
+    //     $lookup: {
+    //       from: 'products',
+    //       localField: 'cart.product',
+    //       foreignField: '_id',
+    //       as: 'product'
+    //     }
+    //   }
+    // ])
+    // const productData = await Product.find();
 
-    let subTotal=0;
-    const sum= userData.cart.map((item)=>{
-     
-      subTotal+=(item.product.price* item.quantity);
-      return subTotal
-    }
-    )
-    res.render("cart", { userData: userData ,subTotal:subTotal});
+    let subTotal = 0;
+    const sum = userData.cart.map((item) => {
+      subTotal += item.product.price * item.quantity;
+      return subTotal;
+    });
+    res.render("cart", { userData: userData, subTotal: subTotal });
   } catch (error) {
     console.log(error.message);
   }
@@ -260,73 +260,68 @@ const loadCart = async (req, res) => {
 
 const loadWishlist = async (req, res) => {
   try {
-    
-    const user= req.session.user_id;
+    const user = req.session.user_id;
     // const userData = await User.findById(user);
-    const userData= await User.aggregate([
-      {$match:{_id:new ObjectId(user)}},
-      {$lookup:{
-        from:'products',
-        localField:'wishlist',
-        foreignField:'_id',
-        as: 'productData'
-        
-      }}
-    ])
+    const userData = await User.aggregate([
+      { $match: { _id: new ObjectId(user) } },
+      {
+        $lookup: {
+          from: "products",
+          localField: "wishlist",
+          foreignField: "_id",
+          as: "productData",
+        },
+      },
+    ]);
     // console.log("Userdata", userData);
     // const wishlistProducts = await Product.findById(user.wishlist)
     // console.log(wishlistProducts);
-  
-    res.render('wishlist', {userData: userData});
 
+    res.render("wishlist", { userData: userData });
 
     //     const id= new ObjectId(req.session.user_id);
     //     // const userData= await User.findById(req.session.user_id).populate('wishlist.product').lean();
     //     // console.log(userData);
-    //     // console.log(userData.wishlist); 
-    //     // console.log(userData.wishlist[0].product); 
+    //     // console.log(userData.wishlist);
+    //     // console.log(userData.wishlist[0].product);
     //     const userData= await User.findById(req.session.user_id)
     //     const wishlistProducts = await Product.find({ _id: userData.wishlist });
     // console.log("wish",wishlistProducts);
 
+    // res.render("wishlist", { userData: userData });
 
-        // res.render("wishlist", { userData: userData });
-     
-     
-     
-        // const userData = await User.aggregate([{
-      //       $match: { _id: id}
-      //     },
-      //   {
-      //     $lookup: {
-      //       from: 'products',
-      //       localField: 'cart.product',
-      //       foreignField: '_id',
-      //       as: 'product'
-      //     }
-      //   }
-      // ])
-        // const productData = await Product.find(); 
-  //   const id= new ObjectId(req.session.user_id);
-  //   // const userData= await User.findOne({_id:req.session.user_id}).populate('wishlist').lean();
-  //   // const userData = await User.findById(req.session.user_id).populate('wishlist.product').lean();
+    // const userData = await User.aggregate([{
+    //       $match: { _id: id}
+    //     },
+    //   {
+    //     $lookup: {
+    //       from: 'products',
+    //       localField: 'cart.product',
+    //       foreignField: '_id',
+    //       as: 'product'
+    //     }
+    //   }
+    // ])
+    // const productData = await Product.find();
+    //   const id= new ObjectId(req.session.user_id);
+    //   // const userData= await User.findOne({_id:req.session.user_id}).populate('wishlist').lean();
+    //   // const userData = await User.findById(req.session.user_id).populate('wishlist.product').lean();
 
-  // const userData = await User.aggregate([{
-  //       $match: { _id: id}
-  //     },
-  //   {
-  //     $lookup: {
-  //       from: 'products',
-  //       localField: 'wishlist.product',
-  //       foreignField: '_id',
-  //       as: 'product'
-  //     }
-  //   }
-  // ])
+    // const userData = await User.aggregate([{
+    //       $match: { _id: id}
+    //     },
+    //   {
+    //     $lookup: {
+    //       from: 'products',
+    //       localField: 'wishlist.product',
+    //       foreignField: '_id',
+    //       as: 'product'
+    //     }
+    //   }
+    // ])
 
-
-  //   console.log(userData);
-  //   res.render("wishlist", { userData: userData });
+    //   console.log(userData);
+    //   res.render("wishlist", { userData: userData });
   } catch (error) {
     console.log(error.message);
   }
@@ -334,81 +329,88 @@ const loadWishlist = async (req, res) => {
 
 //=================Load User Dashboard================================
 
-const loadUserDashboard =async (req, res) => {
+const loadUserDashboard = async (req, res) => {
   try {
-    const user_id= req.session.user_id;
-    const orderData = await Order.find({userId:user_id});
+    const user_id = req.session.user_id;
+    const orderData = await Order.find({ userId: user_id });
     // console.log(orderData);
-    
 
     const userData = await User.findOne({ _id: req.session.user_id });
-    res.render("userDashboard", { userData: userData,orderData:orderData });
+    res.render("userDashboard", { userData: userData, orderData: orderData });
   } catch (error) {
     console.log(error.message);
   }
 };
 
 //===============================Add to Cart==========================
-const addToCart =async (req, res) => {
+const addToCart = async (req, res) => {
   try {
-    const {_id}= req.query;
-   
-    const user_id= req.session.user_id;
-    const userData= await User.findById(user_id);
+    const { _id } = req.query;
+
+    const user_id = req.session.user_id;
+    const userData = await User.findById(user_id);
     // if(req.query.wishlist){}
-    if(req.query.quantity){
-      const quantity= req.query.quantity;
-      const addCartData = await User.findOneAndUpdate({ _id: new ObjectId(user_id)},{ $push: { cart:{product: new ObjectId(_id), quantity: quantity }} },
-        { new: true });
-    }
-    else{
-      const productInCart = await User.findOne({ _id: req.session.user_id, "cart.product": { $in: [new ObjectId(_id)] } });
-    if (productInCart) {
-      const addCartData = await User.findOneAndUpdate({_id: new ObjectId(user_id),"cart.product": new ObjectId(_id)},{ $inc: { "cart.$.quantity": 1 } } );
-            
-
+    if (req.query.quantity) {
+      const quantity = req.query.quantity;
+      const addCartData = await User.findOneAndUpdate(
+        { _id: new ObjectId(user_id) },
+        { $push: { cart: { product: new ObjectId(_id), quantity: quantity } } },
+        { new: true }
+      );
+    } else {
+      const productInCart = await User.findOne({
+        _id: req.session.user_id,
+        "cart.product": { $in: [new ObjectId(_id)] },
+      });
+      if (productInCart) {
+        const addCartData = await User.findOneAndUpdate(
+          { _id: new ObjectId(user_id), "cart.product": new ObjectId(_id) },
+          { $inc: { "cart.$.quantity": 1 } }
+        );
       } else {
-    
-      
-      const addCartData = await User.findOneAndUpdate({ _id: new ObjectId(user_id)},{ $push:{cart: {product: new ObjectId(_id)}}}, { new: true });
-    }
+        const addCartData = await User.findOneAndUpdate(
+          { _id: new ObjectId(user_id) },
+          { $push: { cart: { product: new ObjectId(_id) } } },
+          { new: true }
+        );
+      }
 
-    res.redirect(req.headers.referer);
-  }
+      res.redirect(req.headers.referer);
+    }
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
 //===============================Add to Wishlist==========================
-const addToWishlist =async (req, res) => {
+const addToWishlist = async (req, res) => {
   try {
-    const productId =req.query._id;
+    const productId = req.query._id;
     const userId = req.session.user_id;
     const existed = await User.findOne({ _id: userId, wishlist: productId });
     if (existed) {
       await User.findByIdAndUpdate(
         { _id: userId },
         { $pull: { wishlist: productId } },
-        { new: true },
+        { new: true }
       );
-      res.redirect(req.headers.referer)    } else {
+      res.redirect(req.headers.referer);
+    } else {
       await User.findByIdAndUpdate(
         { _id: userId },
         { $addToSet: { wishlist: productId } },
-        { new: true },
+        { new: true }
       );
-      res.redirect(req.headers.referer)
-      }
+      res.redirect(req.headers.referer);
+    }
 
     // const {_id}= req.query;
-    // const user_id= req.session.user_id; 
+    // const user_id= req.session.user_id;
     //   const userData= await User.findById(user_id);
     //   await User.findOneAndUpdate({ _id: new ObjectId(user_id)},{ $push: { wishlist: new ObjectId(_id) } },
     //     { new: true });
-    
+
     // res.redirect(req.headers.referer);
-  
   } catch (error) {
     console.log(error.message);
   }
@@ -417,11 +419,10 @@ const addToWishlist =async (req, res) => {
 //===============================Add Address Load==========================
 const addAddressLoad = async (req, res) => {
   try {
-    const user_id= req.session.user_id;
-    const userData= await User.findOne({_id:req.session.user_id});
+    const user_id = req.session.user_id;
+    const userData = await User.findOne({ _id: req.session.user_id });
 
-
-    res.render("addAddress",{userData:userData});
+    res.render("addAddress", { userData: userData });
   } catch (error) {
     console.log(error.message);
   }
@@ -430,8 +431,8 @@ const addAddressLoad = async (req, res) => {
 //===============================Add Address==========================
 const addAddress = async (req, res) => {
   try {
-    const user_id= req.session.user_id;
-    const {location}= req.query;
+    const user_id = req.session.user_id;
+    const { location } = req.query;
 
     const addressDetails = {
       name: req.body.name,
@@ -443,24 +444,22 @@ const addAddress = async (req, res) => {
       landmark: req.body.landmark,
     };
     User.findById(user_id)
-    .then(user => {
-      if (user) {
-        user.address.push(addressDetails);
-        return user.save();
-      } else {
-        throw new Error('User not found');
-      }
-    })
-    .then(updatedUser => {
-      res.redirect(location)
-    })
-    .catch(error => {
-      console.error(error);
-    });
-
+      .then((user) => {
+        if (user) {
+          user.address.push(addressDetails);
+          return user.save();
+        } else {
+          throw new Error("User not found");
+        }
+      })
+      .then((updatedUser) => {
+        res.redirect(location);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
     // const userData= await User.findOneAndUpdate({_id:req.session.user_id},{});
-    
 
     // res.render("addAddress",{userData:userData});
   } catch (error) {
@@ -468,18 +467,19 @@ const addAddress = async (req, res) => {
   }
 };
 
-
-
 //===============================Remove cart Item==========================
 const removeCartItem = async (req, res) => {
   try {
-    const productId =req.query._id;
+    const productId = req.query._id;
 
-    const userData= await User.findOne({_id:req.session.user_id}).populate('cart.product').lean();
+    const userData = await User.findOne({ _id: req.session.user_id })
+      .populate("cart.product")
+      .lean();
 
-    await User.findByIdAndUpdate({ _id: req.session.user_id },{ $pull: { cart: { product: productId } }}
+    await User.findByIdAndUpdate(
+      { _id: req.session.user_id },
+      { $pull: { cart: { product: productId } } }
     ).then(res.redirect(req.headers.referer));
-    
   } catch (error) {
     console.log(error.message);
   }
@@ -493,7 +493,7 @@ const quantityUpdate = async (req, res) => {
     const productStock = await Product.findById(prodId);
 
     const CartProductStock = await User.findOne({
-      'cart.product': prodId,
+      "cart.product": prodId,
       _id: userId,
     });
 
@@ -507,29 +507,29 @@ const quantityUpdate = async (req, res) => {
       }
     }
     let cartquantity = findquantity(prodId);
-    if (method !== 'increment') {
+    if (method !== "increment") {
       cartquantity -= 1;
     }
     if (cartquantity < productStock.stock) {
-      if (method === 'increment') {
+      if (method === "increment") {
         await User.findOneAndUpdate(
-          { _id: userId, 'cart.product': prodId },
-          { $inc: { 'cart.$.quantity': 1 } },
-          { new: true },
+          { _id: userId, "cart.product": prodId },
+          { $inc: { "cart.$.quantity": 1 } },
+          { new: true }
         );
       } else {
         await User.findOneAndUpdate(
-          { _id: userId, 'cart.product': prodId },
-          { $inc: { 'cart.$.quantity': -1 } },
-          { new: true },
+          { _id: userId, "cart.product": prodId },
+          { $inc: { "cart.$.quantity": -1 } },
+          { new: true }
         );
       }
       const quant = await User.findOne(
-        { _id: userId, 'cart.product': prodId },
-        { 'cart.$': 1 },
+        { _id: userId, "cart.product": prodId },
+        { "cart.$": 1 }
       );
       const user = await User.findOne({ _id: userId })
-        .populate('cart.product')
+        .populate("cart.product")
         .lean();
       const { cart } = user;
       let subTotal = 0;
@@ -537,67 +537,66 @@ const quantityUpdate = async (req, res) => {
         val.total = val.product.price * val.quantity;
         subTotal += val.total;
       });
-      
+
       const totalQuantity = quant.cart[0].quantity;
       if (totalQuantity < 1) {
         await User.updateOne(
           { _id: userId },
-          { $pull: { cart: { product: prodId } } },
+          { $pull: { cart: { product: prodId } } }
         );
-        res.json('success');
+        res.json("success");
       } else {
-
         // console.log("------",quant.cart, subTotal);
         res.json({
-
           quantity: quant.cart,
           subTotal,
-          
         });
       }
     } else {
-      res.json({ stocklimit: 'stocklimit' });
+      res.json({ stocklimit: "stocklimit" });
     }
-    
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
-
 //===============================Update address==========================
 const updateAddress = async (req, res) => {
   try {
-    const{name,mobile,address,pincode,city,state,landmark,index}  =req.body;
-    const userData= await User.findByIdAndUpdate(req.session.user_id,{$set:{[`address.${index}`]:{name:name,mobile:mobile,
-      address:address,pincode:pincode,city:city,state:state,landmark:landmark}}})
-      res.redirect(req.headers.referer);
-  } catch (error) { 
+    const { name, mobile, address, pincode, city, state, landmark, index } =
+      req.body;
+    const userData = await User.findByIdAndUpdate(req.session.user_id, {
+      $set: {
+        [`address.${index}`]: {
+          name: name,
+          mobile: mobile,
+          address: address,
+          pincode: pincode,
+          city: city,
+          state: state,
+          landmark: landmark,
+        },
+      },
+    });
+    res.redirect(req.headers.referer);
+  } catch (error) {
     console.log(error.message);
   }
 };
 
-
-  // =========================Delete Address=============
-  const deleteAddress = async (req, res) => {
-    try {
-      const {id}= req.query;
-      await User.updateOne(
-        {_id:req.session.user_id },
-        { $pull: { address: { _id: id } } }),
+// =========================Delete Address=============
+const deleteAddress = async (req, res) => {
+  try {
+    const { id } = req.query;
+    await User.updateOne(
+      { _id: req.session.user_id },
+      { $pull: { address: { _id: id } } }
+    ),
       res.redirect(req.headers.referer);
-    
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-  
-
-
-
-
-
+  } catch (err) {
+    console.log(err.message);
+  }
+};
 
 module.exports = {
   loginLoad,
@@ -624,6 +623,5 @@ module.exports = {
   removeCartItem,
   quantityUpdate,
   updateAddress,
-  deleteAddress
-  
+  deleteAddress,
 };

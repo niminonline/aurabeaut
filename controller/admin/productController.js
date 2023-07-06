@@ -91,10 +91,7 @@ const addProduct = async (req, res) => {
         return new Promise((resolve, reject) => {
           cloudinary.uploader.upload(
             image,
-            { folder: "image_uploads",
-            width: 400,
-            height: 600,
-            crop: 'fill' },
+            { folder: "image_uploads", width: 400, height: 600, crop: "fill" },
             (error, result) => {
               if (error) {
                 reject(error);
@@ -140,8 +137,8 @@ const addProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
   try {
-    console.log("image",req.file);
-    console.log("bodyyy",req.body);
+    console.log("image", req.file);
+    console.log("bodyyy", req.body);
     const productName = req.body.category.toUpperCase();
     const id = req.body._id;
     // console.log(req.body);
@@ -169,9 +166,12 @@ const editProduct = async (req, res) => {
           return new Promise((resolve, reject) => {
             cloudinary.uploader.upload(
               image,
-              { folder: "image_uploads" , width: 400,
-              height: 600,
-              crop: 'fill' },
+              {
+                folder: "image_uploads",
+                width: 400,
+                height: 600,
+                crop: "fill",
+              },
               (error, result) => {
                 if (error) {
                   reject(error);
@@ -229,36 +229,30 @@ const editProduct = async (req, res) => {
 // ===========================Product List/Unlist=====================
 const productListUnlist = async (req, res) => {
   try {
-    const {id} = req.body;
-    
-    const productData= await Product.findOne({_id:id});
+    const { id } = req.body;
+
+    const productData = await Product.findOne({ _id: id });
     // console.log(productData);
-    if(productData.isProductUnlist == true){
+    if (productData.isProductUnlist == true) {
       await Product.findByIdAndUpdate(
         { _id: new ObjectId(id) },
         { $set: { isProductUnlist: false } }
-      )
-      
-
-    }
-    else {
+      );
+    } else {
       await Product.findByIdAndUpdate(
         { _id: new ObjectId(id) },
         { $set: { isProductUnlist: true } }
-      ) 
+      );
       // .then((response) => {
-        
-        
+
       //    res.json(response);
-        
+
       // })
       // .catch((err) => {
       //   console.log(err.message);
       // });
-
     }
     res.redirect("/admin/products");
-
 
     // const id = req.body.id;
     // const type = req.body.type;
@@ -280,7 +274,7 @@ const deleteProductImage = async (req, res) => {
     const { id, imageurl } = req.query;
     const public_id = imageurl.match(/image_uploads\/\w+/)[0];
     // -----Start Cloudinary Image Removal-----
-    
+
     const result = cloudinary.uploader.destroy(
       public_id,
       { invalidate: true },
@@ -297,9 +291,8 @@ const deleteProductImage = async (req, res) => {
       await Product.findByIdAndUpdate(
         { _id: id },
         { $pull: { imageUrl: imageurl } }
-      ).then(()=>{
-        res.sendStatus(200); 
-        
+      ).then(() => {
+        res.sendStatus(200);
       });
     } else {
       res.sendstatus(500);
@@ -309,14 +302,16 @@ const deleteProductImage = async (req, res) => {
   }
 };
 
-
-
 // ====================================Set Product main Image==========================
 
 const setProductMainImage = async (req, res) => {
   try {
     const { id, imageurl } = req.query;
-    await Product.findByIdAndUpdate(new ObjectId(id),{$set:{mainImage:imageurl}},{ new: true })
+    await Product.findByIdAndUpdate(
+      new ObjectId(id),
+      { $set: { mainImage: imageurl } },
+      { new: true }
+    );
     res.redirect(req.headers.referer);
   } catch (err) {
     console.log(err.message);
@@ -342,5 +337,5 @@ module.exports = {
   editProduct,
   productListUnlist,
   deleteProductImage,
-  setProductMainImage
+  setProductMainImage,
 };

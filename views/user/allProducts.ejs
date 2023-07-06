@@ -27,10 +27,11 @@
 
 
                       <div class="searchBox text-center m-3">
-                        <form class="form-inline my-4 my-lg-0 searchProducts">
-                            <input type="text" placeholder="Search..."  style="font-size: 2rem;height: 4rem;" name="search">
-                            <input type="submit" value="Search" class="btn btn-secondary">
-                        </form>
+                       
+                            <input type="text" id="searchData" placeholder="Search..."  style="font-size: 2rem;height: 4rem;" name="search">
+                            <button class="btn btn-primary" onclick="searchProducts()">Search</button>
+                            <!-- <input type="submit" value="Search"  class="btn btn-secondary"> -->
+                        
                     </div>
 
                        
@@ -145,7 +146,10 @@
                                             <div class="input-category">
                                                 <% categoryDetails.map(item=>{%>
                                                        <div class="category-item">
-                                                        <a href="/all-products?cat=<%=item._id%>"><%=item.category%> </a>
+                                                        <!-- <a href="/all-products?cat=<%=item._id%>"><%=item.category%> </a> -->
+
+                                                        <a href="#" onclick="handleCat('<%=item._id%>')"><%=item.category%> </a>
+
                                                     </div>
                                                   
                                                    <% })%>
@@ -166,12 +170,21 @@
               
                     <div class="pagination-block my-4">
                         <nav aria-label="Page navigation example ">
-                            <ul class="pagination d-flex justify-content-center" onclick="handlePage(event)">
-                              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            <ul class="pagination d-flex justify-content-center" onclick="handlePage(event,'<%=page%>','<%=totalPages%>')">
+                              <li class="page-item <%= page == 1 ? 'disabled' : '' %>"><a class="page-link" href="#" >Previous</a></li>
                              <% for(let i=1;i<=totalPages;i++){%>
-                              <li class="page-item"><a class="page-link" href="#"><%=i%></a></li>
+                              <li class="page-item <%= page == i ? 'active' : '' %>"><a class="page-link" id="currentPage" href="#"><%=i%> </a></li>
                              <% }%>
-                              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            
+                              <li class="page-item <%= page == totalPages ? 'disabled' : '' %>"><a class="page-link" href="#" >Next</a></li>
+
+                              
+
+
+
+
+
+
                             </ul>
                           </nav>
                     </div>
@@ -204,15 +217,24 @@ const handleSort =(option)=>{
 }
 
 
-const handlePage=(event)=>{
+const handlePage=(event,currentPage,totalPages)=>{
     let pageNumber= event.target.innerText;
-    console.log("Page num",pageNumber);
+    console.log("Page ",currentPage);
     if(pageNumber=="Previous"){
-        pageNumber--;
+        if(currentPage=='1'){
+            pageNumber= parseInt(currentPage);
+        }else{
+        pageNumber= parseInt(currentPage)-1;
+    }
     }
     else if(pageNumber=="Next"){
-        pageNumber++;
+        if(currentPage==totalPages){
+            pageNumber= parseInt(totalPages);
+        }else{
+        pageNumber= parseInt(currentPage)+1;
     }
+    }
+    console.log("Page num",pageNumber);
     
     const url = new URL(window.location.href);
     url.searchParams.set('page', pageNumber);
@@ -220,18 +242,21 @@ const handlePage=(event)=>{
 
 }
 
+const handleCat=(catId)=>{
 
+   console.log("cat",catId);
+    const url = new URL(window.location.href);
+    url.searchParams.set('cat', catId);
+    window.location.href = url.toString();
+}
 
-
-
-
-
-
-
-
-
-
-
+const searchProducts= ()=>{
+    const searchData= document.getElementById("searchData").value;
+    console.log(searchData);
+    const url = new URL(window.location.href);
+    url.searchParams.set('search', searchData);
+    window.location.href = url.toString();
+}
 
 
 
