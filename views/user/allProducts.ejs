@@ -38,10 +38,10 @@
         					<div class="toolbox-sort">
         						<label for="sortby">Sort by:</label>
         						<div class="select-custom">
-									<select name="sortby" id="sortby" class="form-control">
-										<option value="recent" selected="selected">Recently added</option>
-										<option value="price-l-h">Price low to high</option>
-										<option value="price-l-h">Price high to low</option>
+									<select name="sortby" id="sortby" class="form-control" onchange="handleSort(this)">
+										<option value="new" <%=sort=="new" ? "selected" : "" %> >New arrivals</option>
+										<option value="price-l-h" <%=sort==="price-l-h" ? "selected" : "" %>>Price low to high</option>
+										<option value="price-h-l" <%=sort==="price-h-l" ? "selected" : "" %>>Price high to low</option>
 										
 									</select>
 								</div>
@@ -117,14 +117,14 @@
                             <!-- ================================End Product ------------->
 
 
-                            <!-- End .row -->
+                   
 
-                        <div class="load-more-container text-center">
+                        <!-- <div class="load-more-container text-center">
                             <a href="#" class="btn btn-outline-darker btn-load-more">More Products <i class="icon-refresh"></i></a>
-                        </div><!-- End .load-more-container -->
-                    </div><!-- End .products -->
+                        </div>
+                    </div> -->
 
-                    <div class="sidebar-filter-overlay"></div><!-- End .sidebar-filter-overlay -->
+                    <div class="sidebar-filter-overlay"></div>
                     <aside class="sidebar-shop sidebar-filter">
                         <div class="sidebar-filter-wrapper">
                             <div class="widget widget-clean">
@@ -142,16 +142,11 @@
                                     <div class="widget-body">
                                         <div class="filter-items filter-items-count">
                                             
-                                        
-
-                                         
                                             <div class="input-category">
                                                 <% categoryDetails.map(item=>{%>
-                                                    <div class="category-item">
+                                                       <div class="category-item">
                                                         <a href="/all-products?cat=<%=item._id%>"><%=item.category%> </a>
                                                     </div>
-                                                  
-                                                    
                                                   
                                                    <% })%>
                                         </div>
@@ -162,76 +157,87 @@
                             </div><!-- End .widget -->
 
 
-
-                            <!-- <div class="widget widget-collapsible">
-                                <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-4" role="button" aria-expanded="true" aria-controls="widget-4">
-                                        Brand
-                                    </a>
-                                </h3>
-
-                                <div class="collapse show" id="widget-4">
-                                    <div class="widget-body">
-                                        <div class="filter-items">
-                                            <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="brand-1">
-                                                    <label class="custom-control-label" for="brand-1">auraBeaut</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="brand-2">
-                                                    <label class="custom-control-label" for="brand-2">ayurbeaute</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="brand-3">
-                                                    <label class="custom-control-label" for="brand-3">ayursaukhya</label>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>End .widget -->
-<!-- 
-                            <div class="widget widget-collapsible">
-                                <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
-                                        Price
-                                    </a>
-                                </h3>
-
-                                <div class="collapse show" id="widget-5">
-                                    <div class="widget-body">
-                                        <div class="filter-price">
-                                            <div class="filter-price-text">
-                                                Price Range:
-                                                <span id="filter-price-range"></span>
-                                            </div>
-
-                                            <div id="price-slider"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                            
                             
                             
                             <!-- End .widget -->
                         </div><!-- End .sidebar-filter-wrapper -->
                     </aside><!-- End .sidebar-filter -->
+              
+              
+                    <div class="pagination-block my-4">
+                        <nav aria-label="Page navigation example ">
+                            <ul class="pagination d-flex justify-content-center" onclick="handlePage(event)">
+                              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                             <% for(let i=1;i<=totalPages;i++){%>
+                              <li class="page-item"><a class="page-link" href="#"><%=i%></a></li>
+                             <% }%>
+                              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            </ul>
+                          </nav>
+                    </div>
+
+
+                   
+
+
+
+
+              
+              
+              
+              
+              
                 </div><!-- End .container -->
             </div>
 
 
 
+<script>
 
+
+const handleSort =(option)=>{
+    const selectedValue = option.value;
+    console.log('Selected value:', option.value);
+    const url = new URL(window.location.href);
+    url.searchParams.set('sort', selectedValue);
+    window.location.href = url.toString();
+}
+
+
+const handlePage=(event)=>{
+    let pageNumber= event.target.innerText;
+    console.log("Page num",pageNumber);
+    if(pageNumber=="Previous"){
+        pageNumber--;
+    }
+    else if(pageNumber=="Next"){
+        pageNumber++;
+    }
+    
+    const url = new URL(window.location.href);
+    url.searchParams.set('page', pageNumber);
+    window.location.href = url.toString();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
 
 
 

@@ -31,7 +31,6 @@ const loadCheckout = async (req, res) => {
     });
     const cartValue= parseInt(sum);
     const today = new Date();
-    console.log(today);
     const couponData= await Coupon.find({expiryDate:{$gte:today},  usersUsed:{$nin:[req.session.user_id]}, minPurchase:{$lte:cartValue}});
 
   

@@ -100,7 +100,7 @@ function updateSubmitButton() {
   const submitButton = document.getElementById('signUpButton');
 
   if (namevalid && emailvalid && phonevalid && passwordvalid && confirmPasswordvalid) {
-    console.log("Success");
+    // console.log("Success");
       submitButton.disabled=false;
   } else {
     submitButton.disabled=true;

@@ -151,6 +151,9 @@
 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addressBoxModal">
     Edit
   </button>
+  <button type="button" class="btn btn-danger mx-4" onclick="deleteAddress('<%=item._id%>')" >
+    Delete
+  </button>
   
   <!-- Modal -->
   <div class="modal fade" id="addressBoxModal" tabindex="-1" role="dialog" aria-labelledby="addressBoxModalTitle" aria-hidden="true">
@@ -466,12 +469,12 @@ else if(selectedPaymentMode=='Razorpay'){
         totalAmount:totalAmount
   })
 }).then(function(response) {
-  console.log(response);
+  // console.log(response);
    return response.json();
   })
   .then(function(data) {
     if(data == "noStock"){
-      console.log("nostock");
+      // console.log("nostock");
       window.location.href = `/order-failure?error=out of stock`;
 
     }else
@@ -536,7 +539,7 @@ else if(selectedPaymentMode=='Cash on Delivery'){
 // =======================Start Place Order======================
 const placeOrder = () => {
   // discount= document.getElementById("discountDisplay").innerText;
-console.log('discount',discount);
+// console.log('discount',discount);
   fetch("/place-order", {
     method: "POST",
     headers: {
@@ -557,7 +560,7 @@ console.log('discount',discount);
       if(data.status !='out of stock'){
 
       
-      console.log("data", data);
+      // console.log("data", data);
       window.location.href = `/order-success?orderId=${data._id}&invoiceNumber=${data.invoiceNumber}`;
       fetch(`/order-success?orderId=${data._id}&invoiceNumber=${data.invoiceNumber}`, {
         method: "get",
@@ -586,7 +589,7 @@ const sendResponse=(response,data)=>{
         response:  response,
         order_id: data,
   })}).then(response => {
-    console.log(response);
+    // console.log(response);
     if (response.statusText=="OK"
 ) {
   placeOrder();
@@ -627,7 +630,7 @@ body:
   })
 }).then(response=> (response.json()))
 .then(data=>{
-  console.log(data);
+  // console.log(data);
   document.getElementById('appliedCoupon').innerText=  couponCode+" applied successfully";
   document.getElementById('coupon-applied-block').style.display='block';
   document.getElementById('discountDisplay').innerText=data.discount;
@@ -649,6 +652,18 @@ const removeCoupon=()=>{
 
 
 }
+
+const deleteAddress=(id)=>{
+      new swal({
+  title: "Are you sure to delete this address?",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    window.location.href = `/delete-address?id=${id}`;    }});
+  } 
 
 </script>
 

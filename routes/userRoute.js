@@ -49,6 +49,7 @@ userRoute.get("/remove-cart-item",isUserSession, userController.removeCartItem);
 userRoute.get("/download-invoice",isUserSession, orderController.downloadInvoice);
 userRoute.get("/order-failure",isUserSession, orderController.orderFailure);
 userRoute.get("/order-success",isUserSession, orderController.orderSuccess);
+userRoute.get("/delete-address",isUserSession, userController.deleteAddress);
 
 
 

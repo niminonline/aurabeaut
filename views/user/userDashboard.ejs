@@ -164,6 +164,13 @@
 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editaddressBoxModal">
     Edit
   </button>
+
+  <button type="button" class="btn btn-danger mx-4" onclick="deleteAddress('<%=item._id%>')" >
+    Delete
+  </button>
+
+
+
   
   <!-- Modal -->
   <div class="modal fade" id="editaddressBoxModal" tabindex="-1" role="dialog" aria-labelledby="addressBoxModalTitle" aria-hidden="true">
@@ -292,9 +299,23 @@
                 </div><!-- End .container -->
             </div><!-- End .dashboard -->
         </div><!-- End .page-content -->
-    </main><
+    </main>
 
+<script>
 
+const deleteAddress=(id)=>{
+      new swal({
+  title: "Are you sure to delete this address?",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    window.location.href = `/delete-address?id=${id}`;    }});
+  } 
+
+</script>
 
 
 

@@ -579,6 +579,21 @@ const updateAddress = async (req, res) => {
 };
 
 
+  // =========================Delete Address=============
+  const deleteAddress = async (req, res) => {
+    try {
+      const {id}= req.query;
+      await User.updateOne(
+        {_id:req.session.user_id },
+        { $pull: { address: { _id: id } } }),
+      res.redirect(req.headers.referer);
+    
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+  
+
 
 
 
@@ -609,5 +624,6 @@ module.exports = {
   removeCartItem,
   quantityUpdate,
   updateAddress,
+  deleteAddress
   
 };

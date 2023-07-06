@@ -30,7 +30,7 @@ const stockCheck = async (req, res,next) => {
 
      }
      else{
-        console.log(" stock next");
+        // console.log(" stock next");
 
         next();
      }

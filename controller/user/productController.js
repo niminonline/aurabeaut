@@ -9,39 +9,51 @@ const loadAllProducts = async (req, res) => {
   try {
     const categoryDetails = await Category.find({});
 
-    const categoryId = req.query.cat;
-    
-    if(categoryId){
-    const productData = await Product.find({
-      category: categoryId,
-      isProductUnlist: false,
-      isCategoryUnlist: false,
-    });
-    if (req.session.user_id) {
-      const userData = await User.findOne({ _id: req.session.user_id });
-     
+    const categoryId = req.query.cat||'';
+    const sort= req.query.sort||'';
 
-      res.render("allProducts", { userData: userData, productData: productData,categoryDetails:categoryDetails });
-    } else {
-      res.render("allProducts", { productData: productData,categoryDetails:categoryDetails });
-    }
-  }
-    else{
-      const categoryData = await Category.find({});
-      const productData = await Product.find({
-        isProductUnlist: false,
-        isCategoryUnlist: false,
-      });
+    const catQuery= {isProductUnlist: false,
+      isCategoryUnlist: false};
+      if (categoryId !== '') {
+        catQuery.category = categoryId;
+      }
+      let sortQuery='';
+      if (sort !== '') {
+        if(sort=='price-l-h'){
+           sortQuery={price:1}
+        }
+        else  if(sort=='price-h-l'){
+           sortQuery={price:-1}
+      } else  if(sort=='new'){
+         sortQuery={_id:-1}
+    }}
+
+
+// Pagination
+const page = req.query.page || 1;
+const limit = 4;
+const skip = (page - 1) * limit;
+
+
+const totalPages = Math.ceil(await Product.countDocuments(catQuery) / limit); 
+// console.log("total", totalPages);
+
+
+
+
+    
+     
+      const productData = await Product.find(catQuery).sort(sortQuery).skip(skip).limit(limit);;
+
 
       if (req.session.user_id) {
         const userData = await User.findOne({ _id: req.session.user_id });
   
-        res.render("allProducts", { userData: userData, productData: productData ,categoryDetails,categoryDetails});
+        res.render("allProducts", { userData: userData, productData: productData ,categoryDetails,categoryDetails,sort:sort,totalPages:totalPages});
       } else {
-        res.render("allProducts", { productData: productData,categoryDetails,categoryDetails});
+        res.render("allProducts", { productData: productData,categoryDetails,categoryDetails,sort:sort,totalPages:totalPages});
       }
     }
-  }
    catch (error) {
     console.log(error.message);
   }

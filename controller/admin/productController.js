@@ -91,7 +91,10 @@ const addProduct = async (req, res) => {
         return new Promise((resolve, reject) => {
           cloudinary.uploader.upload(
             image,
-            { folder: "image_uploads" },
+            { folder: "image_uploads",
+            width: 400,
+            height: 600,
+            crop: 'fill' },
             (error, result) => {
               if (error) {
                 reject(error);
@@ -166,7 +169,9 @@ const editProduct = async (req, res) => {
           return new Promise((resolve, reject) => {
             cloudinary.uploader.upload(
               image,
-              { folder: "image_uploads" },
+              { folder: "image_uploads" , width: 400,
+              height: 600,
+              crop: 'fill' },
               (error, result) => {
                 if (error) {
                   reject(error);
@@ -180,7 +185,6 @@ const editProduct = async (req, res) => {
         const imageUrl = await uploadImages(images);
         //------------------End Cloudinary----------------
         if (imageUrl) {
-          console.log(imageUrl);
           const productData = await Product.findByIdAndUpdate(
             { _id: id },
             {
@@ -284,7 +288,6 @@ const deleteProductImage = async (req, res) => {
         if (error) {
           console.error(error);
         } else {
-          console.log(result);
           return result;
         }
       }
