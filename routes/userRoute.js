@@ -51,6 +51,7 @@ userRoute.get("/order-failure",isUserSession, orderController.orderFailure);
 userRoute.get("/order-success",isUserSession, orderController.orderSuccess);
 userRoute.get("/delete-address",isUserSession, userController.deleteAddress);
 userRoute.get("/return-order",isUserSession, orderController.returnOrder);
+userRoute.get("/cancel-order",isUserSession, orderController.cancelOrder);
 
 
 

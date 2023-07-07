@@ -178,27 +178,9 @@
                             
                               <li class="page-item <%= page == totalPages ? 'disabled' : '' %>"><a class="page-link" href="#" >Next</a></li>
 
-                              
-
-
-
-
-
-
                             </ul>
                           </nav>
                     </div>
-
-
-                   
-
-
-
-
-              
-              
-              
-              
               
                 </div><!-- End .container -->
             </div>
@@ -252,7 +234,6 @@ const handleCat=(catId)=>{
 
 const searchProducts= ()=>{
     const searchData= document.getElementById("searchData").value;
-    console.log(searchData);
     const url = new URL(window.location.href);
     url.searchParams.set('search', searchData);
     window.location.href = url.toString();

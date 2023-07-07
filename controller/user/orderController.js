@@ -68,8 +68,9 @@ const placeOrder = async (req, res) => {
         { code: couponCode },
         { $push: { usersUsed: req.session.user_id } }
       );
-    } else {
-      discount = 0;
+    } 
+    if(discount==null){
+      discount=0;
     }
 
     const userData = await User.findOne({ _id: req.session.user_id })
@@ -323,9 +324,39 @@ const returnOrder = async (req, res) => {
     const orderData= await Order.findById(_id);
     // console.log(order);
 
-    orderData.map(item=>{
-      console.log("prod"+ item.product.quantity)
+    const stockupdate= orderData.product.map( async item=>{
+      const updateStock= await Product.findByIdAndUpdate(item.id,{$inc:{stock: item.quantity}});
+      console.log(stockupdate);
+
     })
+    if(orderData.paymentMethod !=='Cash on Delivery'){
+
+      const updateWallet= await User.findByIdAndUpdate(new ObjectId(req.session.user_id),{$inc:{wallet:orderData.totalAmount}},{new:true});
+      console.log(req.session.user_id);
+    }
+    await Order.findByIdAndUpdate(_id,{$set:{status:"Returned"}})
+    res.redirect("/orders");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+//=============================== Cancel Order ==========================
+const cancelOrder = async (req, res) => {
+  try {
+    const {_id}= req.query;
+    const orderData= await Order.findById(_id);
+
+    orderData.product.map( async item=>{
+      await Product.findByIdAndUpdate(item.id,{$inc:{stock: item.quantity}});
+
+    })
+    if(orderData.paymentMethod !=='Cash on Delivery'){
+
+      const updateWallet= await User.findByIdAndUpdate(new ObjectId(req.session.user_id),{$inc:{wallet:orderData.totalAmount}},{new:true});
+      console.log(req.session.user_id);
+    }
+    await Order.findByIdAndUpdate(_id,{$set:{status:"Cancelled"}})
+    res.redirect("/orders");
 
   } catch (error) {
     console.log(error.message);
@@ -342,5 +373,6 @@ module.exports = {
   pgOrder,
   orderSuccess,
   orderFailure,
-  returnOrder
+  returnOrder,
+  cancelOrder
 };

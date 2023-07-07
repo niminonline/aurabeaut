@@ -16,14 +16,12 @@
   
           <div class="table-responsive table table-striped align-left table-hover">
               <table class="table">
-               <!-- <tr>
-                  <th>
-                      Id
-                  </th>
-                  <td>
-                      <%=orderData._id%>
-                  </td>
-               </tr> -->
+                
+                <tr><th>
+                    Invoice Number
+                </th>
+               <td><%=orderData.invoiceNumber%></td>
+            </tr>
   
                <tr>
                   <th>
@@ -71,7 +69,7 @@
                       Ordered Date
                   </th>
                   <td>
-                      <%=orderData.date%>
+                      <%=orderData.date.toLocaleString('en-IN',{ dateStyle: 'long'})%>
                   </td>
                </tr>
                <tr>
@@ -140,10 +138,13 @@
 
         </table>
         <div class="button-block d-flex justify-content-end ">
-            <%if(orderData.status=="Delivered"){%>
+            <%if((orderData.status=="Delivered")&& (( Date.now()- (orderData.updatedAt.getTime()) <= (7 * 24 * 60 * 60 * 1000)) )){%>
             
-            <a href="/return-order?_id=<%=orderData._id%>" class="btn btn-primary my-3">Return</a>
-        <%}%>
+            <a href="/return-order?_id=<%=orderData._id%>" class="btn btn-primary my-3">Return Order</a>
+        <%}else if ((orderData.status=="Shipped")||(orderData.status=="Confirmed")||(orderData.status=="Pending")){%>
+            <a href="/cancel-order?_id=<%=orderData._id%>" class="btn btn-primary my-3">Cancel Order</a>
+
+            <%}%>
             <a href="/download-invoice?_id=<%=orderData._id%> " class="btn btn-secondary my-3 mx-4"><i class="bi bi-download" style="font-size: 2rem;"></i>  Download Invoice</a>
     </div>
 </div>

@@ -2,13 +2,6 @@ const express = require("express");
 const adminRoute = express();
 
 
-
-
-
-// const bodyParser = require("body-parser");
-// adminRoute.use(bodyParser.urlencoded({ extended: true }));
-// adminRoute.use(express.static("public"));
-
 // ==============================Controllers===================================
 const admincontroller = require("../controller/admin/adminController");
 const carouselController = require("../controller/admin/carouselController");
@@ -61,7 +54,6 @@ adminRoute.post("/editproduct",upload.array("image", 3),productController.editPr
 adminRoute.post("/blockunblockuser", admincontroller.userBlockUnblock);
 adminRoute.post("/listunlistcategory", categoryController.listUnlistCategory);
 adminRoute.post("/productlistunlist", productController.productListUnlist);
-// adminRoute.get("/deleteproduct", shopController.deleteproduct);
 adminRoute.post("/order-details", orderController.updateOrder);
 adminRoute.post("/coupons", couponController.createCoupon);
 adminRoute.post("/coupon-actions", couponController.couponActions);

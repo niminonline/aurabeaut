@@ -15,7 +15,7 @@
         <table class="table table-hover">
           <tr class="heading-row">
             <th>Sl No.</th>
-            <!-- <th>Order Id</th> -->
+            <th>Invoice Id</th>
             <th>Name</th>
             <!-- <th>Address</th> -->
             <th>Product</th>
@@ -34,15 +34,14 @@
     
                <% for(let i=0;i<orderData.length;i++){%>
             <td><%=i+1%></td>
-            <!-- <td><%=orderData[i]._id%></td> -->
+            <td><%=orderData[i].invoiceNumber%></td>
             <td><%=orderData[i].address.name%></td>
             <!-- <td><%=orderData[i].address%></td> -->
             <td><%=orderData[i].product[0].name%> + <%=orderData[i].product.length%> items </td>
   
             
             <td><%=orderData[i].status%></td>
-            <td><%=orderData[i].date%></td>
-         
+            <td> <%=orderData[i].date.toLocaleString('en-IN',{ dateStyle: 'long'})%>  </td>       
             <td>
         
             
