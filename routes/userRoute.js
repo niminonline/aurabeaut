@@ -42,6 +42,7 @@ userRoute.get("/checkout",isUserSession, orderController.loadCheckout);
 userRoute.get("/user-dashboard",isUserSession, userController.loadUserDashboard);
 userRoute.get("/add-to-cart",isUserSession, userController.addToCart);
 userRoute.get("/add-to-wishlist",isUserSession, userController.addToWishlist);
+userRoute.get("/remove-wishlist-item",isUserSession, userController.removeWishlistItem);
 userRoute.get("/add-address",isUserSession, userController.addAddressLoad);
 userRoute.get("/orders",isUserSession, orderController.ordersLoad);
 userRoute.get("/order-details",isUserSession, orderController.orderDetailsLoad);
@@ -52,6 +53,7 @@ userRoute.get("/order-success",isUserSession, orderController.orderSuccess);
 userRoute.get("/delete-address",isUserSession, userController.deleteAddress);
 userRoute.get("/return-order",isUserSession, orderController.returnOrder);
 userRoute.get("/cancel-order",isUserSession, orderController.cancelOrder);
+userRoute.get("/404", userController.pageNotFound);
 
 
 

@@ -48,7 +48,7 @@
                           <a href="/add-to-cart?_id=<%=item._id%>">  <button class="btn btn-block btn-outline-primary-2" disabled><i class="icon-cart-plus"></i>Add to Cart</button></a>
                         </td>
                       <%  }%>
-                        <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
+                        <td class="remove-col"><button class="btn-remove" onclick="removeFromWishlist('<%=item._id%>','<%=item.name%>')"><i class="icon-close"></i></button></td>
                       
 
                     
@@ -73,7 +73,39 @@
 </main><!-- End .main -->
 
 
+<script>
 
+const removeFromWishlist=(id, name)=>{
+
+    new swal({
+
+text: `Are your sure want to remove ${name} from your wishlist?`,
+icon: "warning",
+buttons: ["No", "Yes"],
+dangerMode: true,
+})
+.then((response) => {
+if (response) {
+fetch(`/remove-wishlist-item?id=${id}`,{method:"GET",headers:{'contentType':'application/json'}})
+.then(response=>{
+    console.log(response);
+    if(response.ok){
+        new swal({title: "Product removed from wishlist",
+  icon: "success",
+  button: "OK"}).then(()=>
+        { window.location.href=`/wishlist` }
+           
+    )
+    }
+})
+}
+})
+}
+
+
+
+
+</script>
 
 
     <%-include("../layout/footer.ejs")%>

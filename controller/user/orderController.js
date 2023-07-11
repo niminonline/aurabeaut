@@ -51,6 +51,7 @@ const loadCheckout = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -68,17 +69,16 @@ const placeOrder = async (req, res) => {
         { code: couponCode },
         { $push: { usersUsed: req.session.user_id } }
       );
-    } 
-    if(discount==null){
-      discount=0;
+    }
+    if (discount == null) {
+      discount = 0;
     }
 
     const userData = await User.findOne({ _id: req.session.user_id })
       .populate("cart.product")
       .lean();
     const lastOrder = await Order.find().sort({ _id: -1 }).limit(1);
-    const invoiceNumber =
-      parseInt(lastOrder[0].invoiceNumber.match(/\d+/)[0]) + 1;
+    const invoiceNumber = parseInt(lastOrder[0].invoiceNumber.match(/\d+/)[0]) + 1;
 
     // const cartProducts = userData.cart.map(item =>
     //      ({
@@ -119,13 +119,13 @@ const placeOrder = async (req, res) => {
       totalAmount: parseInt(totalAmount) - discount,
       paymentMethod: paymentMode,
       date: new Date().toISOString().split("T")[0],
+      coupon: couponCode,
       notes: notes,
+
     });
 
     console.log("placeorder-userdata", userData);
-
     const saveOrder = await order.save();
-
     if (saveOrder) {
       const userData = await User.findOne({ _id: req.session.user_id });
       userData.cart = [];
@@ -139,6 +139,7 @@ const placeOrder = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -147,10 +148,13 @@ const placeOrder = async (req, res) => {
 const ordersLoad = async (req, res) => {
   try {
     const userData = await User.findOne({ _id: req.session.user_id });
-    const orderData = await Order.find({ userId: req.session.user_id }).sort({_id:-1});
+    const orderData = await Order.find({ userId: req.session.user_id }).sort({
+      _id: -1,
+    });
     res.render("orders", { orderData: orderData, userData: userData });
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -164,6 +168,7 @@ const orderDetailsLoad = async (req, res) => {
     res.render("orderDetails", { orderData: orderData, userData: userData });
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 //=================Download Invoice================================
@@ -284,6 +289,7 @@ const pgOrder = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -300,6 +306,7 @@ const orderSuccess = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -315,51 +322,98 @@ const orderFailure = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 //=============================== Return Order ==========================
 const returnOrder = async (req, res) => {
   try {
-    const {_id}= req.query;
-    const orderData= await Order.findById(_id);
+    const { _id } = req.query;
+    const orderData = await Order.findById(_id);
     // console.log(order);
 
-    const stockupdate= orderData.product.map( async item=>{
-      const updateStock= await Product.findByIdAndUpdate(item.id,{$inc:{stock: item.quantity}});
-      console.log(stockupdate);
+    const stockupdate = orderData.product.map(async (item) => {
+      const updateStock = await Product.findByIdAndUpdate(item.id, {
+        $inc: { stock: item.quantity },
+      });
+      // console.log(stockupdate);
+    });
+    if (orderData.paymentMethod !== "Cash on Delivery") {
+      const userData = await User.findById(req.session.user_id);
+      userData.wallet.balance += orderData.totalAmount;
+      const updateData = {
+        amount: orderData.totalAmount,
+        details: "Refund for returned order #" + orderData.invoiceNumber,
+      };
 
-    })
-    if(orderData.paymentMethod !=='Cash on Delivery'){
-
-      const updateWallet= await User.findByIdAndUpdate(new ObjectId(req.session.user_id),{$inc:{wallet:orderData.totalAmount}},{new:true});
-      console.log(req.session.user_id);
+      userData.wallet.transaction.push(updateData);
+      await userData.save();
     }
-    await Order.findByIdAndUpdate(_id,{$set:{status:"Returned"}})
-    res.redirect("/orders");
+        await Order.findByIdAndUpdate(_id, { $set: { status: "Returned" } });
+        res.json(200);
+
+    // res.redirect("/orders");
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 //=============================== Cancel Order ==========================
 const cancelOrder = async (req, res) => {
-  try {
-    const {_id}= req.query;
-    const orderData= await Order.findById(_id);
 
-    orderData.product.map( async item=>{
-      await Product.findByIdAndUpdate(item.id,{$inc:{stock: item.quantity}});
+    try {
+      const { _id } = req.query;
+      const orderData = await Order.findById(_id);
+  
+      const stockupdate = orderData.product.map(async (item) => {
+        const updateStock = await Product.findByIdAndUpdate(item.id, {
+          $inc: { stock: item.quantity },
+        });
+      });
+      if (orderData.paymentMethod !== "Cash on Delivery") {
+        const userData = await User.findById(req.session.user_id);
+        userData.wallet.balance += orderData.totalAmount;
+        const updateData = {
+          amount: orderData.totalAmount,
+          details: "Refund for cancelled order #" + orderData.invoiceNumber,
+        };
+  
+        userData.wallet.transaction.push(updateData);
+        await userData.save();
+      }
+          await Order.findByIdAndUpdate(_id, { $set: { status: "Cancelled" } });
+          res.json(200);
+  
+      // res.redirect("/orders");
 
-    })
-    if(orderData.paymentMethod !=='Cash on Delivery'){
 
-      const updateWallet= await User.findByIdAndUpdate(new ObjectId(req.session.user_id),{$inc:{wallet:orderData.totalAmount}},{new:true});
-      console.log(req.session.user_id);
-    }
-    await Order.findByIdAndUpdate(_id,{$set:{status:"Cancelled"}})
-    res.redirect("/orders");
 
+
+
+
+
+    // const { _id } = req.query;
+    // const orderData = await Order.findById(_id);
+
+    // orderData.product.map(async (item) => {
+    //   await Product.findByIdAndUpdate(item.id, {
+    //     $inc: { stock: item.quantity },
+    //   });
+    // });
+    // if (orderData.paymentMethod !== "Cash on Delivery") {
+    //   const updateWallet = await User.findByIdAndUpdate(
+    //     new ObjectId(req.session.user_id),
+    //     { $inc: { wallet: orderData.totalAmount } },
+    //     { new: true }
+    //   );
+    //   console.log(req.session.user_id);
+    // }
+    // await Order.findByIdAndUpdate(_id, { $set: { status: "Cancelled" } });
+    // res.json(200);
+    // res.redirect("/orders");
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -374,5 +428,5 @@ module.exports = {
   orderSuccess,
   orderFailure,
   returnOrder,
-  cancelOrder
+  cancelOrder,
 };

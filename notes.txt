@@ -68,3 +68,35 @@ const downloadInvoice = async (req, res) => {
     res.status(500).send('Error generating invoice');
   }
 };
+
+
+===============
+Swal confirmation
+
+const cancelOrder=(order_id)=>{
+
+new swal({
+
+text: "Are your sure want to cancel this order?",
+icon: "warning",
+buttons: ["No", "Yes"],
+dangerMode: true,
+})
+.then((response) => {
+if (response) {
+fetch(`/cancel-order?_id=${order_id}`,{method:"GET",headers:{'contentType':'application/json'}})
+.then(response=>{
+    console.log(response);
+    if(response.ok){
+        new swal({title: "Order cancelled successfully",
+  icon: "success",
+  button: "OK"}).then(()=>
+        { window.location.href=`/orders` }
+           
+    )
+    }
+})
+}
+})
+}
+

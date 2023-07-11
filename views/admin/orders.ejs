@@ -25,11 +25,12 @@
         <tr class="heading-row">
           <th>Sl No.</th>
           <!-- <th>Order Id</th> -->
+          <th>Invoice #</th>
+          <th>Date</th>
           <th>Name</th>
           <th>Address</th>
           <th>Product</th>
           <th>Status</th>
-          <th>Date</th>
           <th>More</th>
 
           <!-- <th>View</th> -->
@@ -43,7 +44,8 @@
   
              <% for(let i=0;i<orderData.length;i++){%>
           <td><%=i+1%></td>
-          <!-- <td><%=orderData[i]._id%></td> -->
+          <td><%=orderData[i].invoiceNumber%></td>
+          <td><%=orderData[i].date.toLocaleString('en-IN',{dateStyle:'long'})%></td>
           <td><%=orderData[i].address.name%></td>
           <td><%=orderData[i].address.address%> <br>  
           <%=orderData[i].address.city%> <%=orderData[i].address.state%>  <%=orderData[i].address.pincode%> <br> <%=orderData[i].address.landmark%> </td>
@@ -52,7 +54,6 @@
 
           
           <td><%=orderData[i].status%></td>
-          <td><%=orderData[i].date%></td>
           <td> <a href="/admin/order-details?_id=<%=orderData[i]._id%>"  class="btn btn-primary">Details</a></td>
   
         </tr>

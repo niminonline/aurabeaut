@@ -40,10 +40,17 @@ app.use("/admin", adminRoute);
 
 
 
-// catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
+// catch 404 and forward to 404 page
+app.use(function(req, res, next) {
+
+    if(req.route){
+        next();
+    }
+    else{
+        res.status(404).redirect('/404');
+    }
+ 
+});
 
 // error handler
 // app.use(function(err, req, res, next) {

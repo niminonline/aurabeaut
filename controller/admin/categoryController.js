@@ -12,6 +12,7 @@ const categoryLoad = async (req, res) => {
     } else res.render("category", { errorMessage: "No categories found" });
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -29,6 +30,7 @@ const editCategoryLoad = async (req, res) => {
     res.render("editCategory");
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -64,6 +66,7 @@ const addCategory = async (req, res) => {
 
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -104,6 +107,7 @@ const editCategory = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -125,6 +129,7 @@ const listUnlistCategory = async (req, res) => {
     // res.redirect("/admin/category");
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 

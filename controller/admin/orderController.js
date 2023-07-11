@@ -8,6 +8,7 @@ const ordersLoad = async (req, res) => {
     res.render("orders", { orderData: orderData });
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -30,6 +31,7 @@ const orderDetailsLoad = async (req, res) => {
     });
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -48,6 +50,7 @@ const updateOrder = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 

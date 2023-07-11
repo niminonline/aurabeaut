@@ -68,7 +68,8 @@
                                         </div><!-- End .cart-product-quantity -->
                                     </td>
                                     <td class="total-col"><%=item.quantity*item.product.price%></td>
-                                    <td> <a href="/remove-cart-item?_id=<%=item.product._id%>" class="btn-remove"><i class="icon-close"></i></a> </td>
+                                    <!-- <td> <a href="/remove-cart-item?_id=<%=item.product._id%>" class="btn-remove" ><i class="icon-close"></i></a> </td> -->
+                                    <td> <a href="#" class="btn-remove" onclick="removeFromCart('<%=item.product._id%>','<%=item.product.name%>')"><i class="icon-close"></i></a> </td>
                                     <!-- <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td> -->
                                   </tr>
                                  <%})%>
@@ -131,13 +132,6 @@
 
 <script>
 
-
-
-
-
-
-
-
 const freeShippingRadio = document.getElementById('free-shipping');
 const standardShippingRadio = document.getElementById('standart-shipping');
 const expressShippingRadio = document.getElementById('express-shipping');
@@ -165,13 +159,6 @@ function handleShippingMethod() {
 }
 
 
-const checkCart= ()=>{
-    if(totalAmount<0){
-
-    }
-
-}
-
 const proceedToCheckOut = () => {
   const shippingCharge = document.getElementById('totalAmount').textContent;
   fetch('/checkout?shippingCharge=' + shippingCharge, {
@@ -183,10 +170,8 @@ const proceedToCheckOut = () => {
   })
     .then(response => {
       if (!response.ok) {
-        // Handle error response
         throw new Error('Error: ' + response.status);
       }
-      // Check the response content type
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         return response.json();
@@ -195,17 +180,45 @@ const proceedToCheckOut = () => {
       }
     })
     .then(data => {
-      // Process the retrieved data
       console.log(data);
     })
     .catch(error => {
-      // Handle any errors
       console.error(error);
     });
-};
+}
 
 async  function handlequantity(id,val){
-var quantityId=document.getElementById(`quantitynumber${id}`)
+    let quantityId=document.getElementById(`quantitynumber${id}`);
+
+
+ 
+if(quantityId.innerText=='1' && val=='decrement'){
+    new swal({
+
+text: "Are you sure want to remove this item from cart?",
+icon: "warning",
+buttons: ["No", "Yes"],
+dangerMode: true,
+})
+.then((response) => {
+    if(response){
+        updateQuantity(id,val);
+    }
+    else{
+        console.log("false response")
+    }
+})
+}
+else{
+    updateQuantity(id,val);
+}
+
+}
+
+
+async function updateQuantity(id,val){
+    let quantityId=document.getElementById(`quantitynumber${id}`);
+
 await fetch('/quantity-update', {
 method: 'POST',
 headers: {
@@ -224,12 +237,6 @@ if(data=='success'){
 window.location.reload()
 
 }
-// else if(data.stocklimit=="stocklimit"){
-//  const stocklimit= document.getElementById(`stocklimit+${id}`).innerHTML="stock limit"
-//  setTimeout(()=>{
-//   const stocklimit= document.getElementById(`stocklimit+${id}`).innerHTML=""
-//  },3000)
-// }
 
 else{
 quantityId.innerHTML=data.quantity[0].quantity
@@ -240,8 +247,43 @@ totalamount.innerHTML=data.lastprice
 }
 
 })
-.catch(error => console.error(error));
+.catch(error => console.log(error));
 }
+
+
+
+function removeFromCart(id,name){
+
+    new swal({
+
+text: `Are your sure want to remove ${name} from cart?`,
+icon: "warning",
+buttons: ["No", "Yes"],
+dangerMode: true,
+})
+.then((response) => {
+if (response) {
+fetch(`/remove-cart-item?_id=${id}`,{method:"GET",headers:{'contentType':'application/json'}})
+.then(response=>{
+    console.log(response);
+    if(response.ok){
+        new swal({title: "Product removed from cart",
+  icon: "success",
+  button: "OK"}).then(()=>
+        { window.location.href=`/cart` }
+           
+    )
+    }
+})
+}
+})
+}
+
+
+
+
+
+
 
 </script>
 

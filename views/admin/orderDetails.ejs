@@ -13,16 +13,16 @@
             <table class="table">
              <tr>
                 <th>
-                    Id
+                    Invoice #
                 </th>
                 <td>
-                    <%=orderData._id%>
+                    <%=orderData.invoiceNumber%>
                 </td>
              </tr>
 
              <tr>
                 <th>
-                    User Name
+                    Recipient
                 </th>
                 <td>
                     <%=orderData.address.name%>
@@ -66,7 +66,7 @@
                     Ordered Date
                 </th>
                 <td>
-                    <%=orderData.date%>
+                    <%=orderData.date.toLocaleString('en-In',{dateStyle:'long'})%>
                 </td>
              </tr>
              <tr>
@@ -145,9 +145,9 @@
 
                     <div class="buttons-row text-center my-4">
                        
-                        <input type="submit" class="btn btn-success mx-3 mx-auto"  value="Save "/>
+                        <input type="submit" class="btn btn-outline-success mx-3 mx-auto"  value="Save "/>
 
-                        <a href="/admin/orders"class="btn btn-danger mx-3">Cancel</a>
+                        <a href="/admin/orders"class="btn btn-outline-danger mx-3">Cancel</a>
                     </div>
                 </form>
 

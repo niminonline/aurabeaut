@@ -36,6 +36,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Change password</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-wallet-link" data-toggle="tab" href="#tab-wallet" role="tab" aria-controls="tab-wallet" aria-selected="false">Wallet</a>
+                                </li>
                                 <!-- <li class="nav-item">
                                     <a class="nav-link" href="/logout">Sign Out</a>
                                 </li> -->
@@ -292,7 +295,54 @@
                                             <i class="icon-long-arrow-right"></i>
                                         </button>
                                     </form>
-                                </div><!-- .End .tab-pane -->
+                                </div>
+                                
+                                
+
+                                <div class="tab-pane fade" id="tab-wallet" role="tabpanel" aria-labelledby="tab-account-link">
+                                  
+
+
+                              <div class="wallet-balance-block border border-primary rounded-pill text-center">
+
+                                <h4 class="m-4">Wallet balance: ₹<%=userData.wallet.balance%></h4>
+
+
+                              </div>
+
+
+                         <table class=" table table-hover my-4">
+
+
+                          <thead>
+                            <tr>
+                              <th scope="col">Date</th>
+                              <th scope="col">Details</th>
+                              <th scope="col">Amount</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                   <% userData.wallet.transaction.slice().reverse().map(item=>{ %>
+                      <tr>
+                        <td><%=item.date.toLocaleString("en-IN",{dateStyle:'long',timeStyle:'short'})%></td>
+                        <td><%=item.details%></td>
+                        <td class="text-success">+<%=item.amount%></td>
+                      </tr>
+
+                   <% })   %>    
+                          
+
+
+                         </table>
+
+                              </div>
+
+
+
+
+                                <!-- .End .tab-pane -->
                             </div>
                         </div><!-- End .col-lg-9 -->
                     </div><!-- End .row -->

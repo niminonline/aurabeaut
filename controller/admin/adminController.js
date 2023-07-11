@@ -8,6 +8,7 @@ const loginLoad = async (req, res) => {
     res.render("login");
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 //============================Admin login=======================
@@ -24,6 +25,7 @@ const adminLogin = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 //===============================Dashboard Load====================
@@ -32,6 +34,7 @@ const dashboardLoad = async (req, res) => {
     res.render("home");
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -57,6 +60,7 @@ const usersLoad = async (req, res) => {
     res.render("users", { userData: userData });
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -66,6 +70,7 @@ const ordersLoad = async (req, res) => {
     res.render("products");
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 //=====================================Admin Logout================
@@ -76,6 +81,7 @@ const adminLogout = async (req, res) => {
     res.redirect("/admin/");
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -108,6 +114,7 @@ const userBlockUnblock = async (req, res) => {
       })
       .catch((err) => {
         console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
       });
 
     }
@@ -131,9 +138,11 @@ const userBlockUnblock = async (req, res) => {
       // })
       // .catch((err) => {
       //   console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
       // });
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 

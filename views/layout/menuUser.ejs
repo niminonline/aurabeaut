@@ -35,7 +35,11 @@
                         <div class="icon">
                             <i class="icon-user"></i>
                         </div>
-                        <p><%=userData.name%></p>
+                       <% if(typeof userData.name != 'undefined'){ %>
+                        <p> <%=userData.name%> </p>
+                       <% }else{ %>
+                            <p> <%=userData[0].name%> </p>
+                     <%   } %>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">

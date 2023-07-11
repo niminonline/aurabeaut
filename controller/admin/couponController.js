@@ -9,6 +9,7 @@ const couponsLoad = async (req, res) => {
     res.render("coupons", { couponData, couponData });
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -38,6 +39,7 @@ const createCoupon = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -56,6 +58,7 @@ const couponActions = async (req, res) => {
     res.redirect("/admin/coupon-actions");
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -67,6 +70,7 @@ const deleteCoupon = async (req, res) => {
     res.redirect("/admin/coupons");
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 

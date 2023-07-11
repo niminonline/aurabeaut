@@ -48,14 +48,16 @@
                     <%=orderData.address.mobile%>
                   </td>
                </tr>
-               <tr>
-                  <th>
-                      Total Amount
-                  </th>
-                  <td>
-                      <%=orderData.totalAmount%>
-                  </td>
-               </tr>
+
+             <tr>
+                <th>
+                    Total Amount
+                </th>
+                <td>
+                    <%=orderData.totalAmount%>
+                </td>
+             </tr>
+
                <tr>
                   <th>
                       Payment method
@@ -70,6 +72,14 @@
                   </th>
                   <td>
                       <%=orderData.date.toLocaleString('en-IN',{ dateStyle: 'long'})%>
+                  </td>
+               </tr>
+               <tr>
+                  <th>
+                      Expected Delivery Date
+                  </th>
+                  <td>
+                      <%=new Date(orderData.date.getTime()+(7*24*60*60*1000)).toLocaleString('en-IN',{ dateStyle: 'long'})%>
                   </td>
                </tr>
                <tr>
@@ -98,12 +108,12 @@
                 <th >
                         Products  
                           </th>
-<table class="table table-bordered">
+<table class="table table-bordered ">
                           <tr>
-                            <th> Product Name</th>
-                            <th> Price</th>
-                            <th> Quantity</th>
-                            <th> Total Price</th>
+                            <th> <strong> Product Name </strong></th>
+                            <th> <strong>  Price </strong></th>
+                            <th> <strong> Quantity </strong></th>
+                            <th> <strong> Total Price </strong></th>
                           </tr>
 
                           <tr>
@@ -129,22 +139,60 @@
            <% })%>
 
            <tr>
-            <th>Total Amount</th>
+            <th> <strong>Sub Total </strong></th>
+            <td></td>
+            <td></td>
+            <th>  <%=orderData.subTotal%></th>
+           </tr>
+
+
+           <tr>
+            <th><strong>Coupon Applied </strong></th>
+            <td></td>
+            <td></td>
+            <th>    <%=orderData.coupon%> </th>
+           </tr>
+
+
+
+           <tr>
+            <th><strong> Discount </strong></th>
+            <td></td>
+            <td></td>
+            <th>  <%=orderData.discount%> </th>
+           </tr>
+
+
+
+           <tr>
+            <th><strong>Total Amount </strong></th>
             <td></td>
             <td></td>
             <th>  <%=orderData.totalAmount%></th>
            </tr>
 
 
+
+
         </table>
-        <div class="button-block d-flex justify-content-end ">
-            <%if((orderData.status=="Delivered")&& (( Date.now()- (orderData.updatedAt.getTime()) <= (7 * 24 * 60 * 60 * 1000)) )){%>
+      
+            <%if(((orderData.status=="Returned")||(orderData.status=="Cancelled"))&&(orderData.paymentMethod!=='Cash on Delivery')  ){%>
             
-            <a href="/return-order?_id=<%=orderData._id%>" class="btn btn-primary my-3">Return Order</a>
+                <div class="return-status-box  border border-rounded w-100">
+
+                    <h5 class="text-left m-4">Refund of Rs.<%=orderData.totalAmount%> has beed added to your wallet</h5>
+                </div>
+                
+                <div class="button-block d-flex justify-content-end">
+               
+            <%}else if((orderData.status=="Delivered")&& (( Date.now()- (orderData.updatedAt.getTime()) <= (7 * 24 * 60 * 60 * 1000)) )){%>
+                
+            <a href="#" class="btn btn-primary my-3" onclick="returnOrder('<%=orderData._id%>')">Return Order</a>
         <%}else if ((orderData.status=="Shipped")||(orderData.status=="Confirmed")||(orderData.status=="Pending")){%>
-            <a href="/cancel-order?_id=<%=orderData._id%>" class="btn btn-primary my-3">Cancel Order</a>
+            <a href="#" class="btn btn-primary my-3" onclick="cancelOrder('<%=orderData._id%>')">Cancel Order</a>
 
             <%}%>
+
             <a href="/download-invoice?_id=<%=orderData._id%> " class="btn btn-secondary my-3 mx-4"><i class="bi bi-download" style="font-size: 2rem;"></i>  Download Invoice</a>
     </div>
 </div>
@@ -153,18 +201,67 @@
 <div class="back-button " style="text-align: right"><a href="/orders" class="btn btn-warning my-3">Back</a></div>
             </div>
             
+    </div>
+    </div>
+
+<script>
+
+const returnOrder=(order_id)=>{
+
+
+    new swal({
+
+text: "Are your sure want to return this order?",
+icon: "warning",
+buttons: ["No", "Yes"],
+dangerMode: true,
+})
+.then((response) => {
+if (response) {
+fetch(`/return-order?_id=${order_id}`,{method:"GET",headers:{'contentType':'application/json'}})
+.then(response=>{
+    if(response.ok){
+        new swal({title: "Order returned successfully",
+  icon: "success",
+  button: "OK"}).then(()=>
+        { window.location.href=`/orders` }
            
-            
-  
-  
-        
-    
-        
-    </div>
-    </div>
+    )
+    }
+})
+}
+})
+}
+
+const cancelOrder=(order_id)=>{
+
+new swal({
+
+text: "Are your sure want to cancel this order?",
+icon: "warning",
+buttons: ["No", "Yes"],
+dangerMode: true,
+})
+.then((cancel) => {
+if (cancel) {
+fetch(`/cancel-order?_id=${order_id}`,{method:"GET",headers:{'contentType':'application/json'}})
+.then(response=>{
+    if(response.ok){
+        new swal({title: "Order cancelled successfully",
+  icon: "success",
+  button: "OK"}).then(()=>
+        { window.location.href=`/orders` }
+           
+    )
+    }
+})
+}
+})
+}
 
 
-</div>
+
+</script>
 
 
 

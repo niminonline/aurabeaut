@@ -1,0 +1,24 @@
+<%-include("../layout/header.ejs")%> <%if(typeof userData != 'undefined'){%>
+    <%-include("../layout/menuUser.ejs")%> <%}else{%>
+    <%-include("../layout/menu.ejs")%> <%}%>
+
+
+
+<div class="image-container ">  
+
+    <%if(typeof errorMessage != 'undefined'){%>
+        <h5 class="text-center"><%=errorMessage%></h5>
+
+    <%}%>
+    <img src="/images/404error.webp" class="mx-auto"  style="height: 100vh;">
+</div>
+
+
+
+
+
+
+
+
+
+<%-include("../layout/footer.ejs")%>

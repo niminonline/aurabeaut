@@ -24,6 +24,7 @@ async function verifyEmail(email, otp) {
     // console.log(result);
   } catch (error) {
     console.log(error.message);
+res.status(404).render("404",{errorMessage:error.message});
   }
 }
 
@@ -33,6 +34,7 @@ const generateOtp = () => {
     return otp;
   } catch (err) {
     console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
@@ -44,6 +46,7 @@ const hashPassword = async (password) => {
     return await bcrypt.hash(password, 10);
   } catch (error) {
     console.log(error.message);
+res.status(404).render("404",{errorMessage:error.message});
   }
 };
 

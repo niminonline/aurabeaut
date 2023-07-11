@@ -77,6 +77,7 @@ const loadAllProducts = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+res.status(404).render("404",{errorMessage:error.message});
   }
 };
 
@@ -96,6 +97,7 @@ const loadProduct = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+res.status(404).render("404",{errorMessage:error.message});
   }
 };
 

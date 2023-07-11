@@ -13,6 +13,7 @@ const loginLoad = async (req, res) => {
     res.render("login");
   } catch (err) {
     console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
   }
 };
 
@@ -23,6 +24,7 @@ const forgetPasswordLoad = (req, res) => {
     res.render("forgetPassword");
   } catch (err) {
     console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
   }
 };
 
@@ -33,6 +35,7 @@ const verifyRPOtpLoad = (req, res) => {
     res.render("verifyResetPassOtp");
   } catch (err) {
     console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
   }
 };
 
@@ -61,6 +64,7 @@ const verifyLogin = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
   }
 };
 
@@ -71,6 +75,7 @@ const sendOTP = (req, res) => {
     res.redirect("verifyotp");
   } catch (err) {
     console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
   }
 };
 
@@ -81,6 +86,7 @@ const resetPasswordLoad = (req, res) => {
     res.render("resetPassword");
   } catch (err) {
     console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
   }
 };
 // =======================Reset Password=====================
@@ -90,6 +96,7 @@ const resetPassword = (req, res) => {
     res.redirect("login");
   } catch (err) {
     console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
   }
 };
 
@@ -100,6 +107,7 @@ const submitOTP = (req, res) => {
     res.redirect("resetPassword");
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 //===============================Store signup details==================
@@ -124,6 +132,7 @@ const storeSignUpDetails = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -141,7 +150,7 @@ const insertUser = async (req, res) => {
         isVerified: true,
         isBlocked: false,
       });
-      const userData = user.save();
+      const userData = await user.save();
       const getUserData = await User.findOne({
         email: req.session.tempUserData.email,
       });
@@ -172,6 +181,7 @@ const logout = async (req, res) => {
     res.redirect("/login");
   } catch (err) {
     console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
   }
 };
 
@@ -181,6 +191,7 @@ const loadSignUp = (req, res) => {
     res.render("signup", { message: "" });
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -190,6 +201,7 @@ const loadSignUpOtp = (req, res) => {
     res.render("verifySignUpOtp");
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -220,6 +232,7 @@ const loadHome = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
   }
 };
 
@@ -253,6 +266,7 @@ const loadCart = async (req, res) => {
     res.render("cart", { userData: userData, subTotal: subTotal });
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -261,7 +275,6 @@ const loadCart = async (req, res) => {
 const loadWishlist = async (req, res) => {
   try {
     const user = req.session.user_id;
-    // const userData = await User.findById(user);
     const userData = await User.aggregate([
       { $match: { _id: new ObjectId(user) } },
       {
@@ -273,57 +286,12 @@ const loadWishlist = async (req, res) => {
         },
       },
     ]);
-    // console.log("Userdata", userData);
-    // const wishlistProducts = await Product.findById(user.wishlist)
-    // console.log(wishlistProducts);
+    console.log(userData);
 
     res.render("wishlist", { userData: userData });
-
-    //     const id= new ObjectId(req.session.user_id);
-    //     // const userData= await User.findById(req.session.user_id).populate('wishlist.product').lean();
-    //     // console.log(userData);
-    //     // console.log(userData.wishlist);
-    //     // console.log(userData.wishlist[0].product);
-    //     const userData= await User.findById(req.session.user_id)
-    //     const wishlistProducts = await Product.find({ _id: userData.wishlist });
-    // console.log("wish",wishlistProducts);
-
-    // res.render("wishlist", { userData: userData });
-
-    // const userData = await User.aggregate([{
-    //       $match: { _id: id}
-    //     },
-    //   {
-    //     $lookup: {
-    //       from: 'products',
-    //       localField: 'cart.product',
-    //       foreignField: '_id',
-    //       as: 'product'
-    //     }
-    //   }
-    // ])
-    // const productData = await Product.find();
-    //   const id= new ObjectId(req.session.user_id);
-    //   // const userData= await User.findOne({_id:req.session.user_id}).populate('wishlist').lean();
-    //   // const userData = await User.findById(req.session.user_id).populate('wishlist.product').lean();
-
-    // const userData = await User.aggregate([{
-    //       $match: { _id: id}
-    //     },
-    //   {
-    //     $lookup: {
-    //       from: 'products',
-    //       localField: 'wishlist.product',
-    //       foreignField: '_id',
-    //       as: 'product'
-    //     }
-    //   }
-    // ])
-
-    //   console.log(userData);
-    //   res.render("wishlist", { userData: userData });
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -339,6 +307,7 @@ const loadUserDashboard = async (req, res) => {
     res.render("userDashboard", { userData: userData, orderData: orderData });
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -379,6 +348,7 @@ const addToCart = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -413,6 +383,7 @@ const addToWishlist = async (req, res) => {
     // res.redirect(req.headers.referer);
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -425,6 +396,7 @@ const addAddressLoad = async (req, res) => {
     res.render("addAddress", { userData: userData });
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -464,24 +436,24 @@ const addAddress = async (req, res) => {
     // res.render("addAddress",{userData:userData});
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
 //===============================Remove cart Item==========================
 const removeCartItem = async (req, res) => {
   try {
-    const productId = req.query._id;
+    const id = req.query._id;
 
-    const userData = await User.findOne({ _id: req.session.user_id })
-      .populate("cart.product")
-      .lean();
+    // const userData= await User.findOne({_id:req.session.user_id}).populate('cart.product').lean();
 
     await User.findByIdAndUpdate(
       { _id: req.session.user_id },
-      { $pull: { cart: { product: productId } } }
-    ).then(res.redirect(req.headers.referer));
+      { $pull: { cart: { product: id } } }
+    ).then(res.json(200));
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -557,6 +529,7 @@ const quantityUpdate = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -581,6 +554,7 @@ const updateAddress = async (req, res) => {
     res.redirect(req.headers.referer);
   } catch (error) {
     console.log(error.message);
+    res.status(404).render("404", { errorMessage: error.message });
   }
 };
 
@@ -595,6 +569,30 @@ const deleteAddress = async (req, res) => {
       res.redirect(req.headers.referer);
   } catch (err) {
     console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
+  }
+};
+
+// =========================Remove Wishlist Item=============
+const removeWishlistItem = async (req, res) => {
+  try {
+    const { id } = req.query;
+    console.log(req.query);
+    await User.findByIdAndUpdate(new ObjectId(req.session.user_id), {
+      $pull: { wishlist: new ObjectId(id) },
+    }).then(res.json(200));
+  } catch (err) {
+    console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
+  }
+};
+// =========================Page not found=============
+const pageNotFound = async (req, res) => {
+  try {
+    res.render("404");
+  } catch (err) {
+    console.log(err.message);
+    res.status(404).render("404", { errorMessage: err.message });
   }
 };
 
@@ -624,4 +622,6 @@ module.exports = {
   quantityUpdate,
   updateAddress,
   deleteAddress,
+  removeWishlistItem,
+  pageNotFound,
 };
