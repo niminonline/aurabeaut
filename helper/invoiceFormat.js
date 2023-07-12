@@ -65,7 +65,7 @@ const createInvoiceHtml=(invoiceData)=>{
             <p><strong>Address:</strong> ${addressLine1}</p>
             <p>        ${addressLine2}</p>
             <p><strong>Payment method:</strong> ${paymentMethod}</p>
-            <p><strong>Date:</strong> ${date}</p>
+            <p><strong>Date:</strong> ${date.toLocaleString('en-IN',{dateStyle:'long',timeStyle:'short'})}</p>
           </div>
           <table>
             <thead>

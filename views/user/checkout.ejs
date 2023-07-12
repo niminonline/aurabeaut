@@ -371,14 +371,13 @@
                                                 <input type="radio" name="paymentMode" id="creditCard" value="Razorpay"  onchange="paymentMode()"> 
                                                 <label for="creditCard">Credit/debit Card</label>     
                                                </div>
-
-                                               <!-- <div class="paymentItem my-4">
-                                                <input type="radio" name="paymentMode" id="upi" value="UPI" onchange="paymentMode()"> 
-                                                <label for="upi">UPI</label>     
-                                               </div> -->
-  
-                                           
+                                               <div class="paymentItem my-4">
+                                                <input type="radio" name="paymentMode" id="wallet" value="Wallet" onchange="paymentMode()"> 
+                                                <label for="wallet">Wallet</label> 
                                                     
+                                                <p id="wallet-balance" hidden >Available Balance: ₹<%=userData.wallet.balance%> </p>
+                                               </div>
+
                                                 
                                             </div><!-- End .card-header -->
                                         </div><!-- End .card -->
@@ -437,6 +436,13 @@ for (var i = 0; i < radioButtons.length; i++) {
   if (radioButtons[i].checked) {
      selectedPaymentMode = radioButtons[i].value;
   }
+  if(selectedPaymentMode=='Wallet'){
+    document.getElementById('wallet-balance').removeAttribute('hidden');
+  }
+  else{
+    document.getElementById('wallet-balance').setAttribute('hidden', 'true');
+
+  }
 }
 }
 
@@ -480,21 +486,6 @@ else if(selectedPaymentMode=='Razorpay'){
     }else
     {
    console.log('data',data)
-    // const options = {
-    //   key: 'rzp_test_9zHydJZu7xq9lh',
-    //   amount: data.amount,
-    //   currency: 'INR',
-    //   name: 'aurabeaut',
-    //   description: 'Payment for aurabeaut',
-    //   order_id: data.id,
-    //   handler: function(response) {
-    //     console.log(response);
-    //   },
-    //   prefill: {
-    //     email: 'user@example.com',
-    //     contact: '9999999999'
-    //   }
-    // };
     
     var options = {
     key: 'rzp_test_9zHydJZu7xq9lh', 
@@ -534,12 +525,33 @@ else if(selectedPaymentMode=='Cash on Delivery'){
     placeOrder();
 
 }
+else if(selectedPaymentMode=='Wallet'){
+
+  console.log(document.getElementById('couponCode').value);
+
+  fetch(`/wallet-balance-check`,{method:'post',headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123'
+    },
+    body: JSON.stringify({
+      
+      couponCode: document.getElementById('couponCode').value
+      
+  })
+  }).then(response=>(response.json()))
+  .then(response=>{
+    if(response.status=="success"){
+      placeOrder();
+    }
+    else{
+      new swal("Your wallet don't have sufficient balance to place this order")
+    }
+  })
+}
 }
 
 // =======================Start Place Order======================
 const placeOrder = () => {
-  // discount= document.getElementById("discountDisplay").innerText;
-// console.log('discount',discount);
   fetch("/place-order", {
     method: "POST",
     headers: {
@@ -644,6 +656,8 @@ body:
 }
 
 const removeCoupon=()=>{
+
+  document.getElementById('couponCode').value='none';
   document.getElementById('appliedCoupon').innerText=  "";
   document.getElementById('coupon-applied-block').style.display='none';
   document.getElementById('discountDisplay').innerText="";

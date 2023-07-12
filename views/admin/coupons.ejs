@@ -130,10 +130,10 @@
                     <h5 class="text-center text-white">No coupons found</h5>
                      <%}else{%>
           
-                     <% for(let i=0;i<couponData.length;i++){%>
+                     <% for(let i=0;i<couponData.length;i++){%> 
                   <td><%=i+1%></td>
                   <td> <strong><%=couponData[i].code%> </strong></td>
-                  <td><%=couponData[i].expiryDate%></td>
+                  <td><%=couponData[i].expiryDate.toLocaleString('en-IN',{dateStyle:'long',timeStyle:'short'})%></td>
                   <td><%=couponData[i].percentage%></td>
                   <td><%=couponData[i].minPurchase%></td>
                   <td><%=couponData[i].maxDiscount%></td>

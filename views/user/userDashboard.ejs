@@ -328,10 +328,14 @@
                       <tr>
                         <td><%=item.date.toLocaleString("en-IN",{dateStyle:'long',timeStyle:'short'})%></td>
                         <td><%=item.details%></td>
+                        <%if(item.details.includes("Refund")){   %>
                         <td class="text-success">+<%=item.amount%></td>
+                        <%  }else{  %>
+                        <td class="text-danger">-<%=item.amount%></td>
+                        <%   }  %>
                       </tr>
 
-                   <% })   %>    
+                   <% }) %>    
                           
 
 

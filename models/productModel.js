@@ -43,6 +43,18 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    review:[{
+      reviewer:{
+        type:String
+      },
+      reviewContent:{
+        type:String
+      },
+      star:{
+        type:Number,
+      }
+
+    }]
   },
 
   { timestamps: true },

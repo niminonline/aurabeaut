@@ -10,125 +10,169 @@
         <h4 class="my-4 text-center">Order details</h4>
 
         <div class="table-responsive table table-striped align-left table-hover">
-            <table class="table">
+            <div class="table-responsive table table-striped align-left table-hover">
+                <table class="table">
+                  
+                  <tr><th>
+                      Invoice Number
+                  </th>
+                 <td><%=orderData.invoiceNumber%></td>
+              </tr>
+    
+                 <tr>
+                    <th>
+                      Recipient
+                    </th>
+                    <td>
+                      <%=orderData.address.name%>
+                    </td>
+                 </tr>
+                 <tr>
+                    <th>
+                        Address
+                    </th>
+                     
+                      <td><%=orderData.address.address%> <br>  
+                          <%=orderData.address.city%> <%=orderData.address.state%>  <%=orderData.address.pincode%> <br> <%=orderData.address.landmark%>
+                       </td>
+                 </tr>
+                 <tr>
+                    <th>
+                        Mobile Number
+                    </th>
+                    <td>
+                      <%=orderData.address.mobile%>
+                    </td>
+                 </tr>
+  
+               <tr>
+                  <th>
+                      Total Amount
+                  </th>
+                  <td>
+                      <%=orderData.totalAmount%>
+                  </td>
+               </tr>
+  
+                 <tr>
+                    <th>
+                        Payment method
+                    </th>
+                    <td>
+                        <%=orderData.paymentMethod%>
+                    </td>
+                 </tr>
+                 <tr>
+                    <th>
+                        Ordered Date
+                    </th>
+                    <td>
+                        <%=orderData.date.toLocaleString('en-IN',{ dateStyle: 'long'})%>
+                    </td>
+                 </tr>
+                 <tr>
+                    <th>
+                        Expected Delivery Date
+                    </th>
+                    <td>
+                        <%=new Date(orderData.date.getTime()+(7*24*60*60*1000)).toLocaleString('en-IN',{ dateStyle: 'long'})%>
+                    </td>
+                 </tr>
+                 <tr>
+                    <th>
+                       Delivery notes
+                    </th>
+                    <td>
+                        <%=orderData.notes%>
+                    </td>
+                 </tr>
+                 <tr>
+                    <th>
+                        Status
+                    </th>
+    
+                    <td>
+                    
+                      <%=orderData.status%>
+    
+                    </td>
+                 </tr>
+  
+  
+                 <tr>
+                  <th> </th>
+                  <th >
+                          Products  
+                            </th>
+  <table class="table table-bordered ">
+                            <tr>
+                              <th> <strong> Product Name </strong></th>
+                              <th> <strong>  Price </strong></th>
+                              <th> <strong> Quantity </strong></th>
+                              <th> <strong> Total Price </strong></th>
+                            </tr>
+  
+                            <tr>
+                         <%   orderData.product.map((item)=>{%>
+                           
+  
+                  <td>
+                      <%=item.name%>
+                  </td>
+                  <td>
+                      <%=item.price%>
+                  </td>
+                  <td>
+                      <%=item.quantity%>
+                  </td>
+                  <td>
+                      <%=item.total%>
+                  </td>
+                  
+              </tr>
+        
+             
+             <% })%>
+  
              <tr>
-                <th>
-                    Invoice #
-                </th>
-                <td>
-                    <%=orderData.invoiceNumber%>
-                </td>
+              <th> <strong>Sub Total </strong></th>
+              <td></td>
+              <td></td>
+              <th>  <%=orderData.subTotal%></th>
              </tr>
-
+  
+  
              <tr>
-                <th>
-                    Recipient
-                </th>
-                <td>
-                    <%=orderData.address.name%>
-                </td>
+              <th><strong>Coupon Applied </strong></th>
+              <td></td>
+              <td></td>
+              <th>    <%=orderData.coupon%> </th>
              </tr>
+  
+  
+  
              <tr>
-                <th>
-                    Address
-                </th>
-                    <td><%=orderData.address.address%> <br>  
-                        <%=orderData.address.city%> <%=orderData.address.state%>  <%=orderData.address.pincode%> <br> <%=orderData.address.landmark%>
-                     </td>
-                        
+              <th><strong> Discount </strong></th>
+              <td></td>
+              <td></td>
+              <th>  <%=orderData.discount%> </th>
              </tr>
+  
+  
+  
              <tr>
-                <th>
-                    Mobile Number
-                </th>
-                <td>
-                    <%=orderData.address.mobile%>
-                </td>
+              <th><strong>Total Amount </strong></th>
+              <td></td>
+              <td></td>
+              <th>  <%=orderData.totalAmount%></th>
              </tr>
+  
+    </table>
              <tr>
-                <th>
-                    Total Amount
-                </th>
-                <td>
-                    <%=orderData.totalAmount%>
-                </td>
-             </tr>
-             <tr>
-                <th>
-                    Payment method
-                </th>
-                <td>
-                    <%=orderData.paymentMethod%>
-                </td>
-             </tr>
-             <tr>
-                <th>
-                    Ordered Date
-                </th>
-                <td>
-                    <%=orderData.date.toLocaleString('en-In',{dateStyle:'long'})%>
-                </td>
-             </tr>
-             <tr>
-                <th>
-                   Delivery notes
-                </th>
-                <td>
-                    <%=orderData.notes%>
-                </td>
-             </tr>
-           
-           
-             <tr>
-                <th> </th>
                 <th >
-                        Products  
-                          </th>
-<table class="table table-bordered">
-                          <tr>
-                            <th> Product Name</th>
-                            <th> Price</th>
-                            <th> Quantity</th>
-                            <th> Total Price</th>
-                          </tr>
-
-                          <tr>
-                       <%   orderData.product.map((item)=>{%>
-                         
-
-                <td>
-                    <%=item.name%>
-                </td>
-                <td>
-                    <%=item.price%>
-                </td>
-                <td>
-                    <%=item.quantity%>
-                </td>
-                <td>
-                    <%=item.total%>
-                </td>
-                
-            </tr>
-      
-           <% })%>
-
-           <tr>
-            <th>Total Amount</th>
-            <td></td>
-            <td></td>
-            <th>  <%=orderData.totalAmount%></th>
-           </tr>
-        </table>
-
-
-             <tr>
-                <th>
-                    Status
+                    
+                   <strong > Update status</strong> 
                 </th>
-                
-
-
                 <td>
                 <form class="form-floating " method="post">
                     <select class="form-select" name="status" required>
@@ -154,9 +198,15 @@
 
                 </td>
              </tr>
-
-            </table>
-          
+  
+  
+          </table>
+        
+             
+  
+              <a href="/download-invoice?_id=<%=orderData._id%> " class="btn btn-secondary my-3 mx-4"><i class="bi bi-download" style="font-size: 2rem;"></i>  Download Invoice</a>
+      </div>
+  </div>
           </div>
           
 
