@@ -47,11 +47,17 @@ const productSchema = new mongoose.Schema(
       reviewer:{
         type:String
       },
-      reviewContent:{
+      title:{
         type:String
       },
-      star:{
+      content:{
+        type:String
+      },
+      starRating:{
         type:Number,
+      },
+      date:{
+        type:Date,
       }
 
     }]

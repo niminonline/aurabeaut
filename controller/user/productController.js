@@ -100,5 +100,28 @@ const loadProduct = async (req, res) => {
 res.status(404).render("404",{errorMessage:error.message});
   }
 };
+//===============================Add review ==================================
 
-module.exports = { loadAllProducts, loadProduct };
+const addReview = async (req, res) => {
+  try {
+    const {id,review,starRating,title} =req.body;
+    const productData= await Product.findById(id);
+    const userData= await User.findById(req.session.user_id)
+    const reviewData={
+      reviewer: userData.name,
+      title: title,
+      content: review,
+      starRating:starRating,
+      date: new Date()
+    }
+    await Product.findByIdAndUpdate(id,{$push:{review:reviewData}},{new:true});
+
+
+
+  } catch (error) {
+    console.log(error.message);
+res.status(404).render("404",{errorMessage:error.message});
+  }
+};
+
+module.exports = { loadAllProducts, loadProduct,addReview };

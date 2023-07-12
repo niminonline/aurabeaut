@@ -72,6 +72,7 @@ userRoute.post("/payment-gateway",isUserSession,stockCheck, orderController.paym
 userRoute.post("/pg-order",isUserSession,stockCheck, orderController.pgOrder);
 userRoute.post("/apply-coupon", couponController.applyCoupon);
 userRoute.post("/wallet-balance-check", orderController.walletBalanceCheck);
+userRoute.post("/add-review", productController.addReview);
 
 
 

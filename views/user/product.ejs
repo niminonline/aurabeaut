@@ -75,23 +75,6 @@
 
 
 
-                                        <!-- <%if(productData.imageUrl.length>0){%>
-                                            <% for(let i=0;i<productData.imageUrl.length;i++){%>
-
-                                        <div id="product-zoom-gallery" class="product-image-gallery">
-                                            <a class="product-gallery-item active" href="#" data-image="<%= productData.mainImage%>" data-zoom-image="<%= productData.mainImage%>">
-                                                <img src="<%= productData.mainImage%>" alt="product side">
-                                            </a>
-
-
-                                           <a class="product-gallery-item" href="#" data-image="<%= productData.imageUrl[i]%>" data-zoom-image="<%= productData.imageUrl[i]%>">
-                                                <img src="<%= productData.imageUrl[i]%>" alt="product cross">
-                                            </a>
-
-
-
-
-                                            <%}}%> -->
 
                                   
                                         </div>
@@ -169,9 +152,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="product-shipping-link" data-toggle="tab" href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab" aria-selected="false">Shipping & Returns</a>
                             </li>
-                            <!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
-                            </li> -->
+                            </li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
@@ -211,6 +194,11 @@
                             <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
                                 <div class="reviews">
                                     <h3>Reviews (2)</h3>
+                                   
+                                   
+
+
+                                   
                                     <div class="review">
                                         <div class="row no-gutters">
                                             <div class="col-auto">
@@ -227,41 +215,58 @@
 
                                                 <div class="review-content">
                                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
-                                                </div><!-- End .review-content -->
+                                                </div>
 
-                                                <div class="review-action">
+                                                <!-- <div class="review-action">
                                                     <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
                                                     <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
-                                                </div><!-- End .review-action -->
-                                            </div><!-- End .col-auto -->
-                                        </div><!-- End .row -->
-                                    </div><!-- End .review -->
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                    <div class="review">
-                                        <div class="row no-gutters">
-                                            <div class="col-auto">
-                                                <h4><a href="#">John Doe</a></h4>
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
-                                                    </div><!-- End .ratings -->
-                                                </div><!-- End .rating-container -->
-                                                <span class="review-date">5 days ago</span>
-                                            </div><!-- End .col -->
-                                            <div class="col">
-                                                <h4>Very good</h4>
 
-                                                <div class="review-content">
-                                                    <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
-                                                </div><!-- End .review-content -->
+                                    <div class="add-review-block container border rounded border-light p-4 text-center">
+                                        <form class="border" action="/add-review" method="post">
+                                            <h5 class="text-center m-4">Add Review</h5>
+                                            <input type="text" value="<%=productData._id%>" hidden name="id">
 
-                                                <div class="review-action">
-                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
-                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
-                                                </div><!-- End .review-action -->
-                                            </div><!-- End .col-auto -->
-                                        </div><!-- End .row -->
-                                    </div><!-- End .review -->
+                                            <div class="form-group row">
+                                                <label for="title" class="col-sm-2 col-form-label">Title</label>
+                                                <input type="text"  id="title" name="title" >
+                                          </div>
+
+                                            <div class="form-group row">
+                                              <label for="reviewContent" class="col-sm-2 col-form-label">Review</label>
+                                              <textarea  id="w3review" name="review" rows="4" cols="100"></textarea>
+                                        </div>
+                                        
+                                        <div class="form-group row ">
+                                            
+                                            <label for="starRating" class="col-sm-2 col-form-label">Star Rating</label>
+                                                <select id="starRating" class="custom-select" style="width: 200px;height: 30px;font-size: 1.5rem;" name="starRating">
+                                                    <!-- <option selected>Open this select menu</option> -->
+                                                    <option value="1">⭐</option>
+                                                    <option value="2">⭐⭐</option>
+                                                    <option value="3">⭐⭐⭐</option>
+                                                    <option value="4">⭐⭐⭐⭐</option>
+                                                    <option value="5">⭐⭐⭐⭐⭐</option>   
+                                                  </select>
+                                               
+                                              </div>
+                                              <div class="submit-button-block text-center my-4">
+                                                  <input type="submit" class="btn btn-primary" value="Submit">
+                                              </div>
+
+                                          </form>
+
+
+                                    </div>
+
+
+
+
+                                    
                                 </div><!-- End .reviews -->
                             </div><!-- .End .tab-pane -->
                         </div><!-- End .tab-content -->
