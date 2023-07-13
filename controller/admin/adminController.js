@@ -33,10 +33,8 @@ res.status(404).render("404",{errorMessage:err.message});
 //===============================Dashboard Load====================
 const dashboardLoad = async (req, res) => {
   try {
-    const orderData = Order.find();
-    console.log(orderData);
 
-    res.render("home",{orderData:orderData});
+    res.render("home");
   } catch (err) {
     console.log(err.message);
 res.status(404).render("404",{errorMessage:err.message});

@@ -3,71 +3,116 @@
 <div class="container-fluid">
   <h2>Welcome Admin....</h2>
   
-
-  <div class="card-row row m-4">
-
-    <!-- -----------------Start Card------------------ -->
-    <div class="card" style="width: 18rem;">
-      <div class="card-header">
-        <h4 class="card-title my-4">Weekly Orders</h4>
-      </div>
-    
-      <div class="card-body">
-       
-        <img src="..." class="card-img-top" alt="...">
-        <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      </div>
-    </div>
-    
   </div>
 
+  <div class="card-row row m-4 d-flex justify-content-around">
 
-
+    <!-- -----------------Start Card------------------ -->
+    <div class="card bg-warning dashboard-card" style="width: 18rem;"> 
+        <h2 class="card-title my-4 text-white text-center">Total Orders</h2>
+    
+      <div class="card-body ">
+       
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <h1 class=" mb-2  text-white text-center">9 Orders</h1>
+       
+      </div>
+    </div>
     <!-- -----------------End Card------------------ -->
 
+    <!-- -----------------Start Card------------------ -->
+    <div class="card bg-primary dashboard-card" style="width: 18rem;"> 
+        <h2 class="card-title my-4 text-white text-center">Orders Placed today</h2>
+      <div class="card-body ">
+       
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <h1 class=" mb-2  text-white text-center">9 Orders</h1>
+       
+      </div>
+    </div>
+    <!-- -----------------End Card------------------ -->
+
+    <!-- -----------------Start Card------------------ -->
+    <div class="card bg-danger dashboard-card" style="width: 18rem;"> 
+        <h2 class="card-title my-4 text-white text-center">Pending Orders</h2>
+      <div class="card-body ">
+       
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <h1 class=" mb-2  text-white text-center">9 Orders</h1>
+      </div>
+    </div>
+    <!-- -----------------End Card------------------ -->
+
+    <!-- -----------------Start Card------------------ -->
+    <div class="card bg-success dashboard-card" style="width: 18rem;"> 
+        <h2 class="card-title my-4 text-white text-center">Total Revenue</h2>
+      <div class="card-body ">
+       
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <h1 class=" mb-2  text-white text-center">9 Orders</h1>
+       
+      </div>
+    </div>
+    <!-- -----------------End Card------------------ -->
+
+     
+
+
+
+
+  </div>
+  <!-- </div> -->
  
 
 
   <!-- ----------------------------------Start Charts----------------------->
-  <div class="row">
+  <div class="row d-flex justify-content-around">
 <!-- -----------Start Single Chart--------------- -->
-<div class="col-md-4 chart-card">
-  <div style="width: 400px;height: 400px;">
-    <h4 class="text-center my-3">Payment Modes</h4>
-    <canvas id="paymentModseChart"></canvas>
+<div class="col-md-3 m-4 chart-card">
+  <!-- <div style="width: 400px;height: 400px;"> -->
+    <h4 class="text-center my-3 p-4">Daily Sales</h4>
+    <canvas id="dailySalesContainer"></canvas>
   </div>
-</div>
-<!-- -----------End Single Chart--------------- -->
 
-<!-- -----------Start Single Chart--------------- -->
-<div class="col-md-4">
-  <div style="width: 400px;height: 400px;">
-    <h4 class="text-center my-3">Payment Modes</h4>
-    <canvas id="paymentModeChart"></canvas>
-  </div>
-</div>
 <!-- -----------End Single Chart--------------- -->
 
 
+<!-- -----------Start Single Chart--------------- -->
+<div class="col-md-3 m-4 chart-card">
+  <!-- <div style="width: 400px;height: 400px;"> -->
+    <h4 class="text-center my-3 p-4">Daily Orders</h4>
+    <canvas id="dailyOrderContainer"></canvas>
+  </div>
+  
+  <!-- -----------End Single Chart--------------- -->
+  
+  <!-- -----------Start Single Chart--------------- -->
+  <div class="col-md-3 m-4 p-4 chart-card">
+    <!-- <div style="width: 400px;height: 400px;"> -->
+      <h4 class="text-center my-3">Payment Modes</h4>
+      <canvas id="paymentModeContainer"></canvas>
+    </div>
+  
+  <!-- -----------End Single Chart--------------- -->
 </div>
   
+
   <!-- ----------------------------------End Charts---------------------- -->
-</div>
+
 
 
   <script>
 
     // ------------------Start Chart Script----------------------
-    const ctx = document.getElementById('paymentModeChart');
-    const paymentModeFun= ()=>{
+    const paymentModeFun= async ()=>{
+      const pmc = document.getElementById('paymentModeContainer');
 
       fetch("/admin/get-paymentmodes",{method:"get"})
       .then(response=>response.json())
       .then(data=>{
-        console.log(data)
+        // console.log(data)
 
-        new Chart(ctx, {
+        new Chart(pmc, {
         type: 'pie',
       data: {
         labels:  Object.keys(data),
@@ -85,20 +130,98 @@
         }
       }
     });
+      })
+    }
+  
+// --------------------------------------------//
+
+    const dailySalesChart= async()=>{
+
+  const dsc = document.getElementById('dailySalesContainer');
+
+fetch("/admin/daily-sales-chart",{method:"get"})
+.then(response=>response.json())
+.then(data=>{
+  // console.log(data);
+  const labels= []
+  const chartData= []
+data.map(item=>{
+  labels.push(item._id)
+  chartData.push(item.totalPrice)
+})
+console.log(labels);
+console.log(chartData);
+  
   
 
+  new Chart(dsc, {
+  type: 'bar',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Total Sales per day Rs',
+      data:chartData,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
 
-      })
-      
-      
+})
     }
 
 
+const dailyOrderChart= async ()=>{
+
+  const dsc = document.getElementById('dailyOrderContainer');
+
+fetch("/admin/daily-order-chart",{method:"get"})
+.then(response=>response.json())
+.then(data=>{
+  // console.log(data);
+  const labels= []
+  const chartData= []
+data.map(item=>{
+  labels.push(item._id)
+  chartData.push(item.count)
+})
+console.log(labels);
+console.log(chartData);
+  
+  
+
+  new Chart(dsc, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Total order per day',
+      data:chartData,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+})
+    }
 
 
-
-
-  paymentModeFun();
+paymentModeFun();
+dailySalesChart();
+dailyOrderChart();
     
     
     

@@ -41,6 +41,8 @@ adminRoute.get("/set-product-main-image",isAdminLogout, productController.setPro
 adminRoute.get("/coupons", isAdminLogout, couponController.couponsLoad);
 adminRoute.get("/delete-coupon", isAdminLogout, couponController.deleteCoupon);
 adminRoute.get("/get-paymentmodes", isAdminLogout, dashboardController.getPaymentModes);
+adminRoute.get("/daily-sales-chart", isAdminLogout, dashboardController.dailySalesChart);
+adminRoute.get("/daily-order-chart", isAdminLogout, dashboardController.dailyOrderChart);
 
 
 // =================== Admin Log in/log out=========================================
