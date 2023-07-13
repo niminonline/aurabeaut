@@ -55,7 +55,7 @@
 
 
 
-                                        <div id="product-zoom-gallery" class="product-image-gallery" style="max-height: 1.5rem">
+                                        <div id="product-zoom-gallery" class="product-image-gallery" style="overflow: auto; height: 400px;" >
                                             <a class="product-gallery-item active" href="#" data-image="<%= productData.mainImage%>" data-zoom-image="<%= productData.mainImage%>" >
                                                 <img src="<%= productData.mainImage%>" alt="product side" >
                                             </a>
@@ -153,7 +153,7 @@
                                 <a class="nav-link" id="product-shipping-link" data-toggle="tab" href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab" aria-selected="false">Shipping & Returns</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
+                                <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -193,28 +193,34 @@
                             </div><!-- .End .tab-pane -->
                             <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
                                 <div class="reviews">
-                                    <h3>Reviews (2)</h3>
+                                    <h3>Reviews (<%=productData.review.length%>)</h3>
                                    
-                                   
+                                    <%   if(productData.review.length>0){ %>
 
+                                    <% productData.review.map(item=>{ %>
 
                                    
-                                    <div class="review">
+                                   
+                                    <div class="review my-4">
                                         <div class="row no-gutters">
                                             <div class="col-auto">
-                                                <h4><a href="#">Samanta J.</a></h4>
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                                <h4><a href="#"><%=item.reviewer%></a></h4>
+                                                <!-- <div class="ratings-container"> -->
+                                                    <div class="ratingsw d-flex">
+                                                      <% for(let i=0;i<item.starRating;i++){ %>
+                                                        <p> ⭐ </p>  
+                                                            
+                                                        <% }%>  
+                                                        <!-- <div class="ratings-val" style="width: <%= item.starRating * 20 %>%;"></div>                                                        End .ratings-val -->
                                                     </div><!-- End .ratings -->
-                                                </div><!-- End .rating-container -->
-                                                <span class="review-date">6 days ago</span>
+                                                <!-- </div>End .rating-container -->
+                                                <span class="review-date"><%=item.date.toLocaleString('en-IN',{dateStyle:'long'})%></span>
                                             </div><!-- End .col -->
                                             <div class="col">
-                                                <h4>Good, perfect size</h4>
+                                                <h4><%=item.title%></h4>
 
                                                 <div class="review-content">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
+                                                    <p><%=item.content%></p>
                                                 </div>
 
                                                 <!-- <div class="review-action">
@@ -223,7 +229,20 @@
                                                 </div> -->
                                             </div>
                                         </div>
+
+                                        <% }) %>
+
+                                        <% }else{%>
+                                        
+                                        <p>No reviews for this product</p>
+                                        
+                                        <%  }%>
                                     </div>
+
+
+                                 <% if((typeof userData !=='undefined')){  %>  
+
+                                  
 
 
                                     <div class="add-review-block container border rounded border-light p-4 text-center">
@@ -263,7 +282,7 @@
 
                                     </div>
 
-
+                                    <%   }  %>  
 
 
                                     

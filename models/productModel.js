@@ -44,6 +44,9 @@ const productSchema = new mongoose.Schema(
       default: false,
     },
     review:[{
+      userId:{
+        type:String,
+      },
       reviewer:{
         type:String
       },

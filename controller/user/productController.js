@@ -108,15 +108,16 @@ const addReview = async (req, res) => {
     const productData= await Product.findById(id);
     const userData= await User.findById(req.session.user_id)
     const reviewData={
+      userId: req.session.user_id,
       reviewer: userData.name,
       title: title,
       content: review,
       starRating:starRating,
-      date: new Date()
+      date: new Date()    
     }
     await Product.findByIdAndUpdate(id,{$push:{review:reviewData}},{new:true});
 
-
+    res.redirect(req.headers.referer);
 
   } catch (error) {
     console.log(error.message);
