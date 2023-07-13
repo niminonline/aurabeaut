@@ -40,6 +40,7 @@ adminRoute.get("/order-details",isAdminLogout, orderController.orderDetailsLoad)
 adminRoute.get("/set-product-main-image",isAdminLogout, productController.setProductMainImage);
 adminRoute.get("/coupons", isAdminLogout, couponController.couponsLoad);
 adminRoute.get("/delete-coupon", isAdminLogout, couponController.deleteCoupon);
+adminRoute.get("/get-paymentmodes", isAdminLogout, dashboardController.getPaymentModes);
 
 
 // =================== Admin Log in/log out=========================================

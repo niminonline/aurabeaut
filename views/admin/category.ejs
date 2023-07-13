@@ -7,7 +7,7 @@
 
 
   <div class="shadow-div container rounded text-center">
-    
+    <%if(typeof errorMessage!= 'undefined'){%>
 
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
       <strong>Error:</strong> <%=errorMessage%>
@@ -67,7 +67,6 @@
             class="form-control"
             id="image_upload"
             name="image"
-            accept="image/jpeg, image/png,image/jpg,image/webp,image/svg image/gif"
             placeholder="Add Image"
             onchange="loadThumbnail()"
           />
@@ -105,7 +104,6 @@
       />
       <div class="card-body">
         <h5 class="card-title"><%=item.category%></h5>
-        <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
         <a href="/admin/editcategory?_id=<%=item._id%>" class="btn btn-warning mx-2"
           >Edit</a
         >
@@ -140,7 +138,7 @@
 <script>
 
 const loadThumbnail=()=>{
-  // console.log("Load thumbnail exec");
+  console.log("Load thumbnail exec");
   const input = document.getElementById('image_upload');
   const img = document.getElementById('image');
   const imageContainer= document.getElementById("image-container");
@@ -167,15 +165,10 @@ const loadThumbnail=()=>{
   }),
 })
   .then(response => {
-    // Perform any necessary operations with the response
-    // ...
-
-    // Reload the page
     location.reload();
   })
   .catch(error => {
-    // Handle any errors that occur during the fetch request
-    console.error("Error:", error);
+    console.log("Error:", error);
   });
       
      

@@ -1,4 +1,6 @@
 const User = require("../../models/userModel");
+const Order = require("../../models/orderModel");
+const Product = require("../../models/productModel");
 const { ObjectId } = require("mongodb");
 
 
@@ -31,7 +33,10 @@ res.status(404).render("404",{errorMessage:err.message});
 //===============================Dashboard Load====================
 const dashboardLoad = async (req, res) => {
   try {
-    res.render("home");
+    const orderData = Order.find();
+    console.log(orderData);
+
+    res.render("home",{orderData:orderData});
   } catch (err) {
     console.log(err.message);
 res.status(404).render("404",{errorMessage:err.message});
