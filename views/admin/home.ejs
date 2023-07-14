@@ -120,7 +120,8 @@
     <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
   </div>
 
-<button class="btn btn-primary my-4" onclick="getSalesReport()">Get details</button>
+<button class="btn btn-primary m-4" onclick="getSalesReportPDF()">Download PDF</button>
+<button class="btn btn-primary m-4" onclick="">Download XLS</button>
 
 </div>
 
@@ -257,7 +258,7 @@ dailyOrderChart();
     
     // ------------------Start Chart Script----------------------
 
-  const getSalesReport=()=>{
+  const getSalesReportPDF=()=>{
 
     const startDate= document.getElementById("startDate").value
     const endDate= document.getElementById("endDate").value
@@ -269,21 +270,25 @@ dailyOrderChart();
       new swal("Start date must be less than end date")
     }
     else{
-      console.log(startDate)
-    console.log(endDate)
+    //   console.log(startDate)
+    // console.log(endDate)
 
-    fetch(`/admin/generate-sales-report`,{method:'post',headers: {
+    fetch(`/admin/generate-sales-report-pdf`,{method:'post',headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer token123'
     },
     body: JSON.stringify({
-      
       startDate: startDate,
       endDate:endDate
-        
-      
   })
+  }).then(response=>response.json())
+  .then(data=>{
+    console.log(data);
+
   })
+
+
+
 
     }
   }

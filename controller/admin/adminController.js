@@ -202,52 +202,6 @@ res.status(404).render("404",{errorMessage:err.message});
 
 
 
-// =========================Generate Sales Report=============
-const generateSalesReport = async (req, res) => {
-  try {
-        
-    let {startDate,endDate}= req.body;
-    console.log("datee----",startDate, endDate);
-
-    startDate=  startDate.toLocaleString('en-IN',{ day: '2-digit', month: '2-digit', year: 'numeric' });
-    endDateDate=  endDate.toLocaleString('en-IN',{ day: '2-digit', month: '2-digit', year: 'numeric' });
-
-
-
-
-    const orderData = await Order.aggregate([{$group:{
-      _id:{
-        $dateToString: { format: "%d/%m/%Y", date: "$date" }
-      },
-      totalSales:{$sum:"$totalAmount"}}}])
-  
-    let salesToday=0;
-    salesTd.map(item=>{
-      if(item._id==today){
-        salesToday= item.totalSales;
-      }
-    })
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-  } catch (err) {
-    console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
-  }
-};
-
-
 module.exports = {
   loginLoad,
   adminLogin,
@@ -256,5 +210,4 @@ module.exports = {
   ordersLoad,
   adminLogout,
   userBlockUnblock,
-  generateSalesReport
 };
