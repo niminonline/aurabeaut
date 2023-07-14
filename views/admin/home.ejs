@@ -105,8 +105,8 @@
 
 <div class="sales-report-block m-4 rounded chart-card py-4">
   <h4 class="text-center my-3 py-3">Sales Report</h4>
-  <form action=""></form>
-  <div class="input-fields-block container">
+  <div class="row">
+  <div class="input-fields-block container col-md-4">
   <div class="form-group my-4">
     <label for="startDate">Select start date</label>
     <input type="date" class="form-control" id="startDate" >
@@ -122,7 +122,7 @@
 
 <button class="btn btn-primary m-4" onclick="getSalesReportPDF()">Download PDF</button>
 <button class="btn btn-primary m-4" onclick="">Download XLS</button>
-
+</div>
 </div>
 
 
@@ -270,22 +270,28 @@ dailyOrderChart();
       new swal("Start date must be less than end date")
     }
     else{
+
+      window.location.href=`/admin/generate-sales-report-pdf?startDate=${startDate}&endDate=${endDate}` 
+
+
     //   console.log(startDate)
     // console.log(endDate)
 
-    fetch(`/admin/generate-sales-report-pdf`,{method:'post',headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123'
-    },
-    body: JSON.stringify({
-      startDate: startDate,
-      endDate:endDate
-  })
-  }).then(response=>response.json())
-  .then(data=>{
-    console.log(data);
+    
 
-  })
+  //   fetch(`/admin/generate-sales-report-pdf`,{method:'post',headers: {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer token123'
+  //   },
+  //   body: JSON.stringify({
+  //     startDate: startDate,
+  //     endDate:endDate
+  // })
+  // }).then(response=>response.json())
+  // .then(data=>{
+  //   console.log(data);
+
+  // })
 
 
 

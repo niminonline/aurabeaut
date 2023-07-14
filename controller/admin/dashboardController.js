@@ -3,6 +3,7 @@ const { generateInvoicePDF } = require("../../helper/html-pdf");
 const { createInvoiceHtml } = require("../../helper/salesReportFormat");
 const path = require("path");
 const fs = require("fs");
+const { Console } = require("console");
 //===================================Get payment modes Chart ==========================
 
 const getPaymentModes = async (req, res) => {
@@ -92,7 +93,7 @@ const dailyOrderChart = async (req, res) => {
 // =========================Generate Sales Report=============
 const generateSalesReportPDF = async (req, res) => {
   try {
-    let { startDate, endDate } = req.body;
+    let { startDate, endDate } = req.query;
 
     startDate = startDate.toLocaleString("en-IN", {
       day: "2-digit",
@@ -128,10 +129,8 @@ const generateSalesReportPDF = async (req, res) => {
       console.error("Error downloading SalesReport PDF:", downloadError);
       res.status(500).send("Error downloading SalesReport PDF");
     }
-    // fs.unlinkSync(outputFilePath);
+    fs.unlinkSync(outputFilePath);
   });
-  
-  
   
   
   
