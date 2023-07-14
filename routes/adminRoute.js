@@ -60,6 +60,7 @@ adminRoute.post("/productlistunlist", productController.productListUnlist);
 adminRoute.post("/order-details", orderController.updateOrder);
 adminRoute.post("/coupons", couponController.createCoupon);
 adminRoute.post("/coupon-actions", couponController.couponActions);
+adminRoute.post("/generate-sales-report", admincontroller.generateSalesReport);
 
 
 

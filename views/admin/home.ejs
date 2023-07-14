@@ -7,26 +7,14 @@
 
   <div class="card-row row m-4 d-flex justify-content-around">
 
-    <!-- -----------------Start Card------------------ -->
-    <div class="card bg-warning dashboard-card" style="width: 18rem;"> 
-        <h2 class="card-title my-4 text-white text-center">Total Orders</h2>
     
-      <div class="card-body ">
-       
-        <!-- <img src="..." class="card-img-top" alt="..."> -->
-        <h1 class=" mb-2  text-white text-center">9 Orders</h1>
-       
-      </div>
-    </div>
-    <!-- -----------------End Card------------------ -->
-
     <!-- -----------------Start Card------------------ -->
     <div class="card bg-primary dashboard-card" style="width: 18rem;"> 
-        <h2 class="card-title my-4 text-white text-center">Orders Placed today</h2>
+      <h2 class="card-title my-4 text-white text-center">Orders Placed today</h2>
       <div class="card-body ">
        
         <!-- <img src="..." class="card-img-top" alt="..."> -->
-        <h1 class=" mb-2  text-white text-center">9 Orders</h1>
+        <h1 class=" mb-2  text-white text-center"><%=orderToday%> Orders</h1>
        
       </div>
     </div>
@@ -34,22 +22,34 @@
 
     <!-- -----------------Start Card------------------ -->
     <div class="card bg-danger dashboard-card" style="width: 18rem;"> 
-        <h2 class="card-title my-4 text-white text-center">Pending Orders</h2>
+        <h2 class="card-title my-4 text-white text-center">Pending</h2>
       <div class="card-body ">
-       
+        
         <!-- <img src="..." class="card-img-top" alt="..."> -->
-        <h1 class=" mb-2  text-white text-center">9 Orders</h1>
+        <h1 class=" mb-2  text-white text-center"><%=PendingCount%> Orders</h1>
       </div>
     </div>
     <!-- -----------------End Card------------------ -->
-
+    
     <!-- -----------------Start Card------------------ -->
-    <div class="card bg-success dashboard-card" style="width: 18rem;"> 
-        <h2 class="card-title my-4 text-white text-center">Total Revenue</h2>
+    <div class="card bg-warning dashboard-card" style="width: 18rem;"> 
+        <h2 class="card-title my-4 text-white text-center">Sales today</h2>
+    
       <div class="card-body ">
        
         <!-- <img src="..." class="card-img-top" alt="..."> -->
-        <h1 class=" mb-2  text-white text-center">9 Orders</h1>
+        <h1 class=" mb-2  text-white text-center">₹<%=salesToday%></h1>
+       
+      </div>
+    </div>
+    <!-- -----------------End Card------------------ -->
+    <!-- -----------------Start Card------------------ -->
+    <div class="card bg-success dashboard-card" style="width: 18rem;"> 
+      <h2 class="card-title my-4 text-white text-center">Total Revenue</h2>
+      <div class="card-body ">
+       
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <h1 class=" mb-2  text-white text-center">₹<%=totalRevenue%></h1>
        
       </div>
     </div>
@@ -99,6 +99,36 @@
 
   <!-- ----------------------------------End Charts---------------------- -->
 
+
+<!-- ------------------------ Start Sales Report-------------------------- -->
+
+
+<div class="sales-report-block m-4 rounded chart-card py-4">
+  <h4 class="text-center my-3 py-3">Sales Report</h4>
+  <form action=""></form>
+  <div class="input-fields-block container">
+  <div class="form-group my-4">
+    <label for="startDate">Select start date</label>
+    <input type="date" class="form-control" id="startDate" >
+    <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
+  </div>
+
+
+  <div class="form-group">
+    <label for="endDate">Select End date</label>
+    <input type="date" class="form-control" id="endDate" >
+    <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
+  </div>
+
+<button class="btn btn-primary my-4" onclick="getSalesReport()">Get details</button>
+
+</div>
+
+
+</div>
+
+
+<!-- ------------------------ End Sales Report-------------------------- -->
 
 
   <script>
@@ -227,7 +257,36 @@ dailyOrderChart();
     
     // ------------------Start Chart Script----------------------
 
+  const getSalesReport=()=>{
+
+    const startDate= document.getElementById("startDate").value
+    const endDate= document.getElementById("endDate").value
     
+    if(startDate==""|| endDate==""){
+      new swal("Please select a date")
+    }
+    else if(startDate> endDate){
+      new swal("Start date must be less than end date")
+    }
+    else{
+      console.log(startDate)
+    console.log(endDate)
+
+    fetch(`/admin/generate-sales-report`,{method:'post',headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123'
+    },
+    body: JSON.stringify({
+      
+      startDate: startDate,
+      endDate:endDate
+        
+      
+  })
+  })
+
+    }
+  }
     
 </script>
     

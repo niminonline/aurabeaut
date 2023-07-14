@@ -63,7 +63,7 @@ const placeOrder = async (req, res) => {
       req.body;
 
     let discount = req.body.discount;
-    console.log(req.body);
+    // console.log(req.body);
 
     if (couponCode != "none") {
       const userused = await Coupon.findOneAndUpdate(
@@ -93,7 +93,7 @@ const placeOrder = async (req, res) => {
           total: item.product.price * item.quantity,
         };
       } else {
-        console.log("Else block");
+        // console.log("Else block");
         res.json({ status: "out of stock" });
       }
     });
@@ -142,7 +142,7 @@ const placeOrder = async (req, res) => {
       userData.cart = [];
       await userData.save();
 
-      console.log("Data added successfully");
+      // console.log("Data added successfully");
       const orderData = await Order.findOne({ invoiceNumber: invoiceNumber });
       res.json(orderData);
     } else {
@@ -226,7 +226,7 @@ const downloadInvoice = async (req, res) => {
 //===============================Payment Gateway==========================
 const paymentGateway = async (req, res) => {
   try {
-    console.log("pg-body", req.body);
+    // console.log("pg-body", req.body);
     const { notes, paymentMode, addressIndex, discount } = req.body;
     const totalAmount = (parseInt(req.body.totalAmount) - discount) * 100;
     const userData = await User.findById(req.session.user_id);
@@ -278,9 +278,8 @@ const pgOrder = async (req, res) => {
       order_id + "|" + razorpay_payment_id,
       process.env.razorPaySecret
     );
-    console.log("gen signature", generated_signature);
     if (generated_signature == razorpay_signature) {
-      console.log("payment is successful");
+      // console.log("payment is successful");
 
       const validate = validatePaymentVerification(
         { order_id: razorpay_order_id, payment_id: razorpay_payment_id },
@@ -288,14 +287,14 @@ const pgOrder = async (req, res) => {
         process.env.razorPaySecret
       );
       if (validate) {
-        console.log("validation- success.....");
+        // console.log("validation- success.....");
         res.sendStatus(200);
       } else {
-        console.log("Payment validation failed");
+        // console.log("Payment validation failed");
         res.sendStatus(500);
       }
     } else {
-      console.log("Payment failed");
+      // console.log("Payment failed");
       res.sendStatus(500);
     }
   } catch (error) {
@@ -425,7 +424,6 @@ const cancelOrder = async (req, res) => {
 const walletBalanceCheck = async (req, res) => {
   try {
     const { couponCode } = req.body;
-    console.log("body", req.body)
     const userData = await User.findById(req.session.user_id)
       .populate("cart.product")
       .lean();
@@ -452,10 +450,10 @@ const walletBalanceCheck = async (req, res) => {
       // await User.findByIdAndUpdate(req.session.user_id, {
       //   $inc: { "wallet.balance": -amountToPay },
       // });
-      console.log(amountToPay);
+      // console.log(amountToPay);
       res.json({status:"success"});
     } else {
-      console.log("Insufficient balance")
+      // console.log("Insufficient balance")
       res.json({status:"failed"});
     }
   } catch (error) {

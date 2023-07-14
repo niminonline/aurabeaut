@@ -33,8 +33,58 @@ res.status(404).render("404",{errorMessage:err.message});
 //===============================Dashboard Load====================
 const dashboardLoad = async (req, res) => {
   try {
+    const orderData = await Order.find();
+    // console.log(orderData);
+    let totalRevenue=0;
+    orderData.map(item=>{
+      totalRevenue+=item.totalAmount;
+    })
 
-    res.render("home");
+    
+    const pcount = await Order.aggregate([{$group:{_id:"$status",count:{$sum:1}}}])
+    let PendingCount=0;
+    pcount.map(item=>{
+      if(item._id=='Pending'){
+        PendingCount= item.count;
+      }
+    })
+
+    const orderTd = await Order.aggregate([{$group:{
+      _id:{
+        $dateToString: { format: "%d/%m/%Y", date: "$date" }
+      },
+      count:{$sum:1}}}])
+    // console.log(orderTd, "----",)
+    const today=  new Date().toLocaleString('en-IN',{ day: '2-digit', month: '2-digit', year: 'numeric' });
+    let orderToday=0;
+    orderTd.map(item=>{
+      if(item._id==today){
+        orderToday= item.count;
+      }
+    })
+    // console.log("order2day",orderToday);
+
+
+    const salesTd = await Order.aggregate([{$group:{
+      _id:{
+        $dateToString: { format: "%d/%m/%Y", date: "$date" }
+      },
+      totalSales:{$sum:"$totalAmount"}}}])
+    // console.log(salesTd, "----",)
+    // const today=  new Date().toLocaleString('en-IN',{ day: '2-digit', month: '2-digit', year: 'numeric' });
+    // console.log(today)
+    let salesToday=0;
+    salesTd.map(item=>{
+      if(item._id==today){
+        salesToday= item.totalSales;
+      }
+    })
+
+  
+
+
+
+    res.render("home",{orderToday,PendingCount,salesToday,totalRevenue});
   } catch (err) {
     console.log(err.message);
 res.status(404).render("404",{errorMessage:err.message});
@@ -149,6 +199,55 @@ res.status(404).render("404",{errorMessage:err.message});
   }
 };
 
+
+
+
+// =========================Generate Sales Report=============
+const generateSalesReport = async (req, res) => {
+  try {
+        
+    let {startDate,endDate}= req.body;
+    console.log("datee----",startDate, endDate);
+
+    startDate=  startDate.toLocaleString('en-IN',{ day: '2-digit', month: '2-digit', year: 'numeric' });
+    endDateDate=  endDate.toLocaleString('en-IN',{ day: '2-digit', month: '2-digit', year: 'numeric' });
+
+
+
+
+    const orderData = await Order.aggregate([{$group:{
+      _id:{
+        $dateToString: { format: "%d/%m/%Y", date: "$date" }
+      },
+      totalSales:{$sum:"$totalAmount"}}}])
+  
+    let salesToday=0;
+    salesTd.map(item=>{
+      if(item._id==today){
+        salesToday= item.totalSales;
+      }
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+  } catch (err) {
+    console.log(err.message);
+res.status(404).render("404",{errorMessage:err.message});
+  }
+};
+
+
 module.exports = {
   loginLoad,
   adminLogin,
@@ -157,4 +256,5 @@ module.exports = {
   ordersLoad,
   adminLogout,
   userBlockUnblock,
+  generateSalesReport
 };

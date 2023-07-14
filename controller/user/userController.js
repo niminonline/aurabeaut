@@ -577,7 +577,6 @@ const deleteAddress = async (req, res) => {
 const removeWishlistItem = async (req, res) => {
   try {
     const { id } = req.query;
-    console.log(req.query);
     await User.findByIdAndUpdate(new ObjectId(req.session.user_id), {
       $pull: { wishlist: new ObjectId(id) },
     }).then(res.json(200));

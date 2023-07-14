@@ -3,7 +3,6 @@
 
 
 const createInvoiceHtml=(invoiceData)=>{
-    console.log(invoiceData);
 
         const { invoiceNumber, date, recipient, items,mobile,addressLine1,addressLine2,subTotal,discount,total,paymentMethod } = invoiceData;
       
