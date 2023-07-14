@@ -34,10 +34,12 @@
             class="form-control"
             id="price"
             name="price"
+            min="0"
             placeholder="Price"
             required
           />
           <label for="price">Price</label>
+          <p id="priceValidationMessage" style="color: red; display: none;">Please enter a positive number.</p>
         </div>
         <div class="form-floating my-4">
           <select class="form-select" name="category" required>
@@ -66,10 +68,12 @@
             class="form-control"
             id="stock"
             name="stock"
+            min="0"
             placeholder="Stock"
             required
           />
           <label for="stock">Stock</label>
+          <p id="stockValidationMessage" style="color: red; display: none;">Please enter a positive number.</p>
         </div>
         <div class="form-floating mb-3">
           <input
@@ -129,7 +133,9 @@
           <input
             type="submit"
             class="btn btn-primary m-4 mx-auto"
-            value="Add "
+            value="Add"
+            id="addButton"
+            disabled
           />
           <a class="btn btn-danger mx-4" href="/admin/products">Cancel</a>
         </div>
@@ -137,6 +143,48 @@
     </div>
   </div>
 </div>
+
+
+<script>
+
+const stockInput = document.getElementById('stock');
+  const stockValidationMessage = document.getElementById('stockValidationMessage');
+
+  stockInput.addEventListener('input', function() {
+    const inputValue = parseFloat(stockInput.value);
+    if (isNaN(inputValue) || inputValue < 0) {
+      stockValidationMessage.style.display = 'block';
+      document.getElementById('addButton').disabled=true;
+    } else {
+      stockValidationMessage.style.display = 'none';
+      document.getElementById('addButton').disabled=false;
+
+    }
+  });
+
+  const priceInput = document.getElementById('price');
+  const priceValidationMessage = document.getElementById('priceValidationMessage');
+  const addButton = document.getElementById('addButton');
+
+  priceInput.addEventListener('input', function() {
+    const inputValue = parseFloat(priceInput.value);
+    if (isNaN(inputValue) || inputValue < 0) {
+      priceValidationMessage.style.display = 'block';
+      addButton.disabled = true;
+    } else {
+      priceValidationMessage.style.display = 'none';
+      addButton.disabled = false;
+    }
+  });
+
+
+
+</script>
+
+
+
+
+
 
 <script src="/javascripts/imagePreviewMultiple.js"></script>
 
