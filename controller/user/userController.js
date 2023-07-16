@@ -107,8 +107,7 @@ const submitOTP = (req, res) => {
     res.redirect("resetPassword");
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 //===============================Store signup details==================
 
@@ -132,8 +131,7 @@ const storeSignUpDetails = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //==========================Signup User=====================
@@ -191,8 +189,7 @@ const loadSignUp = (req, res) => {
     res.render("signup", { message: "" });
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 // ==============================Load email OTP====================
@@ -201,8 +198,7 @@ const loadSignUpOtp = (req, res) => {
     res.render("verifySignUpOtp");
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //=====================Load User Home Page===================
@@ -266,8 +262,7 @@ const loadCart = async (req, res) => {
     res.render("cart", { userData: userData, subTotal: subTotal });
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //=================Load Wishlist Page================================
@@ -291,8 +286,7 @@ const loadWishlist = async (req, res) => {
     res.render("wishlist", { userData: userData });
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //=================Load User Dashboard================================
@@ -307,8 +301,7 @@ const loadUserDashboard = async (req, res) => {
     res.render("userDashboard", { userData: userData, orderData: orderData });
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //===============================Add to Cart==========================
@@ -348,8 +341,7 @@ const addToCart = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //===============================Add to Wishlist==========================
@@ -383,8 +375,7 @@ const addToWishlist = async (req, res) => {
     // res.redirect(req.headers.referer);
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //===============================Add Address Load==========================
@@ -396,8 +387,7 @@ const addAddressLoad = async (req, res) => {
     res.render("addAddress", { userData: userData });
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //===============================Add Address==========================
@@ -436,8 +426,7 @@ const addAddress = async (req, res) => {
     // res.render("addAddress",{userData:userData});
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //===============================Remove cart Item==========================
@@ -453,8 +442,7 @@ const removeCartItem = async (req, res) => {
     ).then(res.json(200));
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //===============================Quantity update==========================
@@ -529,8 +517,7 @@ const quantityUpdate = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //===============================Update address==========================
@@ -554,8 +541,7 @@ const updateAddress = async (req, res) => {
     res.redirect(req.headers.referer);
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 // =========================Delete Address=============

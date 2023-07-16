@@ -108,8 +108,9 @@
                 <th >
                         Products  
                           </th>
-<table class="table table-bordered ">
+                        <table class="table table-bordered ">
                           <tr>
+                            <th> <strong> Image </strong></th>
                             <th> <strong> Product Name </strong></th>
                             <th> <strong>  Price </strong></th>
                             <th> <strong> Quantity </strong></th>
@@ -119,6 +120,12 @@
                           <tr>
                        <%   orderData.product.map((item)=>{%>
                          
+                        <td style="text-align: center;">
+                        <div class="image-container" style="width: 70px;height: 50px;">
+                            <img src="<%=item.image%>" alt="">
+                        </div>
+                           
+                        </td>
 
                 <td>
                     <%=item.name%>
@@ -142,12 +149,14 @@
             <th> <strong>Sub Total </strong></th>
             <td></td>
             <td></td>
+            <td></td>
             <th>  <%=orderData.subTotal%></th>
            </tr>
 
 
            <tr>
             <th><strong>Coupon Applied </strong></th>
+            <td></td>
             <td></td>
             <td></td>
             <th>    <%=orderData.coupon%> </th>
@@ -159,6 +168,7 @@
             <th><strong> Discount </strong></th>
             <td></td>
             <td></td>
+            <td></td>
             <th>  <%=orderData.discount%> </th>
            </tr>
 
@@ -166,6 +176,7 @@
 
            <tr>
             <th><strong>Total Amount </strong></th>
+            <td></td>
             <td></td>
             <td></td>
             <th>  <%=orderData.totalAmount%></th>
@@ -187,7 +198,7 @@
                
             <%}else if((orderData.status=="Delivered")&& (( Date.now()- (orderData.updatedAt.getTime()) <= (7 * 24 * 60 * 60 * 1000)) )){%>
                 
-            <a href="#" class="btn btn-primary my-3" onclick="returnOrder('<%=orderData._id%>')">Return Order</a>
+            <a href="#" class="btn btn-primary my-3" onclick="requestCancellation('<%=orderData._id%>')">Return Order</a>
         <%}else if ((orderData.status=="Shipped")||(orderData.status=="Confirmed")||(orderData.status=="Pending")){%>
             <a href="#" class="btn btn-primary my-3" onclick="cancelOrder('<%=orderData._id%>')">Cancel Order</a>
 
@@ -218,10 +229,10 @@ dangerMode: true,
 })
 .then((response) => {
 if (response) {
-fetch(`/return-order?_id=${order_id}`,{method:"GET",headers:{'contentType':'application/json'}})
+fetch(`/return-pending?_id=${order_id}`,{method:"GET",headers:{'contentType':'application/json'}})
 .then(response=>{
     if(response.ok){
-        new swal({title: "Order returned successfully",
+        new swal({title: "Order return request submitted",
   icon: "success",
   button: "OK"}).then(()=>
         { window.location.href=`/orders` }
@@ -259,6 +270,41 @@ fetch(`/cancel-order?_id=${order_id}`,{method:"GET",headers:{'contentType':'appl
 })
 }
 
+const requestCancellation= (order_id) =>{
+
+    swal({
+  text: "Please enter the reason for order return",
+  content: "input",
+  button: {
+    text: "Submit",
+    closeModal: false,
+  },
+})
+.then(reason => {
+    
+  if (!reason) throw null;
+  else{
+    console.log("reasn",reason);
+   return fetch('/return-pending',{method:"POST",headers: {
+    "Content-Type": "application/json" },
+  body: JSON.stringify({_id:order_id,
+    returnReason:reason})})
+    .then(response=>{
+        if(response.status==200){
+            new swal({title: "Order cancellation request sent",
+             icon: "success",
+            button: "OK"}).then(()=>
+        { window.location.href=`/orders` }
+           
+    )
+        }
+        else{
+            new swal("Something wrong happened. Please try again later")
+        }
+    })
+  }
+  })
+}
 
 
 </script>

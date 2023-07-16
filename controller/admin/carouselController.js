@@ -11,7 +11,7 @@ const carouselLoad = async(req,res)=>{
     }
     catch(err){
         console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
     }
 }
 
@@ -24,7 +24,7 @@ const editCarouselLoad = async(req,res)=>{
     }
     catch(err){
         console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
     }
 }
 

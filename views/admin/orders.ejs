@@ -2,12 +2,54 @@
 
 
 <div class="mainBody">
+  
+  
+  <div class="container-fluid d-flex justify-content-around">
+
+    <!-- -----------------Start Card------------------ -->
+    <div class="card bg-primary dashboard-card" style="width: 15vw; height: 15vh;"> 
+     <a href="/admin/orders"> <div class="card-body ">
+       <h3 class=" mb-2  text-white text-center">All Orders</h3>
+     </div>
+    </a>
+    </div>
+    <!-- -----------------End Card------------------ -->
+  
+      <!-- -----------------Start Card------------------ -->
+     <div class="card bg-danger dashboard-card" style="width: 15vw; height: 15vh;"> 
+      <a href="/admin/orders?status=Return_Pending"> <div class="card-body ">
+        <h3 class=" mb-2  text-white text-center">Return Request</h3>
+      </div>
+    </a>
+    </div>
+    <!-- -----------------End Card------------------ -->
+
+     <!-- -----------------Start Card------------------ -->
+     <div class="card bg-secondary dashboard-card" style="width: 15vw; height: 15vh;"> 
+      <a href="/admin/orders?status=Pending"> <div class="card-body ">
+        <h3 class=" mb-2  text-white text-center">Pending Orders</h3>
+      </div>
+    </a>
+    </div>
+    <!-- -----------------End Card------------------ -->
+
+
+     <!-- -----------------Start Card------------------ -->
+     <div class="card bg-success dashboard-card" style="width: 15vw; height: 15vh;"> 
+      <a href="/admin/orders?status=Confirmed"> <div class="card-body ">
+        <h3 class=" mb-2  text-white text-center">Confirmed Orders</h3>
+      </div>
+    </a>
+    </div>
+    <!-- -----------------End Card------------------ -->
+
+
+
+  </div>
+
     <nav class="navbar bg-light mx-auto bg-primary">
-  
-  
-  
       <div class="container-fluid justify-content-center">
-        <!-- <form class="d-flex" role="search">
+        <form class="d-flex" role="search">
           <input
             class="form-control me-2"
             type="search"
@@ -16,10 +58,20 @@
             aria-label="Search"
           />
           <button class="btn btn-outline-success" type="submit">Search</button>
-        </form> -->
+        </form>
       </div>
     </nav>
   
+
+
+
+     
+    
+
+
+
+
+
     <div class="table-responsive my-4">
       <table class="table table-hover">
         <tr class="heading-row">

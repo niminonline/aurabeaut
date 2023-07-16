@@ -133,8 +133,7 @@ const addProduct = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 //=================================Edit Product===============================
@@ -227,8 +226,7 @@ const editProduct = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
-  }
+res.status(404).render("404");  }
 };
 
 // ===========================Product List/Unlist=====================
@@ -335,7 +333,7 @@ const setProductMainImage = async (req, res) => {
 //     res.redirect("/admin/products");
 //   } catch (err) {
 //     console.log(err.message);
-// res.status(404).render("404",{errorMessage:err.message});
+// res.status(404).render("404");
 //   }
 //};
 

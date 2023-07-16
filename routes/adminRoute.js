@@ -43,7 +43,11 @@ adminRoute.get("/delete-coupon", isAdminLogout, couponController.deleteCoupon);
 adminRoute.get("/get-paymentmodes", isAdminLogout, dashboardController.getPaymentModes);
 adminRoute.get("/daily-sales-chart", isAdminLogout, dashboardController.dailySalesChart);
 adminRoute.get("/daily-order-chart", isAdminLogout, dashboardController.dailyOrderChart);
-adminRoute.get("/generate-sales-report-pdf", dashboardController.generateSalesReportPDF);
+adminRoute.get("/generate-sales-report-pdf",isAdminLogout, dashboardController.generateSalesReportPDF);
+adminRoute.get("/sales",isAdminLogout, admincontroller.salesLoad);
+adminRoute.get("/return-requests",isAdminLogout, orderController.returnrequestLoad);
+adminRoute.get("/accept-return",isAdminLogout, orderController.acceptReturn);
+adminRoute.get("/reject-return",isAdminLogout, orderController.rejectReturn);
 
 
 // =================== Admin Log in/log out=========================================
@@ -61,7 +65,6 @@ adminRoute.post("/productlistunlist", productController.productListUnlist);
 adminRoute.post("/order-details", orderController.updateOrder);
 adminRoute.post("/coupons", couponController.createCoupon);
 adminRoute.post("/coupon-actions", couponController.couponActions);
-
 
 
 module.exports = adminRoute;

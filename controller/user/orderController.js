@@ -51,7 +51,7 @@ const loadCheckout = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
+    res.status(404).render("404");
   }
 };
 
@@ -63,7 +63,7 @@ const placeOrder = async (req, res) => {
       req.body;
 
     let discount = req.body.discount;
-    // console.log(req.body);
+    console.log(req.body);
 
     if (couponCode != "none") {
       const userused = await Coupon.findOneAndUpdate(
@@ -93,7 +93,7 @@ const placeOrder = async (req, res) => {
           total: item.product.price * item.quantity,
         };
       } else {
-        // console.log("Else block");
+        console.log("Else block");
         res.json({ status: "out of stock" });
       }
     });
@@ -116,33 +116,33 @@ const placeOrder = async (req, res) => {
       notes: notes,
     });
 
-
-
     const saveOrder = await order.save();
     if (saveOrder) {
-
-      if(paymentMode=='Wallet'){
-
-        const amountToPay=parseInt(totalAmount) - discount;
+      if (paymentMode == "Wallet") {
+        const amountToPay = parseInt(totalAmount) - discount;
         const userData = await User.findById(req.session.user_id);
         userData.wallet.balance -= amountToPay;
         const updateData = {
           amount: amountToPay,
           details: "Spent to place order #" + invoiceNumber,
         };
-  
+
         userData.wallet.transaction.push(updateData);
         await userData.save();
-
       }
 
-
-
       const userData = await User.findOne({ _id: req.session.user_id });
+
+      userData.cart.map(async (item) => {
+        await Product.findByIdAndUpdate(item.product, {
+          $inc: { stock: -item.quantity },
+        });
+      });
+
       userData.cart = [];
       await userData.save();
 
-      // console.log("Data added successfully");
+      console.log("Data added successfully");
       const orderData = await Order.findOne({ invoiceNumber: invoiceNumber });
       res.json(orderData);
     } else {
@@ -150,7 +150,7 @@ const placeOrder = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
+    res.status(404).render("404");
   }
 };
 
@@ -165,7 +165,7 @@ const ordersLoad = async (req, res) => {
     res.render("orders", { orderData: orderData, userData: userData });
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
+    res.status(404).render("404");
   }
 };
 
@@ -179,7 +179,7 @@ const orderDetailsLoad = async (req, res) => {
     res.render("orderDetails", { orderData: orderData, userData: userData });
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
+    res.status(404).render("404");
   }
 };
 //=================Download Invoice================================
@@ -226,7 +226,7 @@ const downloadInvoice = async (req, res) => {
 //===============================Payment Gateway==========================
 const paymentGateway = async (req, res) => {
   try {
-    // console.log("pg-body", req.body);
+    console.log("pg-body", req.body);
     const { notes, paymentMode, addressIndex, discount } = req.body;
     const totalAmount = (parseInt(req.body.totalAmount) - discount) * 100;
     const userData = await User.findById(req.session.user_id);
@@ -278,8 +278,9 @@ const pgOrder = async (req, res) => {
       order_id + "|" + razorpay_payment_id,
       process.env.razorPaySecret
     );
+    console.log("gen signature", generated_signature);
     if (generated_signature == razorpay_signature) {
-      // console.log("payment is successful");
+      console.log("payment is successful");
 
       const validate = validatePaymentVerification(
         { order_id: razorpay_order_id, payment_id: razorpay_payment_id },
@@ -287,19 +288,19 @@ const pgOrder = async (req, res) => {
         process.env.razorPaySecret
       );
       if (validate) {
-        // console.log("validation- success.....");
+        console.log("validation- success.....");
         res.sendStatus(200);
       } else {
-        // console.log("Payment validation failed");
+        console.log("Payment validation failed");
         res.sendStatus(500);
       }
     } else {
-      // console.log("Payment failed");
+      console.log("Payment failed");
       res.sendStatus(500);
     }
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
+    res.status(404).render("404");
   }
 };
 
@@ -316,7 +317,7 @@ const orderSuccess = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
+    res.status(404).render("404");
   }
 };
 
@@ -332,42 +333,30 @@ const orderFailure = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
+    res.status(404).render("404");
   }
 };
-//=============================== Return Order ==========================
-const returnOrder = async (req, res) => {
+
+
+// =============================================Return Pending=============================
+const returnPending = async (req, res) => {
   try {
-    const { _id } = req.query;
-    const orderData = await Order.findById(_id);
-    // console.log(order);
+    
+    const {_id,returnReason}= req.body;
+    console.log(req.body);
 
-    const stockupdate = orderData.product.map(async (item) => {
-      const updateStock = await Product.findByIdAndUpdate(item.id, {
-        $inc: { stock: item.quantity },
-      });
-      // console.log(stockupdate);
-    });
-    if (orderData.paymentMethod !== "Cash on Delivery") {
-      const userData = await User.findById(req.session.user_id);
-      userData.wallet.balance += orderData.totalAmount;
-      const updateData = {
-        amount: orderData.totalAmount,
-        details: "Refund for returned order #" + orderData.invoiceNumber,
-      };
-
-      userData.wallet.transaction.push(updateData);
-      await userData.save();
-    }
-    await Order.findByIdAndUpdate(_id, { $set: { status: "Returned" } });
-    res.json(200);
-
-    // res.redirect("/orders");
-  } catch (error) {
-    console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
+   await Order.findByIdAndUpdate(_id, { $set: { status: "Return_Pending",returnReason:returnReason } }).then(res.json(200)).catch(res.json(500))
+    
+    
+  } catch (err) {
+    console.log(err.message);
+    res.status(404).render("404");
   }
 };
+
+
+
+
 //=============================== Cancel Order ==========================
 const cancelOrder = async (req, res) => {
   try {
@@ -393,30 +382,9 @@ const cancelOrder = async (req, res) => {
     await Order.findByIdAndUpdate(_id, { $set: { status: "Cancelled" } });
     res.json(200);
 
-    // res.redirect("/orders");
-
-    // const { _id } = req.query;
-    // const orderData = await Order.findById(_id);
-
-    // orderData.product.map(async (item) => {
-    //   await Product.findByIdAndUpdate(item.id, {
-    //     $inc: { stock: item.quantity },
-    //   });
-    // });
-    // if (orderData.paymentMethod !== "Cash on Delivery") {
-    //   const updateWallet = await User.findByIdAndUpdate(
-    //     new ObjectId(req.session.user_id),
-    //     { $inc: { wallet: orderData.totalAmount } },
-    //     { new: true }
-    //   );
-    //   console.log(req.session.user_id);
-    // }
-    // await Order.findByIdAndUpdate(_id, { $set: { status: "Cancelled" } });
-    // res.json(200);
-    // res.redirect("/orders");
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
+    res.status(404).render("404");
   }
 };
 
@@ -424,20 +392,20 @@ const cancelOrder = async (req, res) => {
 const walletBalanceCheck = async (req, res) => {
   try {
     const { couponCode } = req.body;
+    console.log("body", req.body);
     const userData = await User.findById(req.session.user_id)
       .populate("cart.product")
       .lean();
     // console.log(userData.cart[0].product.price);
     const walletBalance = userData.wallet.balance;
     let sum = 0;
-    let discount=0;
+    let discount = 0;
     userData.cart.map((item) => {
       sum += item.product.price * item.quantity;
     });
-    if (couponCode !== 'none') {
-    
+    if (couponCode !== "none") {
       const couponData = await Coupon.findOne({ code: couponCode });
-      
+
       if (sum * (couponData.percentage * 0.01) >= couponData.maxDiscount) {
         discount = couponData.maxDiscount;
       } else {
@@ -445,20 +413,20 @@ const walletBalanceCheck = async (req, res) => {
       }
     }
     const amountToPay = Math.round(sum - discount);
-    console.log("amount", amountToPay , " ", walletBalance);
+    console.log("amount", amountToPay, " ", walletBalance);
     if (amountToPay < walletBalance) {
       // await User.findByIdAndUpdate(req.session.user_id, {
       //   $inc: { "wallet.balance": -amountToPay },
       // });
-      // console.log(amountToPay);
-      res.json({status:"success"});
+      console.log(amountToPay);
+      res.json({ status: "success" });
     } else {
-      // console.log("Insufficient balance")
-      res.json({status:"failed"});
+      console.log("Insufficient balance");
+      res.json({ status: "failed" });
     }
   } catch (error) {
     console.log(error.message);
-    res.status(404).render("404", { errorMessage: error.message });
+    res.status(404).render("404");
   }
 };
 
@@ -472,7 +440,7 @@ module.exports = {
   pgOrder,
   orderSuccess,
   orderFailure,
-  returnOrder,
+  returnPending,
   cancelOrder,
   walletBalanceCheck,
 };

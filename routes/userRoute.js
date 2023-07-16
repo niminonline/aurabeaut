@@ -51,15 +51,14 @@ userRoute.get("/download-invoice",isUserSession, orderController.downloadInvoice
 userRoute.get("/order-failure",isUserSession, orderController.orderFailure);
 userRoute.get("/order-success",isUserSession, orderController.orderSuccess);
 userRoute.get("/delete-address",isUserSession, userController.deleteAddress);
-userRoute.get("/return-order",isUserSession, orderController.returnOrder);
 userRoute.get("/cancel-order",isUserSession, orderController.cancelOrder);
 userRoute.get("/404", userController.pageNotFound);
 
 
 
 // ============================Post Routes====================
-userRoute.post("/signup", userController.storeSignUpDetails);
-userRoute.post("/login", userController.verifyLogin);
+userRoute.post("/signup",userController.storeSignUpDetails);
+userRoute.post("/login",userController.verifyLogin);
 userRoute.post("/forgetpassword", userController.sendOTP);
 userRoute.post("/verifyResetPassOtp", userController.submitOTP);
 userRoute.post("/resetpassword", userController.resetPassword);
@@ -73,6 +72,7 @@ userRoute.post("/pg-order",isUserSession,stockCheck, orderController.pgOrder);
 userRoute.post("/apply-coupon", couponController.applyCoupon);
 userRoute.post("/wallet-balance-check", orderController.walletBalanceCheck);
 userRoute.post("/add-review", productController.addReview);
+userRoute.post("/return-pending",isUserSession, orderController.returnPending);
 
 
 

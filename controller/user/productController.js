@@ -77,7 +77,7 @@ const loadAllProducts = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-res.status(404).render("404",{errorMessage:error.message});
+res.status(404).render("404");
   }
 };
 
@@ -97,7 +97,7 @@ const loadProduct = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
-res.status(404).render("404",{errorMessage:error.message});
+res.status(404).render("404");
   }
 };
 //===============================Add review ==================================
@@ -121,7 +121,7 @@ const addReview = async (req, res) => {
 
   } catch (error) {
     console.log(error.message);
-res.status(404).render("404",{errorMessage:error.message});
+res.status(404).render("404");
   }
 };
 

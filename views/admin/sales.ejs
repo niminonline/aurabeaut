@@ -1,0 +1,78 @@
+<%-include("../layout/adminHeader.ejs")%>
+
+
+
+<div class="mainBody">
+
+
+
+
+
+
+<!-- ------------------------ Start Sales Report-------------------------- -->
+
+
+<div class="sales-report-block m-4 rounded chart-card py-4">
+    <h4 class="text-center my-3 py-3">Sales Report</h4>
+    <div class="row">
+    <div class="input-fields-block container col-md-4">
+    <div class="form-group my-4">
+      <label for="startDate">Select start date</label>
+      <input type="date" class="form-control" id="startDate" >
+      <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
+    </div>
+  
+  
+    <div class="form-group">
+      <label for="endDate">Select End date</label>
+      <input type="date" class="form-control" id="endDate" >
+      <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
+    </div>
+  
+  <button class="btn btn-primary m-4" onclick="getSalesReportPDF()">Download PDF</button>
+  <button class="btn btn-primary m-4" onclick="">Download XLS</button>
+  </div>
+  </div>
+  
+  
+  </div>
+  
+  
+  <!-- ------------------------ End Sales Report-------------------------- -->
+
+  
+  
+  <script>
+
+ // ------------------Start Chart Script----------------------
+
+ const getSalesReportPDF=()=>{
+
+const startDate= document.getElementById("startDate").value
+const endDate= document.getElementById("endDate").value
+
+if(startDate==""|| endDate==""){
+  new swal("Please select a date")
+}
+else if(startDate> endDate){
+  new swal("Start date must be less than end date")
+}
+else{
+
+  window.location.href=`/admin/generate-sales-report-pdf?startDate=${startDate}&endDate=${endDate}` 
+
+}
+}
+
+
+  </script>
+
+  
+  
+
+
+
+  
+</div>
+
+  <%-include("../layout/adminFooter.ejs")%>

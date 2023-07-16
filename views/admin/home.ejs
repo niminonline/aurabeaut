@@ -21,12 +21,14 @@
     <!-- -----------------End Card------------------ -->
 
     <!-- -----------------Start Card------------------ -->
-    <div class="card bg-danger dashboard-card" style="width: 18rem;"> 
-        <h2 class="card-title my-4 text-white text-center">Pending</h2>
+     <div class="card bg-danger dashboard-card" style="width: 18rem;"> 
+        <h2 class="card-title my-4 text-white text-center">Return Requests</h2>
       <div class="card-body ">
         
         <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <a href="/admin/return-requests">
         <h1 class=" mb-2  text-white text-center"><%=PendingCount%> Orders</h1>
+      </a>
       </div>
     </div>
     <!-- -----------------End Card------------------ -->
@@ -66,9 +68,9 @@
 
 
   <!-- ----------------------------------Start Charts----------------------->
-  <div class="row d-flex justify-content-around">
+  <div class="row d-flex w-100">
 <!-- -----------Start Single Chart--------------- -->
-<div class="col-md-3 m-4 chart-card">
+<div class="col m-4 chart-card">
   <!-- <div style="width: 400px;height: 400px;"> -->
     <h4 class="text-center my-3 p-4">Daily Sales</h4>
     <canvas id="dailySalesContainer"></canvas>
@@ -78,7 +80,7 @@
 
 
 <!-- -----------Start Single Chart--------------- -->
-<div class="col-md-3 m-4 chart-card">
+<div class="col m-4 chart-card">
   <!-- <div style="width: 400px;height: 400px;"> -->
     <h4 class="text-center my-3 p-4">Daily Orders</h4>
     <canvas id="dailyOrderContainer"></canvas>
@@ -99,37 +101,6 @@
 
   <!-- ----------------------------------End Charts---------------------- -->
 
-
-<!-- ------------------------ Start Sales Report-------------------------- -->
-
-
-<div class="sales-report-block m-4 rounded chart-card py-4">
-  <h4 class="text-center my-3 py-3">Sales Report</h4>
-  <div class="row">
-  <div class="input-fields-block container col-md-4">
-  <div class="form-group my-4">
-    <label for="startDate">Select start date</label>
-    <input type="date" class="form-control" id="startDate" >
-    <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
-  </div>
-
-
-  <div class="form-group">
-    <label for="endDate">Select End date</label>
-    <input type="date" class="form-control" id="endDate" >
-    <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
-  </div>
-
-<button class="btn btn-primary m-4" onclick="getSalesReportPDF()">Download PDF</button>
-<button class="btn btn-primary m-4" onclick="">Download XLS</button>
-</div>
-</div>
-
-
-</div>
-
-
-<!-- ------------------------ End Sales Report-------------------------- -->
 
 
   <script>
@@ -256,48 +227,7 @@ dailyOrderChart();
     
     
     
-    // ------------------Start Chart Script----------------------
-
-  const getSalesReportPDF=()=>{
-
-    const startDate= document.getElementById("startDate").value
-    const endDate= document.getElementById("endDate").value
-    
-    if(startDate==""|| endDate==""){
-      new swal("Please select a date")
-    }
-    else if(startDate> endDate){
-      new swal("Start date must be less than end date")
-    }
-    else{
-
-      window.location.href=`/admin/generate-sales-report-pdf?startDate=${startDate}&endDate=${endDate}` 
-
-
-    //   console.log(startDate)
-    // console.log(endDate)
-
-    
-
-  //   fetch(`/admin/generate-sales-report-pdf`,{method:'post',headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer token123'
-  //   },
-  //   body: JSON.stringify({
-  //     startDate: startDate,
-  //     endDate:endDate
-  // })
-  // }).then(response=>response.json())
-  // .then(data=>{
-  //   console.log(data);
-
-  // })
-
-
-
-
-    }
-  }
+   
     
 </script>
     

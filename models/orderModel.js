@@ -69,7 +69,10 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       default: 'Pending',
-    enum: ['Pending','Confirmed', 'Shipped','Delivered','Returned','Cancelled'],
+    enum: ['Pending','Confirmed', 'Shipped','Delivered','Returned','Cancelled','Return_Pending','Return_Rejected'],
+    },
+    returnReason:{
+      type:String,
     },
     coupon: {
       type: String,

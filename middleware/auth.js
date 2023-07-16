@@ -8,7 +8,7 @@ const isAdminLogin= async(req,res,next)=>{
     }
     catch(err){
         console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
     }
 }
 const isAdminLogout= async(req,res,next)=>{
@@ -22,7 +22,7 @@ const isAdminLogout= async(req,res,next)=>{
     }
     catch(err){
         console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
     }
 }
 const isUserLogin= async(req,res,next)=>{
@@ -36,7 +36,7 @@ const isUserLogin= async(req,res,next)=>{
     }
     catch(err){
         console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
     }
 }
 
@@ -51,7 +51,7 @@ const isUserSession= async(req,res,next)=>{
     }
     catch(err){
         console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
     }
 }
 
@@ -68,7 +68,7 @@ const isUserLogout= async(req,res,next)=>{
     }
     catch(err){
         console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
     }
 }
 

@@ -2,6 +2,7 @@ const User = require("../../models/userModel");
 const Order = require("../../models/orderModel");
 const Product = require("../../models/productModel");
 const { ObjectId } = require("mongodb");
+// const { render } = require("../../routes/adminRoute");
 
 
 //==================Load Admin Login Page==================
@@ -10,7 +11,7 @@ const loginLoad = async (req, res) => {
     res.render("login");
   } catch (err) {
     console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
   }
 };
 //============================Admin login=======================
@@ -27,7 +28,7 @@ const adminLogin = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
   }
 };
 //===============================Dashboard Load====================
@@ -37,14 +38,16 @@ const dashboardLoad = async (req, res) => {
     // console.log(orderData);
     let totalRevenue=0;
     orderData.map(item=>{
+      if(item.status=='Delivered'){
       totalRevenue+=item.totalAmount;
+      }
     })
 
     
     const pcount = await Order.aggregate([{$group:{_id:"$status",count:{$sum:1}}}])
     let PendingCount=0;
     pcount.map(item=>{
-      if(item._id=='Pending'){
+      if(item._id=='Return_Pending'){
         PendingCount= item.count;
       }
     })
@@ -65,14 +68,13 @@ const dashboardLoad = async (req, res) => {
     // console.log("order2day",orderToday);
 
 
-    const salesTd = await Order.aggregate([{$group:{
+    const salesTd = await Order.aggregate([
+      { $match: { status: "Delivered" } },
+      {$group:{
       _id:{
         $dateToString: { format: "%d/%m/%Y", date: "$date" }
       },
       totalSales:{$sum:"$totalAmount"}}}])
-    // console.log(salesTd, "----",)
-    // const today=  new Date().toLocaleString('en-IN',{ day: '2-digit', month: '2-digit', year: 'numeric' });
-    // console.log(today)
     let salesToday=0;
     salesTd.map(item=>{
       if(item._id==today){
@@ -87,7 +89,7 @@ const dashboardLoad = async (req, res) => {
     res.render("home",{orderToday,PendingCount,salesToday,totalRevenue});
   } catch (err) {
     console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
   }
 };
 
@@ -113,7 +115,7 @@ const usersLoad = async (req, res) => {
     res.render("users", { userData: userData });
   } catch (err) {
     console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
   }
 };
 
@@ -123,7 +125,7 @@ const ordersLoad = async (req, res) => {
     res.render("products");
   } catch (err) {
     console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
   }
 };
 //=====================================Admin Logout================
@@ -134,7 +136,7 @@ const adminLogout = async (req, res) => {
     res.redirect("/admin/");
   } catch (err) {
     console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
   }
 };
 
@@ -167,37 +169,30 @@ const userBlockUnblock = async (req, res) => {
       })
       .catch((err) => {
         console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
       });
 
     }
     res.redirect("/admin/users");
-    // User.findByIdAndUpdate(
-    //   { _id: new ObjectId(id) },
-    //   { $set: { isBlocked: true ? false : true } }
-    // )
-
-
-    // User.findByIdAndUpdate(
-    //   { _id: new ObjectId(id) },
-    //   { $set: { isBlocked: type === "block" ? true : false } }
-    // )
-      // .then((response) => {
-      //   if (type === "block") {
-      //     req.session.user_id = false;
-      //   }
-      //   // res.json(response);
-      //   res.redirect("/admin/users");
-      // })
-      // .catch((err) => {
-      //   console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
-      // });
   } catch (err) {
     console.log(err.message);
-res.status(404).render("404",{errorMessage:err.message});
+res.status(404).render("404");
   }
 };
+
+
+
+// =========================Sales Load=============
+const salesLoad = async (req, res) => {
+  try {
+  
+    res.render("sales");
+  } catch (err) {
+    console.log(err.message);
+res.status(404).render("404");
+  }
+};
+
 
 
 
@@ -210,4 +205,5 @@ module.exports = {
   ordersLoad,
   adminLogout,
   userBlockUnblock,
+  salesLoad
 };
