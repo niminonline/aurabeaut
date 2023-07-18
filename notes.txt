@@ -21,3 +21,10 @@ res.redirect(req.headers.referer)
 mongodump --uri="mongodb://127.0.0.1:27017/aurabeaut" --archive="ayurbeaute" --nsInclude="aurabeaut.*"
 
 ssh -i nimzzec2.pem ubuntu@13.49.240.109
+
+
+-------------------
+IP: 13.49.240.109
+host: ec2-13-49-240-109.eu-north-1.compute.amazonaws.com
+
+

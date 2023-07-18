@@ -210,9 +210,11 @@ const downloadInvoice = async (req, res) => {
     const outputFilePath = path.join(__dirname, "invoice001.pdf");
     await generateInvoicePDF(invoiceHtml, outputFilePath);
 
+
     res.download(outputFilePath, "invoice.pdf", (downloadError) => {
       if (downloadError) {
-        console.error("Error downloading invoice PDF:", downloadError);
+
+        console.log("Error downloading invoice PDF:", downloadError);
         res.status(500).send("Error downloading invoice PDF");
       }
       fs.unlinkSync(outputFilePath);
