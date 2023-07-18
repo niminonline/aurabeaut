@@ -68,11 +68,25 @@ const verifyLogin = async (req, res) => {
   }
 };
 
-//=========================Send OTP========================
+//=========================Send forget email OTP========================
 
-const sendOTP = (req, res) => {
+const sendOTP = async(req, res) => {
   try {
-    res.redirect("verifyotp");
+    console.log(req.body);
+    const {email} = req.body;
+    const userData = await User.findOne({email: email});
+    if(userData){
+        req.session.passwordResetEmail= email;
+
+        const otp = helper.generateOtp();
+      helper.verifyEmail(email, otp);
+      req.session.otp = otp;
+        res.redirect("/verifyResetPassOtp");
+    }
+    else{
+      res.render("forgetPassword",{errorMessage:"Email id not registered"})
+    }
+
   } catch (err) {
     console.log(err.message);
     res.status(404).render("404", { errorMessage: err.message });
@@ -91,9 +105,16 @@ const resetPasswordLoad = (req, res) => {
 };
 // =======================Reset Password=====================
 
-const resetPassword = (req, res) => {
+const resetPassword = async (req, res) => {
   try {
-    res.redirect("login");
+    const {password}= req.body;
+    const securePassword = await helper.hashPassword(password);
+    console.log(securePassword);
+    const passwordReset= await User.findOneAndUpdate({email:req.session.passwordResetEmail},{$set:{password: securePassword}})
+    if(passwordReset){
+      res.render("login",{message:"Password reset successfully. Please login"});
+    }
+   
   } catch (err) {
     console.log(err.message);
     res.status(404).render("404", { errorMessage: err.message });

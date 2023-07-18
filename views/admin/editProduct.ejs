@@ -269,7 +269,7 @@
               class="btn btn-primary m-4 mx-auto"
               value="Save "
               id="addButton"
-            disabled
+            
             />
             <%}%>
 
@@ -314,7 +314,8 @@
 </script>
 
 <script>
-
+  let isPriceValidation= true;
+  let isStockValidation=true;
 const stockInput = document.getElementById('stock');
   const stockValidationMessage = document.getElementById('stockValidationMessage');
 
@@ -322,10 +323,19 @@ const stockInput = document.getElementById('stock');
     const inputValue = parseFloat(stockInput.value);
     if (isNaN(inputValue) || inputValue < 0) {
       stockValidationMessage.style.display = 'block';
-      document.getElementById('addButton').disabled=true;
+      isStockValidation=false;
+      addButton.disabled = true;
+     // document.getElementById('addButton').disabled=true;
     } else {
+      isStockValidation=true;
       stockValidationMessage.style.display = 'none';
-      document.getElementById('addButton').disabled=false;
+     // document.getElementById('addButton').disabled=false;
+     if(isPriceValidation&&isStockValidation){
+      addButton.disabled = false;
+     }
+     else{
+      addButton.disabled = true;
+     }
 
     }
   });
@@ -338,10 +348,20 @@ const stockInput = document.getElementById('stock');
     const inputValue = parseFloat(priceInput.value);
     if (isNaN(inputValue) || inputValue < 0) {
       priceValidationMessage.style.display = 'block';
+      isPriceValidation=false;
       addButton.disabled = true;
+      
+      //addButton.disabled = true;
     } else {
+      isPriceValidation=true;
       priceValidationMessage.style.display = 'none';
+      if(isPriceValidation&&isStockValidation){
       addButton.disabled = false;
+     }
+     else{
+      addButton.disabled = true;
+     }
+
     }
   });
 

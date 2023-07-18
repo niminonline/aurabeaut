@@ -141,7 +141,7 @@ res.status(404).render("404");  }
 const editProduct = async (req, res) => {
   try {
     console.log("image", req.file);
-    console.log("bodyyy", req.body);
+    // console.log("bodyyy", req.body);
     const productName = req.body.category.toUpperCase();
     const id = req.body._id;
     // console.log(req.body);
