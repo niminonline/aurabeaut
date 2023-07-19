@@ -14,8 +14,9 @@
      </div>
      <div class="form-floating col-md-6">
         <label for="floatingInputValue">Mobile number</label>
-        <input type="text" class="form-control" name="mobile" placeholder="Enter Mobile number" required>
-     </div>
+        <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter Mobile number" required oninput="mobileValidate()">
+         <p id="mobileError"></p>
+      </div>
     </div>
 
     <div class="row">
@@ -29,8 +30,9 @@
      <div class="row g-2">
         <div class="form-floating col-md-6">
         <label for="floatingInputValue">Pincode</label>
-        <input type="text" class="form-control" name="pincode" placeholder="Enter Pincode" required>
-     </div>
+        <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter Pincode" required oninput="pinValidate()">
+         <p id="pincodeError"></p>
+      </div>
      <div class="form-floating col-md-6">
         <label for="floatingInputValue">City</label>
         <input type="text" class="form-control" name="city" placeholder="Enter City" required>
@@ -53,5 +55,30 @@
 
 
     </div>
+
+<script>
+
+
+   const mobileValidate = ()=>{
+     let mobile= document.getElementById("mobile").value;
+     console.log("mobile",mobile);
+     const mobileRegex=/\d{10}/
+     if(!mobile.match(mobileRegex)){
+      document.getElementById("mobileError").innerText="Enter a valid mobile number"
+   }
+   else{
+        document.getElementById("mobileError").innerText=""
+
+     }
+
+   }
+
+   const pinValidate =()=>{
+      let mobile= document.getElementById("pincode").value;
+
+   }
+</script>
+
+
 
     <%-include("../layout/footer.ejs")%>

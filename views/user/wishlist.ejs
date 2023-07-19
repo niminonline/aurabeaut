@@ -6,6 +6,20 @@
 
     <div class="page-content">
         <div class="container">
+
+            <%if(!userData[0].productData.length>0){%>
+                <div class="no-cart-items text-center  w-100">
+                <h5 class="m-4">Your Wishlist is empty</h5>
+                <a href="/all-products" class="btn btn-primary  m-4"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+
+            </div>
+
+
+           <% }else{%>
+
+
+
+
             <table class="table table-wishlist table-mobile">
                 <thead>
                     <tr>
@@ -40,7 +54,7 @@
                         <% if(item.stock>1) {%>
                         <td class="stock-col"><span class="in-stock">In stock</span></td>
                         <td class="action-col">
-                            <a href="/add-to-cart?_id=<%=item._id%>&wishlist=1">  <button class="btn btn-block btn-outline-primary-2"><i class="icon-cart-plus"></i>Add to Cart</button></a>
+                            <a href="#">  <button class="btn btn-block btn-outline-primary-2" onclick="addToCart('<%=item._id%>')"><i class="icon-cart-plus" ></i>Add to Cart</button></a>
                           </td>
                     <%}else{%>
                         <td class="stock-col"><span class=" text-danger">out of stock</span></td>
@@ -57,7 +71,12 @@
                     
                     <!-- ---------------End Display product------------ -->
                 </tbody>
-            </table><!-- End .table table-wishlist -->
+            </table>
+            
+            
+            
+      <%  }%>
+        <!-- End .table table-wishlist -->
             <div class="wishlist-share">
                 <div class="social-icons social-icons-sm mb-2">
                     <label class="social-label">Share on:</label>
@@ -102,6 +121,41 @@ fetch(`/remove-wishlist-item?id=${id}`,{method:"GET",headers:{'contentType':'app
 })
 }
 
+
+
+
+
+
+const addToCart=(id)=>{
+
+fetch(`/add-to-cart?_id=${id}`,{method:"get"})
+.then(response=>(response.json()))
+.then(data=>{
+    if(data=='Success'){
+        
+
+        Toastify({
+text: "Product added to cart successfully",
+duration: 3000,
+destination: "/cart",
+newWindow: false,
+close: true,
+gravity: "bottom", // `top` or `bottom`
+position: "right", // `left`, `center` or `right`
+stopOnFocus: true, // Prevents dismissing of toast on hover
+style: {
+background: "color:blue",
+size: '2rem',
+},
+onClick: function(){} // Callback after click
+}).showToast();
+
+
+window.location.reload();
+    }
+})
+
+}
 
 
 

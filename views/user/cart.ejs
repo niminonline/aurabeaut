@@ -57,6 +57,7 @@
                                         <td class="stock-col"><span class="in-stock">In stock</span></td>
                                     <%}else{%>
                                         <td class="stock-col"><span class=" text-danger">out of stock</span></td>
+
                                       <%  }%>
                                     
                                     
@@ -123,7 +124,7 @@
                                 </tbody>
                             </table><!-- End .table table-summary -->
 
-                            <a href="   /checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+                            <a href="#" class="btn btn-outline-primary-2 btn-order btn-block" onclick="proceedCheckout()">PROCEED TO CHECKOUT</a>
                         </div><!-- End .summary -->
 
                     </aside>
@@ -266,7 +267,7 @@ totalamount.innerHTML=data.lastprice
 
 function removeFromCart(id,name){
 
-    new swal({
+new swal({
 
 text: `Are your sure want to remove ${name} from cart?`,
 icon: "warning",
@@ -291,6 +292,22 @@ fetch(`/remove-cart-item?_id=${id}`,{method:"GET",headers:{'contentType':'applic
 })
 }
 
+
+function proceedCheckout(){
+
+    fetch("/checkout",{method:"get"})
+    .then(response=>response.json())
+    .then(data=>{
+        console.log(data);
+        if(data=='noStock'){
+            new swal("Please remove the out-of-stock items from your cart")
+        }
+    
+    })
+    .catch(err=>{
+            window.location.href = "/checkout";
+    })
+}
 
 
 

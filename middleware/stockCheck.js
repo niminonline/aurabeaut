@@ -4,7 +4,7 @@ const Order = require("../models/orderModel");
 
 const stockCheck = async (req, res,next) => {
     try {
-        console.log("Entered stock");
+        // console.log("Entered stock");
       
       const userData = await User.findOne({ _id: req.session.user_id })
         .populate("cart.product")

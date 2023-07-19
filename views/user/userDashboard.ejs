@@ -94,8 +94,9 @@
              </div>
              <div class="form-floating col-md-6">
                 <label for="floatingInputValue">Mobile number</label>
-                <input type="text" class="form-control" name="mobile" placeholder="Enter Mobile number"  required>
-             </div>
+                <input type="text" class="form-control" id="mobileAdd" name="mobile" placeholder="Enter Mobile number"  required oninput="mobileAddValidate()" >
+              <p id="mobileAddError" style="color: red;"></p>
+              </div>
             </div>
         
             <div class="row">
@@ -109,8 +110,9 @@
              <div class="row g-2">
                 <div class="form-floating col-md-6">
                 <label for="floatingInputValue">Pincode</label>
-                <input type="text" class="form-control" name="pincode" placeholder="Enter Pincode" required>
-             </div>
+                <input type="text" class="form-control" id="pincodeAdd" name="pincode" placeholder="Enter Pincode" required oninput="pincodeAddValidate()" >
+                <p id="pincodeAddError" style="color: red;"></p>
+              </div>
              <div class="form-floating col-md-6">
                 <label for="floatingInputValue">City</label>
                 <input type="text" class="form-control" name="city" placeholder="Enter City"  required>
@@ -131,8 +133,8 @@
          
         </div>
         <div class="modal-footer">
-            <input type="submit" value="Add" class="btn btn-primary">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input type="submit" id="addButton" value="Add" class="btn btn-primary">
+          <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
         </form>
         </div>
       </div>
@@ -197,14 +199,15 @@
              </div>
              <div class="form-floating col-md-6">
                 <label for="floatingInputValue">Mobile number</label>
-                <input type="text" class="form-control" name="mobile" placeholder="Enter Mobile number" value="<%=item.mobile%>" required>
-             </div>
+                <input type="text" class="form-control" id="mobileUpdate" name="mobile"  value="<%=item.mobile%>" placeholder="Enter Mobile number" required oninput="mobileUpdateValidate()">
+                <p id="mobileUpdateError" style="color: red;"></p>       
+                    </div>
             </div>
         
             <div class="row">
                 
                 <div class="form-floating col-md-12">
-                   <label for="floatingInputValue">Address</label>
+                   <label for="floatingInputValue">Address</label>	out of stock
                    <input type="text" class="form-control" name="address" placeholder="Enter Address" value="<%=item.address%>" required>
                 </div>
                 </div>
@@ -212,8 +215,9 @@
              <div class="row g-2">
                 <div class="form-floating col-md-6">
                 <label for="floatingInputValue">Pincode</label>
-                <input type="text" class="form-control" name="pincode" placeholder="Enter Pincode" value="<%=item.pincode%>" required>
-             </div>
+                <input type="text" class="form-control" id="pincodeUpdate" name="pincode" placeholder="Enter Pincode" value="<%=item.pincode%>" required oninput="pincodeUpdateValidate()">
+                <p id="pincodeUpdateError" style="color: red;"></p>           
+                </div>
              <div class="form-floating col-md-6">
                 <label for="floatingInputValue">City</label>
                 <input type="text" class="form-control" name="city" placeholder="Enter City" value="<%=item.city%>" required>
@@ -234,7 +238,7 @@
          
         </div>
         <div class="modal-footer">
-            <input type="submit" value="Save" class="btn btn-primary">
+            <input type="submit" id="updateButton" value="Save" class="btn btn-primary">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </form>
         </div>
@@ -252,7 +256,7 @@
 
 
 <!--------------------------------End  Modal-------------------------------------- -->
-<% })%>
+              <% })%>
                                           
                                                 <!-- End .card-body -->
                                           <!-- End .col-lg-6 -->
@@ -357,6 +361,8 @@
 
 <script>
 
+
+
 const deleteAddress=(id)=>{
       new swal({
   title: "Are you sure to delete this address?",
@@ -368,6 +374,95 @@ const deleteAddress=(id)=>{
   if (willDelete) {
     window.location.href = `/delete-address?id=${id}`;    }});
   } 
+
+
+  // -------------------------- Start Validation----------------
+  let isMobileValidate=true;
+let isPincodeValidate=true;
+const addButton= document.getElementById("addButton")
+
+
+  const mobileAddValidate = ()=>{
+
+     let mobile= document.getElementById("mobileAdd").value;
+     const mobileRegex = /^\d{10}$/;
+     if(!mobile.match(mobileRegex)){
+      isMobileValidate=false;
+      document.getElementById("mobileAddError").innerText="Enter a valid mobile number"
+      addButton.disabled=true
+   }
+   else{
+    document.getElementById("mobileAddError").innerText=""
+    isMobileValidate=true;
+    if(isMobileValidate&&isPincodeValidate){
+      addButton.disabled=false;
+    }
+     }
+   }
+
+   const pincodeAddValidate =()=>{
+      let pincode= document.getElementById("pincodeAdd").value;
+      const pinRegex =/^\d{6}$/;
+     if(!pincode.match(pinRegex)){
+      isPincodeValidate=false;
+
+      document.getElementById("pincodeAddError").innerText="Enter a valid pin code";
+      addButton.disabled=true;
+   }
+   else{
+    isPincodeValidate=true;
+        document.getElementById("pincodeAddError").innerText=""
+        if(isMobileValidate&&isPincodeValidate){
+      addButton.disabled=false;
+    }
+     }
+   }
+
+// ---------------------- Update validation---------------
+
+let isMobileUpdateValidate=true;
+let isPincodeUpdateValidate=true;
+const updateButton = document.getElementById("updateButton");
+
+const mobileUpdateValidate = ()=>{
+
+let mobile= document.getElementById("mobileUpdate").value;
+const mobileRegex = /^\d{10}$/;
+if(!mobile.match(mobileRegex)){
+  isMobileUpdateValidate=false;
+ document.getElementById("mobileUpdateError").innerText="Enter a valid mobile number"
+ updateButton.disabled=true
+}
+else{
+document.getElementById("mobileUpdateError").innerText=""
+isMobileUpdateValidate=true;
+if(isMobileUpdateValidate&&isPincodeUpdateValidate){
+  updateButton.disabled=false;
+}
+}
+}
+
+const pincodeUpdateValidate =()=>{
+ let pincode= document.getElementById("pincodeUpdate").value;
+ const pinRegex =/^\d{6}$/;
+if(!pincode.match(pinRegex)){
+  isPincodeUpdateValidate=false;
+
+ document.getElementById("pincodeUpdateError").innerText="Enter a valid pin code";
+ updateButton.disabled=true;
+}
+else{
+  isPincodeUpdateValidate=true;
+   document.getElementById("pincodeUpdateError").innerText=""
+   if(isMobileUpdateValidate&&isPincodeUpdateValidate){
+    updateButton.disabled=false;
+}
+}
+}
+
+     // -------------------------- End  Validation----------------
+
+
 
 </script>
 

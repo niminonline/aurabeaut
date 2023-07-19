@@ -93,7 +93,7 @@ const placeOrder = async (req, res) => {
           total: item.product.price * item.quantity,
         };
       } else {
-        console.log("Else block");
+        // console.log("Else block");
         res.json({ status: "out of stock" });
       }
     });

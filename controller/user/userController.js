@@ -302,7 +302,7 @@ const loadWishlist = async (req, res) => {
         },
       },
     ]);
-    console.log(userData);
+    // console.log(userData);
 
     res.render("wishlist", { userData: userData });
   } catch (error) {
@@ -357,8 +357,10 @@ const addToCart = async (req, res) => {
           { new: true }
         );
       }
-
-      res.redirect(req.headers.referer);
+     
+      res.json("Success");
+      
+      // res.redirect(req.headers.referer);
     }
   } catch (error) {
     console.log(error.message);
@@ -377,14 +379,16 @@ const addToWishlist = async (req, res) => {
         { $pull: { wishlist: productId } },
         { new: true }
       );
-      res.redirect(req.headers.referer);
+      res.json("Success");
     } else {
       await User.findByIdAndUpdate(
         { _id: userId },
         { $addToSet: { wishlist: productId } },
         { new: true }
       );
-      res.redirect(req.headers.referer);
+
+      res.json("Success");
+      // res.redirect(req.headers.referer);
     }
 
     // const {_id}= req.query;

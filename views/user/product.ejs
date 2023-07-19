@@ -115,7 +115,7 @@
                                     </div>
                                     
                                     <div class="product-details-action">
-                                        <a href="/add-to-cart?_id=<%=productData._id%>" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <a href="#" class="btn-product btn-cart" onclick="addToCart('<%=productData._id%>')"><span>add to cart</span></a>
 
                                         <div class="details-action-wrapper">
                                             <a href="/add-to-wishlist?_id=<%=productData._id%>" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
@@ -321,6 +321,40 @@
 
 //     window.location.href = addToCartBtn.getAttribute('href');
 //   });
+
+
+
+const addToCart=(id)=>{
+
+fetch(`/add-to-cart?_id=${id}`,{method:"get"})
+.then(response=>(response.json()))
+.then(data=>{
+    if(data=='Success'){
+        
+
+        Toastify({
+text: "Product added to cart successfully",
+duration: 3000,
+destination: "/cart",
+newWindow: false,
+close: true,
+gravity: "bottom", // `top` or `bottom`
+position: "right", // `left`, `center` or `right`
+stopOnFocus: true, // Prevents dismissing of toast on hover
+style: {
+background: "color:blue",
+size: '2rem',
+},
+onClick: function(){} // Callback after click
+}).showToast();
+
+
+window.location.reload();
+    }
+})
+
+}
+
 </script>
 
 

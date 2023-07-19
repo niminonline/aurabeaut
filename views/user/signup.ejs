@@ -2,8 +2,17 @@
 <div class="limiter">
 <div class="container-login100">
 <div class="wrap-login100">
-<div class="login100-pic js-tilt" data-tilt="" style="will-change: transform; transform: perspective(300px) rotateX(0deg) rotateY(0deg);">
-<img src="/login/img-01.webp" alt="IMG">
+  <div
+  class="login100-pic js-tilt"
+  data-tilt=""
+  style="
+    will-change: transform;
+    transform: perspective(300px) rotateX(0deg) rotateY(0deg);
+  "
+><a href="/">
+  <img src="/login/images/logoText.png" alt="IMG" />
+</a>
+
 </div>
 <form class="login100-form validate-form" method="post">
 <span class="login100-form-title">
@@ -50,7 +59,7 @@ Sign up
   
   <!-- input field -->
   <div class="wrap-input100 validate-input" data-validate="Password is required">
-    <input class="input100" type="password" name="password" id="password" placeholder="Password" onchange="handlePassword()">
+    <input class="input100" type="password" name="password" id="password" placeholder="Password" oninput="handlePassword()">
 
   
     <span class="focus-input100"></span>
@@ -81,8 +90,10 @@ Sign up
   
   <div class="container-login100-form-btn">
   
+    <p style="color: red;"> <%=message%>  </p>
     <input type="submit" class="btn btn-success" id="signUpButton" value="Sign up" disabled>
-    <p> <%=message%>  </p>
+    <a href="/login" class="btn btn-primary mx-4"> Login</a>
+    
   </div>
 </form>
 <div class="text-center p-t-12">
