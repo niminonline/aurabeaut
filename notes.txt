@@ -27,4 +27,11 @@ ssh -i nimzzec2.pem ubuntu@13.49.240.109
 IP: 13.49.240.109
 host: ec2-13-49-240-109.eu-north-1.compute.amazonaws.com
 
+-----------------
+phanton error
+
+comment openssl_conf = default_conf 
+line 17- /etc/ssl/openssl.cnf
+-------------------
+
 

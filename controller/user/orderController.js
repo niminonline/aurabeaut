@@ -228,11 +228,12 @@ const downloadInvoice = async (req, res) => {
 //===============================Payment Gateway==========================
 const paymentGateway = async (req, res) => {
   try {
-    console.log("pg-body", req.body);
+    // console.log("pg-body", req.body);
     const { notes, paymentMode, addressIndex, discount } = req.body;
     const totalAmount = (parseInt(req.body.totalAmount) - discount) * 100;
     const userData = await User.findById(req.session.user_id);
 
+     console.log("total",totalAmount,"----", userData)
     const payment = await razorpay.orders.create(
       {
         amount: totalAmount,
@@ -248,6 +249,7 @@ const paymentGateway = async (req, res) => {
           order.userName = userData.name;
           order.userEmail = userData.email;
           order.userMobile = userData.mobile;
+          console.log("pg-order",order);
           res.json(order);
         }
       }
@@ -265,20 +267,20 @@ const pgOrder = async (req, res) => {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
       req.body.response;
 
-    console.log(
-      "orderid",
-      order_id,
-      "rpp id",
-      razorpay_payment_id,
-      " rporid,",
-      razorpay_order_id,
-      " rp sign-",
-      razorpay_signature
-    );
+    // console.log(
+    //   "orderid",
+    //   order_id,
+    //   "rpp id",
+    //   razorpay_payment_id,
+    //   " rporid,",
+    //   razorpay_order_id,
+    //   " rp sign-",
+    //   razorpay_signature
+    // );
 
     const generated_signature = await crypto.generateHmacSha256(
       order_id + "|" + razorpay_payment_id,
-      process.env.razorPaySecret
+      'jkKc4IRr3DMm1bcaAyPpCv23'
     );
     console.log("gen signature", generated_signature);
     if (generated_signature == razorpay_signature) {
@@ -287,7 +289,7 @@ const pgOrder = async (req, res) => {
       const validate = validatePaymentVerification(
         { order_id: razorpay_order_id, payment_id: razorpay_payment_id },
         razorpay_signature,
-        process.env.razorPaySecret
+        'jkKc4IRr3DMm1bcaAyPpCv23'
       );
       if (validate) {
         console.log("validation- success.....");
