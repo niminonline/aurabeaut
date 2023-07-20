@@ -106,7 +106,7 @@ const generateSalesReportPDF = async (req, res) => {
       year: "numeric",
     });
 
-    const orderData = await Order.find({
+    const orderData = await Order.find({status:"Delivered",
       date: {
         $gte: startDate,
         $lte: endDate,
