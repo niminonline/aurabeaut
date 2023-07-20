@@ -27,7 +27,7 @@ const getPaymentModes = async (req, res) => {
     });
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -57,7 +57,7 @@ const dailySalesChart = async (req, res) => {
     res.json(orderData);
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -86,7 +86,7 @@ const dailyOrderChart = async (req, res) => {
     res.json(orderData);
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -140,7 +140,7 @@ const generateSalesReportPDF = async (req, res) => {
 
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -160,7 +160,7 @@ const downloadSalesReport = async (req, res) => {
 
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 

@@ -9,26 +9,45 @@
     data-toggle="owl"
     data-owl-options='{"nav": false}'
   >
+
+
+
+<!-- -----------------Start Slides---------- -->
+ <% if(typeof carouselData!=='undefined' ){ %>
+  <% carouselData.map(item=>{ %>
+
+
     <div
       class="intro-slide"
       style="background-position: center;
       background-size: cover;
       object-fit: cover;
-        background-image: url(/images/ab-banner1.jpg);
+        background-image: url(<%=item.imageUrl%>);
       "
     >
       <div class="container intro-content">
-        <h3 class="intro-subtitle">Say no to chemicals </h3>
+        <h3 class="intro-subtitle">   <%=item.subtitle%></h3>
         <!-- End .h3 intro-subtitle -->
-        <h1 class="intro-title">Live with <br />Ayurveda</h1>
+        <h1 class="intro-title">   <%=item.title%></h1>
         <!-- End .intro-title -->
-        <a href="category.html" class="btn btn-primary">
-          <span>Shop Now</span>
+        <a href=" <%=item.buttonLink%>" class="btn btn-primary">
+          <span>  <%=item.buttonText%></span>
           <i class="icon-long-arrow-right"></i>
         </a>
+
+
+
+
       </div>
       <!-- End .container intro-content -->
     </div>
+
+    <%   })} %>
+<!-- -----------------end Slides---------- -->
+
+
+
+
     <!-- End .intro-slide -->
   </div>
   <!-- End .owl-carousel owl-simple -->

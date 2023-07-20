@@ -14,7 +14,7 @@
             </button>
           </p>
           <div class="collapse container" id="collapseExample">
-            <form class="form-floating" method="post" enctype="multipart/form-data">
+            <form class="form-floating" action="/admin/add-carousel" method="post" enctype="multipart/form-data">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="title" name= "title" placeholder="Enter title">
                 <label for="title">Title</label>
@@ -37,32 +37,87 @@
 
               
               <div class="form-floating">
-                <input type="file" class="form-control" id="file" name= "imageUrl" placeholder="Choose Image">
+                <input type="file" class="form-control" id="file" name= "image" placeholder="Choose Image">
                 <label for="file">Slider image</label>
-                <input type="submit" class="btn btn-primary m-4 mx-auto" value="Add ">
-                <a class="btn btn-danger mx-4" href="/admin/carousel">Cancel</a>
-
               </div>
+              <input type="submit"  class="btn btn-success m-4" value="Add">
+
+
             </form>
           </div>
     </div>   
+</div>
+</div>
+</div>
+    <div class="carousel-cards d-flex flex-wrap ">
 
+    
     <!-- List Carousel  -->
-    <div class="card text-center category-cards rounded" style="width: 20rem;">
-        <img src="..." class="card-img-top" alt="...">
+    <%  carouselData.map(item=>{ %>
+
+    
+    <div class="card category-cards rounded" style="width: 20rem;">
+
+      <img
+        src="<%=item.imageUrl%>"
+        class="card-img-top"
+        alt="carousel image"
+        width="200px"
+        height="200px"
+      />
+       
         <div class="card-body">
-          <h5 class="card-title">Carousel Title</h5>
-          <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-          <a href="/admin/editcategory" class="btn btn-warning">Edit</a>
+          <!-- <h5 class="card-title"><%=item.title%></h5> -->
+          <table class="table table-hover">
+            <tr>
+              <th>
+                Title
+              </th>
+            
+              <td>
+                <%=item.title%>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Sub-Title
+              </th>
+            
+              <td>
+                <%=item.subtitle%>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Button Text
+              </th>
+            
+              <td>
+                <%=item.buttonText%>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Button Link
+              </th>
+            
+              <td>
+                <%=item.buttonLink%>
+              </td>
+            </tr>
+          </table>
+          <div class="button-block d-flex justify-content-between">
+            <a href="/admin/edit-carousel?_id=<%=item._id%>" class="btn btn-warning">Edit</a>
+            <a href="/admin/delete-carousel?_id=<%=item._id%>" class="btn btn-danger">Delete</a>
+          </div>
+
         </div>
       </div>
 
+      <% })%>
 
+    </div>
     
-</div>
-</div>
-</div>
-
 
 
 

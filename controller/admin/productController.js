@@ -23,7 +23,7 @@ const productsLoad = async (req, res) => {
     res.render("products", { productData: productData });
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -48,7 +48,7 @@ const editProductLoad = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 //===================================Add Product Load==========================
@@ -60,7 +60,7 @@ const addProductLoad = async (req, res) => {
     res.render("addProduct", { categorydata: categorydata });
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -253,7 +253,7 @@ const productListUnlist = async (req, res) => {
       // })
       // .catch((err) => {
       //   console.log(err.message);
-      res.status(404).render("404", { errorMessage: err.message });
+      res.status(404).render("404");
       // });
     }
     res.redirect("/admin/products");
@@ -268,7 +268,7 @@ const productListUnlist = async (req, res) => {
     // // res.redirect("/admin/category");
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -304,7 +304,7 @@ const deleteProductImage = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -321,7 +321,7 @@ const setProductMainImage = async (req, res) => {
     res.redirect(req.headers.referer);
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 

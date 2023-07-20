@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose');
 
-const banner = mongoose.Schema({
+const Carousel = mongoose.Schema({
   imageUrl: {
     type: [String],
   },
@@ -19,4 +19,4 @@ const banner = mongoose.Schema({
   },
  
 }, { timestamp: true });
-module.exports = mongoose.model('banner', banner);
+module.exports = mongoose.model('carousel', Carousel);

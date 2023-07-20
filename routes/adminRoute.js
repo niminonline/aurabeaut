@@ -31,10 +31,11 @@ adminRoute.get("/orders", isAdminLogout, orderController.ordersLoad);
 adminRoute.get("/category",isAdminLogout,categoryController.categoryLoad);
 adminRoute.get("/products",isAdminLogout,productController.productsLoad);
 adminRoute.get("/carousel",isAdminLogout,carouselController.carouselLoad);
+adminRoute.get("/edit-carousel",isAdminLogout,carouselController.editCarouselLoad);
+adminRoute.get("/delete-carousel",isAdminLogout,carouselController.deleteCarousel);
 adminRoute.get("/editproduct",isAdminLogout,productController.editProductLoad);
 adminRoute.get("/addproduct",isAdminLogout,productController.addProductLoad);
 adminRoute.get("/editcategory",isAdminLogout,categoryController.editCategoryLoad);
-adminRoute.get("/editcarousel",isAdminLogout,carouselController.editCarouselLoad);
 adminRoute.get("/delete-product-image", isAdminLogout,productController.deleteProductImage);
 adminRoute.get("/order-details",isAdminLogout, orderController.orderDetailsLoad);
 adminRoute.get("/set-product-main-image",isAdminLogout, productController.setProductMainImage);
@@ -65,6 +66,8 @@ adminRoute.post("/productlistunlist", productController.productListUnlist);
 adminRoute.post("/order-details", orderController.updateOrder);
 adminRoute.post("/coupons", couponController.createCoupon);
 adminRoute.post("/coupon-actions", couponController.couponActions);
+adminRoute.post("/add-carousel",upload.single("image"),carouselController.addCarousel);
+adminRoute.post("/edit-carousel",upload.single("image"),carouselController.editCarousel);
 
 
 module.exports = adminRoute;

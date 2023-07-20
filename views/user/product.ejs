@@ -70,13 +70,6 @@
     
                                        <% })%>
 
-
-
-
-
-
-
-                                  
                                         </div>
 
 
@@ -118,7 +111,7 @@
                                         <a href="#" class="btn-product btn-cart" onclick="addToCart('<%=productData._id%>')"><span>add to cart</span></a>
 
                                         <div class="details-action-wrapper">
-                                            <a href="/add-to-wishlist?_id=<%=productData._id%>" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                                            <a href="#" class="btn-product btn-wishlist" onclick="addToWishlist('<%=productData._id%>')"><span>add to wishlist</span></a>
                                         </div><!-- End .details-action-wrapper -->
                                     </div><!-- End .product-details-action -->
 
@@ -354,6 +347,44 @@ window.location.reload();
 })
 
 }
+
+
+
+// ----------------------Wishlist----------------------
+
+
+const addToWishlist=(id)=>{
+
+fetch(`/add-to-wishlist?_id=${id}`,{method:"get"})
+.then(response=>(response.json()))
+.then(data=>{
+    if(data=='Success'){
+        
+
+        Toastify({
+text: "Product added to wishlist successfully",
+duration: 3000,
+destination: "/wishlist",
+newWindow: false,
+close: true,
+gravity: "bottom", // `top` or `bottom`
+position: "right", // `left`, `center` or `right`
+stopOnFocus: true, // Prevents dismissing of toast on hover
+style: {
+background: "color:blue",
+size: '2rem',
+},
+onClick: function(){} // Callback after click
+}).showToast();
+
+
+window.location.reload();
+    }
+})
+.catch(err=>(console.log(err)))
+
+}
+
 
 </script>
 

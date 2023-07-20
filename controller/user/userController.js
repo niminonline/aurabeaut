@@ -1,5 +1,6 @@
 const Product = require("../../models/productModel");
 const Order = require("../../models/orderModel");
+const Carousel= require("../../models/carouselModel");
 const User = require("../../models/userModel");
 const Category = require("../../models/categoryModel");
 const bcrypt = require("bcrypt");
@@ -7,13 +8,14 @@ const helper = require("../../helper/helper");
 const nodemailer = require("nodemailer");
 const { ObjectId } = require("mongodb");
 
+
 //=================Load Login Page================================
 const loginLoad = async (req, res) => {
   try {
     res.render("login");
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -24,7 +26,7 @@ const forgetPasswordLoad = (req, res) => {
     res.render("forgetPassword");
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -35,7 +37,7 @@ const verifyRPOtpLoad = (req, res) => {
     res.render("verifyResetPassOtp");
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -64,7 +66,7 @@ const verifyLogin = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -89,7 +91,7 @@ const sendOTP = async(req, res) => {
 
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -100,7 +102,7 @@ const resetPasswordLoad = (req, res) => {
     res.render("resetPassword");
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 // =======================Reset Password=====================
@@ -117,7 +119,7 @@ const resetPassword = async (req, res) => {
    
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -200,7 +202,7 @@ const logout = async (req, res) => {
     res.redirect("/login");
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -239,17 +241,18 @@ const loadHome = async (req, res) => {
     //         $unwind: "$categoryDetails",
     //       },
     //   ]);
+     const carouselData =await Carousel.find({});
     const categoryData = await Category.find({ isUnList: false });
     if (req.session.user_id) {
       const userData = await User.findOne({ _id: req.session.user_id });
 
-      res.render("home", { userData: userData, categoryData: categoryData });
+      res.render("home", { userData: userData, categoryData: categoryData ,carouselData});
     } else {
-      res.render("home", { categoryData: categoryData });
+      res.render("home", { categoryData: categoryData,carouselData });
     }
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -580,7 +583,7 @@ const deleteAddress = async (req, res) => {
       res.redirect(req.headers.referer);
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
@@ -593,7 +596,7 @@ const removeWishlistItem = async (req, res) => {
     }).then(res.json(200));
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 // =========================Page not found=============
@@ -602,7 +605,7 @@ const pageNotFound = async (req, res) => {
     res.render("404");
   } catch (err) {
     console.log(err.message);
-    res.status(404).render("404", { errorMessage: err.message });
+    res.status(404).render("404");
   }
 };
 
