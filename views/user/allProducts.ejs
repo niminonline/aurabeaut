@@ -297,10 +297,29 @@ size: '2rem',
 },
 onClick: function(){} // Callback after click
 }).showToast();
-
-
-window.location.reload();
     }
+else if(data=='Remove'){
+        
+
+        Toastify({
+text: "Product removed from wishlist ",
+duration: 3000,
+destination: "/wishlist",
+newWindow: false,
+close: true,
+gravity: "bottom", // `top` or `bottom`
+position: "right", // `left`, `center` or `right`
+stopOnFocus: true, // Prevents dismissing of toast on hover
+style: {
+background: "color:blue",
+size: '2rem',
+},
+onClick: function(){} // Callback after click
+}).showToast();
+
+}
+window.location.reload();
+    
 })
 .catch(err=>(console.log(err)))
 

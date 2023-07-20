@@ -382,7 +382,7 @@ const addToWishlist = async (req, res) => {
         { $pull: { wishlist: productId } },
         { new: true }
       );
-      res.json("Success");
+      res.json("Remove");
     } else {
       await User.findByIdAndUpdate(
         { _id: userId },

@@ -7,7 +7,8 @@ const { generateInvoicePDF } = require("../../helper/html-pdf");
 const path = require("path");
 const fs = require("fs");
 const { createInvoiceHtml } = require("../../helper/invoiceFormat");
-const razorpay = require("../../helper/razorpay");
+// const razorpay = require("../../helper/razorpay");
+const Razorpay = require('razorpay');
 const crypto = require("../../helper/crypto");
 const {
   validatePaymentVerification,
@@ -210,10 +211,8 @@ const downloadInvoice = async (req, res) => {
     const outputFilePath = path.join(__dirname, "invoice001.pdf");
     await generateInvoicePDF(invoiceHtml, outputFilePath);
 
-
     res.download(outputFilePath, "invoice.pdf", (downloadError) => {
       if (downloadError) {
-
         console.log("Error downloading invoice PDF:", downloadError);
         res.status(500).send("Error downloading invoice PDF");
       }
@@ -234,6 +233,12 @@ const paymentGateway = async (req, res) => {
     const userData = await User.findById(req.session.user_id);
 
     //  console.log("total",totalAmount,"----", userData)
+
+    const razorpay = new Razorpay({
+      key_id: 'rzp_test_9zHydJZu7xq9lh',
+      key_secret: 'jkKc4IRr3DMm1bcaAyPpCv23'
+    });
+
     const payment = await razorpay.orders.create(
       {
         amount: totalAmount,
@@ -249,7 +254,7 @@ const paymentGateway = async (req, res) => {
           order.userName = userData.name;
           order.userEmail = userData.email;
           order.userMobile = userData.mobile;
-          console.log("pg-order",order);
+          console.log("pg-order", order);
           res.json(order);
         }
       }
@@ -280,7 +285,7 @@ const pgOrder = async (req, res) => {
 
     const generated_signature = await crypto.generateHmacSha256(
       order_id + "|" + razorpay_payment_id,
-      'jkKc4IRr3DMm1bcaAyPpCv23'
+      "jkKc4IRr3DMm1bcaAyPpCv23"
     );
     console.log("gen signature", generated_signature);
     if (generated_signature == razorpay_signature) {
@@ -289,7 +294,7 @@ const pgOrder = async (req, res) => {
       const validate = validatePaymentVerification(
         { order_id: razorpay_order_id, payment_id: razorpay_payment_id },
         razorpay_signature,
-        'jkKc4IRr3DMm1bcaAyPpCv23'
+        "jkKc4IRr3DMm1bcaAyPpCv23"
       );
       if (validate) {
         console.log("validation- success.....");
@@ -341,25 +346,22 @@ const orderFailure = async (req, res) => {
   }
 };
 
-
 // =============================================Return Pending=============================
 const returnPending = async (req, res) => {
   try {
-    
-    const {_id,returnReason}= req.body;
+    const { _id, returnReason } = req.body;
     console.log(req.body);
 
-   await Order.findByIdAndUpdate(_id, { $set: { status: "Return_Pending",returnReason:returnReason } }).then(res.json(200)).catch(res.json(500))
-    
-    
+    await Order.findByIdAndUpdate(_id, {
+      $set: { status: "Return_Pending", returnReason: returnReason },
+    })
+      .then(res.json(200))
+      .catch(res.json(500));
   } catch (err) {
     console.log(err.message);
     res.status(404).render("404");
   }
 };
-
-
-
 
 //=============================== Cancel Order ==========================
 const cancelOrder = async (req, res) => {
@@ -385,7 +387,6 @@ const cancelOrder = async (req, res) => {
     }
     await Order.findByIdAndUpdate(_id, { $set: { status: "Cancelled" } });
     res.json(200);
-
   } catch (error) {
     console.log(error.message);
     res.status(404).render("404");
