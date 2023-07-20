@@ -233,7 +233,7 @@ const paymentGateway = async (req, res) => {
     const totalAmount = (parseInt(req.body.totalAmount) - discount) * 100;
     const userData = await User.findById(req.session.user_id);
 
-     console.log("total",totalAmount,"----", userData)
+    //  console.log("total",totalAmount,"----", userData)
     const payment = await razorpay.orders.create(
       {
         amount: totalAmount,
