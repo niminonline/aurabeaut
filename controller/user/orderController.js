@@ -248,6 +248,7 @@ const paymentGateway = async (req, res) => {
       },
       function (error, order) {
         if (error) {
+          console.log("Error inside razorpay");
           console.log(error);
           res.status(500).json({ error: "Failed to create Razorpay order" });
         } else {
