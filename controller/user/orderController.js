@@ -239,27 +239,64 @@ const paymentGateway = async (req, res) => {
       key_secret: 'jkKc4IRr3DMm1bcaAyPpCv23'
     });
 
-    const payment = await razorpay.orders.create(
-      {
+
+    const createRazorpayOrder = async () => {
+      const orderDetails = {
         amount: totalAmount,
         currency: "INR",
         receipt: "receipt_id",
         payment_capture: 1,
-      },
-      function (error, order) {
-        if (error) {
-          console.log("Error inside razorpay");
-          console.log(error);
-          res.status(500).json({ error: "Failed to create Razorpay order" });
-        } else {
-          order.userName = userData.name;
-          order.userEmail = userData.email;
-          order.userMobile = userData.mobile;
-          console.log("pg-order", order);
-          res.json(order);
-        }
+      };
+    
+      try {
+        const order = await new Promise((resolve, reject) => {
+          razorpay.orders.create(orderDetails, function (error, order) {
+            if (error) {
+              console.log("Error inside razorpay");
+              console.log(error);
+              reject(new Error("Failed to create Razorpay order"));
+            } else {
+              order.userName = userData.name;
+              order.userEmail = userData.email;
+              order.userMobile = userData.mobile;
+              console.log("pg-order", order);
+              resolve(order);
+            }
+          });
+        });
+    
+        // At this point, the `order` object should contain the Razorpay order details with the modifications.
+        res.json(order);
+      } catch (error) {
+        console.error("Error:", error.message);
+        res.status(500).json({ error: "Failed to create Razorpay order" });
       }
-    );
+    };
+    
+    // Call the async function to create the Razorpay order
+    createRazorpayOrder();
+
+    // const payment = await razorpay.orders.create(
+    //   {
+    //     amount: totalAmount,
+    //     currency: "INR",
+    //     receipt: "receipt_id",
+    //     payment_capture: 1,
+    //   },
+    //   function (error, order) {
+    //     if (error) {
+    //       console.log("Error inside razorpay");
+    //       console.log(error);
+    //       res.status(500).json({ error: "Failed to create Razorpay order" });
+    //     } else {
+    //       order.userName = userData.name;
+    //       order.userEmail = userData.email;
+    //       order.userMobile = userData.mobile;
+    //       console.log("pg-order", order);
+    //       res.json(order);
+    //     }
+    //   }
+    // );
   } catch (error) {
     console.log(error);
     res.status(500).send("Payment creation failed");
