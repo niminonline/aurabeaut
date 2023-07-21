@@ -72,7 +72,7 @@ userRoute.post("/pg-order",isUserSession,stockCheck, orderController.pgOrder);
 userRoute.post("/apply-coupon", couponController.applyCoupon);
 userRoute.post("/wallet-balance-check", orderController.walletBalanceCheck);
 userRoute.post("/add-review", productController.addReview);
-userRoute.post("/return-pending",isUserSession, orderController.retutimeStyle:'short'rnPending);
+userRoute.post("/return-pending",isUserSession, orderController.returnPending);
 
 
 
