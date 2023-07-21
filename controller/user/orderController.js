@@ -7,8 +7,8 @@ const { generateInvoicePDF } = require("../../helper/html-pdf");
 const path = require("path");
 const fs = require("fs");
 const { createInvoiceHtml } = require("../../helper/invoiceFormat");
-// const razorpay = require("../../helper/razorpay");
-const Razorpay = require('razorpay');
+const razorpay = require("../../helper/razorpay");
+// const Razorpay = require('razorpay');
 const crypto = require("../../helper/crypto");
 const {
   validatePaymentVerification,
@@ -64,7 +64,7 @@ const placeOrder = async (req, res) => {
       req.body;
 
     let discount = req.body.discount;
-    console.log(req.body);
+    // console.log(req.body);
 
     if (couponCode != "none") {
       const userused = await Coupon.findOneAndUpdate(
@@ -143,11 +143,11 @@ const placeOrder = async (req, res) => {
       userData.cart = [];
       await userData.save();
 
-      console.log("Data added successfully");
+      // console.log("Data added successfully");
       const orderData = await Order.findOne({ invoiceNumber: invoiceNumber });
       res.json(orderData);
     } else {
-      console.log("Failed to add data");
+      // console.log("Failed to add data");
     }
   } catch (error) {
     console.log(error.message);
@@ -225,83 +225,38 @@ const downloadInvoice = async (req, res) => {
 };
 
 //===============================Payment Gateway==========================
-const paymentGateway = async (req, res) => {
-  try {
-    // console.log("pg-body", req.body);
-    const { notes, paymentMode, addressIndex, discount } = req.body;
-    const totalAmount = (parseInt(req.body.totalAmount) - discount) * 100;
-    const userData = await User.findById(req.session.user_id);
-
-    //  console.log("total",totalAmount,"----", userData)
-
-    const razorpay = new Razorpay({
-      key_id: 'rzp_test_9zHydJZu7xq9lh',
-      key_secret: 'jkKc4IRr3DMm1bcaAyPpCv23'
-    });
-
-
-    const createRazorpayOrder = async () => {
-      const orderDetails = {
-        amount: totalAmount,
-        currency: "INR",
-        receipt: "receipt_id",
-        payment_capture: 1,
-      };
-    
-      try {
-        const order = await new Promise((resolve, reject) => {
-          razorpay.orders.create(orderDetails, function (error, order) {
-            if (error) {
-              console.log("Error inside razorpay");
-              console.log(error);
-              reject(new Error("Failed to create Razorpay order"));
-            } else {
-              order.userName = userData.name;
-              order.userEmail = userData.email;
-              order.userMobile = userData.mobile;
-              console.log("pg-order", order);
-              resolve(order);
-            }
-          });
-        });
-    
-        // At this point, the `order` object should contain the Razorpay order details with the modifications.
-        res.json(order);
-      } catch (error) {
-        console.error("Error:", error.message);
-        res.status(500).json({ error: "Failed to create Razorpay order" });
-      }
-    };
-    
-    // Call the async function to create the Razorpay order
-    createRazorpayOrder();
-
-    // const payment = await razorpay.orders.create(
-    //   {
-    //     amount: totalAmount,
-    //     currency: "INR",
-    //     receipt: "receipt_id",
-    //     payment_capture: 1,
-    //   },
-    //   function (error, order) {
-    //     if (error) {
-    //       console.log("Error inside razorpay");
-    //       console.log(error);
-    //       res.status(500).json({ error: "Failed to create Razorpay order" });
-    //     } else {
-    //       order.userName = userData.name;
-    //       order.userEmail = userData.email;
-    //       order.userMobile = userData.mobile;
-    //       console.log("pg-order", order);
-    //       res.json(order);
-    //     }
-    //   }
-    // );
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Payment creation failed");
-  }
-};
+  
+  const paymentGateway = async (req, res) => {
+    try {
+      // console.log("pg-body", req.body);
+      const { notes, paymentMode, addressIndex, discount } = req.body;
+      const totalAmount = (parseInt(req.body.totalAmount) - discount) * 100;
+      const userData = await User.findById(req.session.user_id);
+  
+      const payment = await razorpay.orders.create(
+        {
+          amount: totalAmount,
+          currency: "INR",
+          receipt: "receipt_id",
+          payment_capture: 1,
+        },
+        function (error, order) {
+          if (error) {
+            console.log(error);
+            res.status(500).json({ error: "Failed to create Razorpay order" });
+          } else {
+            order.userName = userData.name;
+            order.userEmail = userData.email;
+            order.userMobile = userData.mobile;
+            res.json(order);
+          }
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Payment creation failed");
+    }
+  };
 
 //===============================PG order==========================
 const pgOrder = async (req, res) => {
@@ -325,9 +280,9 @@ const pgOrder = async (req, res) => {
       order_id + "|" + razorpay_payment_id,
       "jkKc4IRr3DMm1bcaAyPpCv23"
     );
-    console.log("gen signature", generated_signature);
+    // console.log("gen signature", generated_signature);
     if (generated_signature == razorpay_signature) {
-      console.log("payment is successful");
+      // console.log("payment is successful");
 
       const validate = validatePaymentVerification(
         { order_id: razorpay_order_id, payment_id: razorpay_payment_id },
@@ -335,14 +290,14 @@ const pgOrder = async (req, res) => {
         "jkKc4IRr3DMm1bcaAyPpCv23"
       );
       if (validate) {
-        console.log("validation- success.....");
+        // console.log("validation- success.....");
         res.sendStatus(200);
       } else {
-        console.log("Payment validation failed");
+        // console.log("Payment validation failed");
         res.sendStatus(500);
       }
     } else {
-      console.log("Payment failed");
+      // console.log("Payment failed");
       res.sendStatus(500);
     }
   } catch (error) {
@@ -373,7 +328,7 @@ const orderFailure = async (req, res) => {
   try {
     errorMessage = req.query.error;
     const userData = await User.findById(req.session.user_id);
-    console.log("orderfail", userData);
+    // console.log("orderfail", userData);
     res.render("orderFailure", {
       userData: userData,
       errorMessage: errorMessage,
@@ -388,13 +343,13 @@ const orderFailure = async (req, res) => {
 const returnPending = async (req, res) => {
   try {
     const { _id, returnReason } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     await Order.findByIdAndUpdate(_id, {
       $set: { status: "Return_Pending", returnReason: returnReason },
     })
       .then(res.json(200))
-      .catch(res.json(500));
+      
   } catch (err) {
     console.log(err.message);
     res.status(404).render("404");
@@ -435,7 +390,7 @@ const cancelOrder = async (req, res) => {
 const walletBalanceCheck = async (req, res) => {
   try {
     const { couponCode } = req.body;
-    console.log("body", req.body);
+    // console.log("body", req.body);
     const userData = await User.findById(req.session.user_id)
       .populate("cart.product")
       .lean();
@@ -456,7 +411,7 @@ const walletBalanceCheck = async (req, res) => {
       }
     }
     const amountToPay = Math.round(sum - discount);
-    console.log("amount", amountToPay, " ", walletBalance);
+    // console.log("amount", amountToPay, " ", walletBalance);
     if (amountToPay < walletBalance) {
       // await User.findByIdAndUpdate(req.session.user_id, {
       //   $inc: { "wallet.balance": -amountToPay },

@@ -101,13 +101,14 @@ const acceptReturn = async (req, res) => {
     if (orderData.paymentMethod !== "Cash on Delivery") {
       const userData = await User.findById(orderData.userId);
       userData.wallet.balance += orderData.totalAmount;
+      console.log("wallet bal", userData.wallet.balance)
       const updateData = {
         amount: orderData.totalAmount,
         details: "Refund for returned order #" + orderData.invoiceNumber,
       };
 
       userData.wallet.transaction.push(updateData);
-      await userData.save();query
+      await userData.save();
     }
     await Order.findByIdAndUpdate(_id, { $set: { status: "Returned" } });
     // res.json(200);

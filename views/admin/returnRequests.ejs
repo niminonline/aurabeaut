@@ -29,6 +29,7 @@
           <th>Date</th>
           <th>Name</th>
           <th>Product</th>
+          <th>Amount</th>
           <th>Cancellation Reason</th>
           <th>Action</th>
 
@@ -48,6 +49,7 @@
           <td><%=orderData[i].address.name%></td>
           
           <td><%=orderData[i].product[0].name%> + <%=orderData[i].product.length%> items </td>
+          <td>Rs.<%=orderData[i].product[0].total%> </td>
           <td><%=orderData[i].returnReason%> </td>
           
           <td> <a href="/admin/accept-return?_id=<%=orderData[i]._id%>"  class="btn btn-success mx-3">Accept</a>

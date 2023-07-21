@@ -22,9 +22,7 @@ const datas= orderData.map((item)=>
 <td>
   ${item.totalAmount}
 </td>
-<td>
-  ${item.status}
-</td>
+
 
 
   </tr>`
@@ -94,7 +92,7 @@ const datas= orderData.map((item)=>
                 <th>Product</th>
                 <th>Payment Mode</th>
                 <th>Total</th>
-                <th>Status</th>
+               
               </tr>
             </thead>
             <tbody>
