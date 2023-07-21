@@ -67,7 +67,7 @@
                         Ordered Date
                     </th>
                     <td>
-                        <%=orderData.date.toLocaleString('en-IN',{ dateStyle: 'long'})%>
+                        <%=orderData.date.toLocaleString('en-IN',{ dateStyle: 'long',timeStyle:'short'})%>
                     </td>
                  </tr>
                  <tr>
@@ -96,7 +96,19 @@
                       <%=orderData.status%>
     
                     </td>
-                 </tr>
+                </tr>
+
+                   <% if(orderData.status=="Returned"){ %>
+                        <tr>
+                            <th>
+                               Return Reason
+                            </th>
+                            <td>
+                                <%=orderData.returnReason%>
+                            </td>
+                         </tr>
+
+                         <%  } %>
   
   
                  <tr>
