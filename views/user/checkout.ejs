@@ -305,11 +305,6 @@
 
                                   </div>
 
-
-
-
-
-
                                 <div class="summary">
                                     <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
 
@@ -347,7 +342,7 @@
                                        
 
                                             <tr class="summary-total">
-                                                <td>Total:</td>
+                                                <td>Amount to pay:</td>
                                                 <td id="totalAmount"><%=subTotal%></td>
                                             </tr><!-- End .summary-total -->
                                         </tbody>
@@ -362,24 +357,42 @@
                                             <div class="card-header" id="heading-3">
                                                 <h4>Payment Mode</h4>
                                             <!-- ----------------Payment method------------        -->
-                                                   
-                                               <div class="paymentItem my-4">
+                                                <p id="balanceAmountDisplay" hidden>Select a payment mode for balance amount</p>
+                                               <div class="paymentItem my-4 " id="codBlock">
                                               <input type="radio" name="paymentMode" id="cod" value="Cash on Delivery" onchange="paymentMode()"> 
                                               <label for="cod">Cash On Delivery</label>     
                                              </div>
-                                             <div class="paymentItem my-4" >
-                                                <input type="radio" name="paymentMode" id="creditCard" value="Razorpay"  onchange="paymentMode()"> 
-                                                <label for="creditCard">Credit/debit Card</label>     
+                                             <div class="paymentItem my-4" id="razorpayBlock">
+                                                <input type="radio" name="paymentMode" id="Razorpay" value="Razorpay"  onchange="paymentMode()"> 
+                                                <label for="Razorpay">Razorpay</label>     
                                                </div>
                                                <div class="paymentItem my-4">
-                                                <input type="radio" name="paymentMode" id="wallet" value="Wallet" onchange="paymentMode()"> 
+                                                <input type="checkbox" name="wallet" id="wallet" value="Wallet" onchange="walletSelect()"> 
                                                 <label for="wallet">Wallet</label> 
                                                     
-                                                <p id="wallet-balance" hidden >Available Balance: ₹<%=userData.wallet.balance%> </p>
+                                                
+                                                <div class="use-wallet  my-4" id="wallet-balance"  hidden>
+                                                  <p id=""  >Available Balance: <strong>₹<%=userData.wallet.balance%> </strong> </p>
+                                                  <label for="walletDeduct my-3">Use wallet amount:</label>
+                                                  <div class="wallet-input-row  d-flex align-items-center">
+                                                  <input type="number" name="walletDeductInput" id="walletDeductInput" style="height: 50px; width: 150px; font-size: 2rem;">
+                                                  <a href="#" class="mx-1 btn btn-outline-secondary" onclick="walletDeductFun('<%=userData.wallet.balance%>')" style="min-width: 80px;">Apply</a>
+                                                  <a href="#" class="mx-1 btn btn-outline-secondary" onclick="walletDeductFunRemove()" style="min-width: 80px;">Reset</a>
+  
+                                                </div>
+                                                <div class="message-row d-flex align-item-center my-3">
+  
+                                                  <p class="">Amount deduct from wallet: ₹ </p>
+                                                    <p id="WalletDeductionAmount"> <strong> 0 </strong> </p>
+                                                </div>
+  
+                                                 </div>
                                                </div>
 
+                                              
+                                             
                                                 
-                                            </div><!-- End .card-header -->
+                                            </div>
                                         </div><!-- End .card -->
 
                                         <!-- End .card -->
@@ -419,7 +432,9 @@ const totalAmount= document.getElementById("totalAmount").innerText;
 const subTotal= document.getElementById("subTotal").innerText;
 const notes= document.getElementById("notes").value;
  discount= parseInt(document.getElementById("discountDisplay").innerText);
-  
+//  let walletCheck= document.getElementById("wallet").checked;
+  const WalletToDeduct= document.getElementById("walletDeductInput").value;
+
 const handleAddress=()=>{
 let options = document.getElementsByName('options');
   for (var i = 0; i < options.length; i++) {
@@ -436,13 +451,6 @@ for (var i = 0; i < radioButtons.length; i++) {
   if (radioButtons[i].checked) {
      selectedPaymentMode = radioButtons[i].value;
   }
-  if(selectedPaymentMode=='Wallet'){
-    document.getElementById('wallet-balance').removeAttribute('hidden');
-  }
-  else{
-    document.getElementById('wallet-balance').setAttribute('hidden', 'true');
-
-  }
 }
 }
 
@@ -453,101 +461,93 @@ const checkout= ()=>{
 if(addressIndex==null){
     new swal("Please select an address");
 }
-else if(selectedPaymentMode==null){
-    new swal("Please select a payment mode");
-}
-else if(selectedPaymentMode=='Razorpay'){
+// else if(selectedPaymentMode==null){
+//     new swal("Please select a payment mode");
+// }
+
+else if(document.getElementById("wallet").checked){
+  // console.log("WalletChecked");
+  // console.log(document.getElementById('creditCard').checked );
+  // console.log(document.getElementById('cod').checked );
+  // console.log(document.getElementById("walletDeductInput").value);
+  // console.log(totalAmount);
+  // console.log((parseFloat(WalletToDeduct)<totalAmount));
+
+  if(parseFloat(document.getElementById("walletDeductInput").value)==totalAmount) {
+    // console.log("Equal");
+    selectedPaymentMode= 'Wallet';
+    placeOrder();
+  }
+
+  else if((parseFloat(document.getElementById("walletDeductInput").value)<totalAmount) &&
+  (((document.getElementById('Razorpay').checked ==false) &&
+    (document.getElementById('cod').checked) ==false))){
+
+      console.log(document.getElementById('Razorpay').checked);
+
+      new swal("Please select a payment mode for balance amount");
+
+    }
+    else if((parseFloat(document.getElementById("walletDeductInput").value)<totalAmount) &&
+    ((document.getElementById('Razorpay').checked ||
+    document.getElementById('cod').checked) ))
+    {
+
+      
+
+      if(selectedPaymentMode=='Razorpay'){
+  
 
 // =========================Start RazorPay=============//
 
-    fetch("/payment-gateway",{
-    method:"POST",
-    headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer token123'
-  },
-  body:
-    JSON.stringify({
-        notes:  notes,
-        paymentMode: selectedPaymentMode,
-        addressIndex:addressIndex,
-        discount:parseInt(document.getElementById("discountDisplay").innerText),
-        totalAmount:totalAmount
-  })
-}).then(function(response) {
-  console.log(response);
-   return response.json();
-  })
-  .then(function(data) {
-    if(data == "noStock"){
-      // console.log("nostock");
-      window.location.href = `/order-failure?error=out of stock`;
-
-    }else
-    {
-   console.log('data',data)
-    
-    var options = {
-    key: 'rzp_test_9zHydJZu7xq9lh', 
-    amount: data.amount,
-    currency: "INR",
-    name: "auraBeaute",
-    description: "auraBeaute Payment Gateway",
-    image: "/images/aurabeaut-logo.png",
-    order_id: data.id,
-    // callback_url: "/pg-order?order_id="+data.id,
-    handler: function(response){
-        sendResponse(response,data.id);
-    },
-    prefill: {
-        name: data.userName,
-        email: data.userEmail,
-        contact: data.userMobile
-    },
-    notes: {
-        "address": "auraBeaut Kerala"
-    },
-    theme: {
-        "color": "#497004"
-    }
-};
-    const razorpayInstance = new Razorpay(options);
-    razorpayInstance.open();
-  }}
-  )
-  
-  
-}
+execRazorpay();
 
 
+ }
 // =========================End Start RazorPay=============//
 else if(selectedPaymentMode=='Cash on Delivery'){
     placeOrder();
 
 }
-else if(selectedPaymentMode=='Wallet'){
+// else if(selectedPaymentMode=='Wallet'){
 
-  console.log(document.getElementById('couponCode').value);
+//   console.log(document.getElementById('couponCode').value);
 
-  fetch(`/wallet-balance-check`,{method:'post',headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123'
-    },
-    body: JSON.stringify({
+//   fetch(`/wallet-balance-check`,{method:'post',headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': 'Bearer token123'
+//     },
+//     body: JSON.stringify({
       
-      couponCode: document.getElementById('couponCode').value
+//       couponCode: document.getElementById('couponCode').value
       
-  })
-  }).then(response=>(response.json()))
-  .then(response=>{
-    if(response.status=="success"){
-      placeOrder();
-    }
-    else{
-      new swal("Your wallet don't have sufficient balance to place this order")
-    }
-  })
+//   })
+//   }).then(response=>(response.json()))
+//   .then(response=>{
+//     if(response.status=="success"){
+//       placeOrder();
+//     }
+//     else{
+//       new swal("Your wallet don't have sufficient balance to place this order")
+//     }
+//   })
+// }
 }
+}
+else if(selectedPaymentMode=='Razorpay'){
+  
+
+  // =========================Start RazorPay=============//
+  
+  execRazorpay();
+  
+  
+   }
+  // =========================End Start RazorPay=============//
+  else if(selectedPaymentMode=='Cash on Delivery'){
+      placeOrder();
+  
+  }
 }
 
 // =======================Start Place Order======================
@@ -562,8 +562,9 @@ const placeOrder = () => {
       notes: notes,
       paymentMode: selectedPaymentMode,
       addressIndex: addressIndex,
+      walletAmount: parseInt(document.getElementById("WalletDeductionAmount").innerText),
       discount: parseInt(document.getElementById("discountDisplay").innerText),
-      totalAmount: parseInt(totalAmount),
+      totalAmount: parseInt(document.getElementById("totalAmount").innerText),
       couponCode: document.getElementById('couponCode').value
     })
   })
@@ -619,6 +620,66 @@ const sendResponse=(response,data)=>{
 
 }
 
+const execRazorpay=()=>{
+
+  fetch("/payment-gateway",{
+    method:"POST",
+    headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer token123'
+  },
+  body:
+    JSON.stringify({
+        notes:  notes,
+        paymentMode: selectedPaymentMode,
+        addressIndex:addressIndex,
+        discount:parseInt(document.getElementById("discountDisplay").innerText),
+        totalAmount:document.getElementById("totalAmount").innerText
+  })
+}).then(function(response) {
+  console.log(response);
+   return response.json();
+  })
+  .then(function(data) {
+    if(data == "noStock"){
+      // console.log("nostock");
+      window.location.href = `/order-failure?error=out of stock`;
+
+    }else
+    {
+   console.log('data',data)
+    
+    var options = {
+    key: 'rzp_test_9zHydJZu7xq9lh', 
+    amount: data.amount,
+    currency: "INR",
+    name: "auraBeaute",
+    description: "auraBeaute Payment Gateway",
+    image: "/images/aurabeaut-logo.png",
+    order_id: data.id,
+    // callback_url: "/pg-order?order_id="+data.id,
+    handler: function(response){
+        sendResponse(response,data.id);
+    },
+    prefill: {
+        name: data.userName,
+        email: data.userEmail,
+        contact: data.userMobile
+    },
+    notes: {
+        "address": "auraBeaut Kerala"
+    },
+    theme: {
+        "color": "#497004"
+    }
+};
+    const razorpayInstance = new Razorpay(options);
+    razorpayInstance.open();
+  }}
+  )
+  
+  
+}
 
 
 
@@ -678,6 +739,71 @@ const deleteAddress=(id)=>{
   if (willDelete) {
     window.location.href = `/delete-address?id=${id}`;    }});
   } 
+
+
+
+//====================================Wallet Deduction====================
+
+const walletSelect=()=>{
+
+  if(document.getElementById("wallet").checked)
+{
+    document.getElementById('wallet-balance').removeAttribute('hidden');
+    document.getElementById('codBlock').setAttribute('hidden', 'true');
+    document.getElementById('razorpayBlock').setAttribute('hidden','true');
+    document.getElementById('Razorpay').checked=false;
+    document.getElementById('cod').checked=false;
+
+
+  }
+  else{
+    document.getElementById('wallet-balance').setAttribute('hidden', 'true');
+    document.getElementById('codBlock').removeAttribute('hidden');
+    document.getElementById('razorpayBlock').removeAttribute('hidden');
+
+  }
+
+}
+
+const walletDeductFun=(walletBalance)=>
+{
+
+  const WalletToDeduct= document.getElementById("walletDeductInput").value;
+
+  if(/^[0-9]+[0-9]$/.test(WalletToDeduct)&& WalletToDeduct>0){
+
+    if(parseFloat(WalletToDeduct)>=walletBalance){
+      swal("You don't have sufficient balance");
+}
+else if(parseFloat(WalletToDeduct)>totalAmount){
+  swal(`Please enter an amount less than Rs.${totalAmount}`);
+
+}
+else{
+  document.getElementById("WalletDeductionAmount").innerText=WalletToDeduct;
+  document.getElementById("totalAmount").innerText= parseFloat(subTotal)- parseFloat(WalletToDeduct);
+  if(parseFloat(WalletToDeduct)<totalAmount){
+    document.getElementById('codBlock').removeAttribute('hidden');
+    document.getElementById('razorpayBlock').removeAttribute('hidden');
+    document.getElementById('balanceAmountDisplay').removeAttribute('hidden');
+
+
+  }
+}
+    
+  }
+  else{
+    swal("Please enter a valid amount")
+  }
+  
+}
+const walletDeductFunRemove=()=>
+{
+  console.log(document.getElementById("walletDeductInput").value);
+  document.getElementById("walletDeductInput").value =0;
+  document.getElementById("WalletDeductionAmount").innerText=0;
+  console.log(document.getElementById("walletDeductInput").value);
+}
 
 </script>
 

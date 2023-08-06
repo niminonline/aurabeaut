@@ -79,6 +79,7 @@ const orderSchema = new mongoose.Schema(
     },
     date: {
       type: Date,
+      default: Date.now
     },
     returndate: {
       type: Date,

@@ -60,7 +60,7 @@ const loadCheckout = async (req, res) => {
 
 const placeOrder = async (req, res) => {
   try {
-    const { notes, paymentMode, addressIndex, totalAmount, couponCode } =
+    const { notes, paymentMode, addressIndex, totalAmount, couponCode,walletAmount } =
       req.body;
 
     let discount = req.body.discount;
@@ -101,6 +101,7 @@ const placeOrder = async (req, res) => {
 
     const selectedAddress = userData.address[addressIndex];
 
+
     const order = new Order({
       userId: new ObjectId(req.session.user_id),
       invoiceNumber: invoiceNumber,
@@ -112,14 +113,14 @@ const placeOrder = async (req, res) => {
       discount: discount,
       totalAmount: parseInt(totalAmount) - discount,
       paymentMethod: paymentMode,
-      date: new Date().toISOString().split("T")[0],
+      //date: new Date().toISOString().split("T")[0],
       coupon: couponCode,
       notes: notes,
     });
 
     const saveOrder = await order.save();
     if (saveOrder) {
-      if (paymentMode == "Wallet") {
+      if (walletAmount>0) {
         const amountToPay = parseInt(totalAmount) - discount;
         const userData = await User.findById(req.session.user_id);
         userData.wallet.balance -= amountToPay;
