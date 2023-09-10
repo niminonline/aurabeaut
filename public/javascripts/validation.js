@@ -65,7 +65,7 @@ function handlePassword() {
   }
   else if (!password.match(passwordRegex)) {
     passwordvalid = false
-      document.getElementById("password-error").innerText = "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one digit"
+      document.getElementById("password-error").innerText = "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one digit. No special characters allowed."
   } else {
     passwordvalid = true
       document.getElementById("password-error").innerText = ""

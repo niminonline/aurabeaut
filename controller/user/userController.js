@@ -228,19 +228,7 @@ res.status(404).render("404");  }
 
 const loadHome = async (req, res) => {
   try {
-    // const productData = await Product.aggregate([
-    //     {
-    //         $lookup: {
-    //           from: "categories",
-    //           localField: "category",
-    //           foreignField: "_id",
-    //           as: "categoryDetails",
-    //         },
-    //       },
-    //       {
-    //         $unwind: "$categoryDetails",
-    //       },
-    //   ]);
+ 
      const carouselData =await Carousel.find({});
     const categoryData = await Category.find({ isUnList: false });
     if (req.session.user_id) {
@@ -264,19 +252,7 @@ const loadCart = async (req, res) => {
     const userData = await User.findOne({ _id: req.session.user_id })
       .populate("cart.product")
       .lean();
-    // const userData = await User.aggregate([{
-    //       $match: { _id: id}
-    //     },
-    //   {
-    //     $lookup: {
-    //       from: 'products',
-    //       localField: 'cart.product',
-    //       foreignField: '_id',
-    //       as: 'product'
-    //     }
-    //   }
-    // ])
-    // const productData = await Product.find();
+
 
     let subTotal = 0;
     const sum = userData.cart.map((item) => {
