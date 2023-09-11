@@ -9,7 +9,7 @@ const loginLoad = async (req, res) => {
   try {
     res.render("login");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -26,7 +26,7 @@ const adminLogin = async (req, res) => {
       res.render("login", { message: "Invalid credentials" });
     }
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -96,7 +96,7 @@ const dashboardLoad = async (req, res) => {
 
     res.render("home", { orderToday, PendingCount, salesToday, totalRevenue });
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -121,7 +121,7 @@ const usersLoad = async (req, res) => {
     // });
     res.render("users", { userData: userData });
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -131,7 +131,7 @@ const ordersLoad = async (req, res) => {
   try {
     res.render("products");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -142,7 +142,7 @@ const adminLogout = async (req, res) => {
     // req.session.destroy();
     res.redirect("/admin/");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -170,13 +170,13 @@ const userBlockUnblock = async (req, res) => {
           // res.json(response);
         })
         .catch((err) => {
-          console.log(err.message);
+          console.error(err.message);
           res.status(404).render("404");
         });
     }
     res.redirect("/admin/users");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
