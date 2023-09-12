@@ -12,7 +12,7 @@ const carouselLoad = async(req,res)=>{
 
     }
     catch(err){
-        console.log(err.message);
+        console.error(err.message);
         res.status(404).render("404");
     }
 }
@@ -51,7 +51,7 @@ const addCarousel = async(req,res)=>{
     }
     // ----------------------------
     catch(err){
-        console.log(err.message);
+        console.error(err.message);
     res.status(404).render("404");
     }
 }
@@ -69,7 +69,7 @@ const editCarouselLoad = async(req,res)=>{
     res.render("editCategory");
     }
     catch(err){
-        console.log(err.message);
+        console.error(err.message);
 res.status(404).render("404");
     }
 }
@@ -95,7 +95,7 @@ const editCarousel = async (req, res) => {
             { $set: {title:title,subtitle:subtitle,buttonText:buttonText,buttonLink:buttonLink, imageUrl: result.secure_url } }
           );}
           else{
-            console.log("Error Uploading image to cloudinary");
+            console.error("Error Uploading image to cloudinary");
           }
         } else {
           const carouselData = await Carousel.findByIdAndUpdate(
@@ -107,7 +107,7 @@ const editCarousel = async (req, res) => {
      
       
     } catch (err) {
-      console.log(err.message);
+      console.error(err.message);
   res.status(404).render("404");
     }
   };
@@ -122,7 +122,7 @@ const deleteCarousel = async (req, res) => {
         res.redirect("/admin/carousel")
       
     } catch (err) {
-      console.log(err.message);
+      console.error(err.message);
   res.status(404).render("404");
     }
   };
