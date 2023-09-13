@@ -29,7 +29,7 @@ const editCategoryLoad = async (req, res) => {
     }
     res.render("editCategory");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };
@@ -93,7 +93,7 @@ const editCategory = async (req, res) => {
           { $set: { category: categoryName, imageUrl: result.secure_url } }
         );}
         else{
-          console.log("Error Uploading image to cloudinary");
+          console.error("Error Uploading image to cloudinary");
         }
       } else {
         const categoryData = await Category.findByIdAndUpdate(
@@ -128,7 +128,7 @@ const listUnlistCategory = async (req, res) => {
     res.json("Success");
     // res.redirect("/admin/category");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };

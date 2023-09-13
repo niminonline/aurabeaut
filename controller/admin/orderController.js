@@ -24,7 +24,7 @@ const ordersLoad = async (req, res) => {
 
     res.render("orders", { orderData: orderData });
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -49,7 +49,7 @@ const orderDetailsLoad = async (req, res) => {
       statusData: statusData,
     });
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -69,7 +69,7 @@ const updateOrder = async (req, res) => {
       console.log("Updation failed");
     }
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -115,7 +115,7 @@ const acceptReturn = async (req, res) => {
 
     res.redirect("/admin/return-requests");
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };
@@ -126,7 +126,7 @@ const rejectReturn = async (req, res) => {
     await Order.findByIdAndUpdate(_id,{$set:{status:"Return_Rejected"}});
     res.redirect("/admin/return-requests");
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };

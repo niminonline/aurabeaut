@@ -62,7 +62,6 @@ const dashboardLoad = async (req, res) => {
         },
       },
     ]);
-    // console.log(orderTd, "----",)
     const today = new Date().toLocaleString("en-IN", {
       day: "2-digit",
       month: "2-digit",
@@ -74,7 +73,6 @@ const dashboardLoad = async (req, res) => {
         orderToday = item.count;
       }
     });
-    // console.log("order2day",orderToday);
 
     const salesTd = await Order.aggregate([
       { $match: { status: "Delivered" } },

@@ -8,7 +8,7 @@ const couponsLoad = async (req, res) => {
 
     res.render("coupons", { couponData, couponData });
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };
@@ -38,7 +38,7 @@ const createCoupon = async (req, res) => {
       res.render("coupons", { errorMessage: "Coupon already exist" });
     }
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };
@@ -57,7 +57,7 @@ const couponActions = async (req, res) => {
 
     res.redirect("/admin/coupon-actions");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };
@@ -69,7 +69,7 @@ const deleteCoupon = async (req, res) => {
     await Coupon.findByIdAndDelete(id);
     res.redirect("/admin/coupons");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };
