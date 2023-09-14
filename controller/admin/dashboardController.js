@@ -26,7 +26,7 @@ const getPaymentModes = async (req, res) => {
       Wallet: walletCount,
     });
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -56,7 +56,7 @@ const dailySalesChart = async (req, res) => {
     // console.log(orderData);
     res.json(orderData);
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -139,7 +139,7 @@ const generateSalesReportPDF = async (req, res) => {
     // res.json(orderData);
 
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -159,7 +159,7 @@ const downloadSalesReport = async (req, res) => {
 
 
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };

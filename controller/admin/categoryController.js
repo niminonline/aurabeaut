@@ -61,11 +61,11 @@ const addCategory = async (req, res) => {
         res.render("category", { errorMessage: "Category already exist" });
       }
     } else {
-      console.log("cloudinary upload failed");
+      console.error("cloudinary upload failed");
     }
 
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };
@@ -106,7 +106,7 @@ const editCategory = async (req, res) => {
       res.render("editCategory", { errorMessage: "Category already exist" });
     }
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };

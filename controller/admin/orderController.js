@@ -80,7 +80,7 @@ const returnrequestLoad = async (req, res) => {
     const orderData = await Order.find({ status: "Return_Pending" });
     res.render("returnRequests", { orderData });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };

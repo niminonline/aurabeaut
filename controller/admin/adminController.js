@@ -184,7 +184,7 @@ const salesLoad = async (req, res) => {
   try {
     res.render("sales");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
