@@ -1,5 +1,4 @@
-
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const offer = mongoose.Schema(
   {
@@ -25,9 +24,9 @@ const offer = mongoose.Schema(
     },
     status: {
       type: String,
-      default: 'Inactive',
+      default: "Inactive",
     },
   },
-  { timestamp: true },
+  { timestamp: true }
 );
-module.exports = mongoose.model('offer', offer);
+module.exports = mongoose.model("offer", offer);
