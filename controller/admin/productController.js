@@ -59,7 +59,7 @@ const addProductLoad = async (req, res) => {
 
     res.render("addProduct", { categorydata: categorydata });
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -123,7 +123,7 @@ const addProduct = async (req, res) => {
           res.redirect("/admin/products");
         });
       } else {
-        console.log("Error while uploading images to cloudinary");
+        console.error("Error while uploading images to cloudinary");
       }
     } else {
       res.render("addproduct", {
@@ -159,7 +159,7 @@ const editProduct = async (req, res) => {
             const imageUrls = results.map((result) => result.secure_url);
             return imageUrls;
           } catch (error) {
-            console.log("Upload error:", error);
+            console.error("Upload error:", error);
             return [];
           }
         };
@@ -225,7 +225,7 @@ const editProduct = async (req, res) => {
       res.render("editProduct", { errorMessage: "Product already exist" });
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
@@ -267,7 +267,7 @@ const productListUnlist = async (req, res) => {
     // res.json("Success");
     // // res.redirect("/admin/category");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -332,7 +332,7 @@ const setProductMainImage = async (req, res) => {
 
 //     res.redirect("/admin/products");
 //   } catch (err) {
-//     console.log(err.message);
+//     console.error(err.message);
 // res.status(404).render("404");
 //   }
 //};

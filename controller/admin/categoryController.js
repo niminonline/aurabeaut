@@ -11,7 +11,7 @@ const categoryLoad = async (req, res) => {
       res.render("category", { categoryData: categoryData });
     } else res.render("category", { errorMessage: "No categories found" });
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };

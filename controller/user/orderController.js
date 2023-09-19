@@ -151,7 +151,7 @@ const placeOrder = async (req, res) => {
       // console.log("Failed to add data");
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };
@@ -180,7 +180,7 @@ const orderDetailsLoad = async (req, res) => {
     const orderData = await Order.findById({ _id });
     res.render("orderDetails", { orderData: orderData, userData: userData });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };
