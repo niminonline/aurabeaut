@@ -47,7 +47,7 @@ const editProductLoad = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -84,7 +84,7 @@ const addProduct = async (req, res) => {
           const imageUrls = results.map((result) => result.secure_url);
           return imageUrls;
         } catch (error) {
-          console.log("Upload error:", error);
+          console.error("Upload error:", error);
           return [];
         }
       };
@@ -140,7 +140,7 @@ res.status(404).render("404");  }
 
 const editProduct = async (req, res) => {
   try {
-    console.log("image", req.file);
+    //console.log("image", req.file);
     // console.log("bodyyy", req.body);
     const productName = req.body.category.toUpperCase();
     const id = req.body._id;
@@ -252,7 +252,7 @@ const productListUnlist = async (req, res) => {
 
       // })
       // .catch((err) => {
-      //   console.log(err.message);
+      //   console.error(err.message);
       res.status(404).render("404");
       // });
     }

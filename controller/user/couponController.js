@@ -28,7 +28,7 @@ const applyCoupon = async (req, res) => {
       total: total,
     });
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };

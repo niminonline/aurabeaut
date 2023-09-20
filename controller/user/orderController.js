@@ -51,7 +51,7 @@ const loadCheckout = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };
