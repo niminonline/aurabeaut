@@ -203,7 +203,7 @@ const editProduct = async (req, res) => {
             }
           );
         } else {
-          console.log("Error while uploading images to cloudinary");
+          console.error("Error while uploading images to cloudinary");
         }
       } else {
         const productData = await Product.findByIdAndUpdate(

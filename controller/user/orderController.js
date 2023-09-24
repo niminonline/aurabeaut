@@ -166,7 +166,7 @@ const ordersLoad = async (req, res) => {
     });
     res.render("orders", { orderData: orderData, userData: userData });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };
@@ -243,7 +243,7 @@ const downloadInvoice = async (req, res) => {
         },
         function (error, order) {
           if (error) {
-            console.log(error);
+            console.error(error);
             res.status(500).json({ error: "Failed to create Razorpay order" });
           } else {
             order.userName = userData.name;
@@ -254,7 +254,7 @@ const downloadInvoice = async (req, res) => {
         }
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).send("Payment creation failed");
     }
   };
@@ -302,7 +302,7 @@ const pgOrder = async (req, res) => {
       res.sendStatus(500);
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };
