@@ -214,7 +214,7 @@ const downloadInvoice = async (req, res) => {
 
     res.download(outputFilePath, "invoice.pdf", (downloadError) => {
       if (downloadError) {
-        console.log("Error downloading invoice PDF:", downloadError);
+        console.error("Error downloading invoice PDF:", downloadError);
         res.status(500).send("Error downloading invoice PDF");
       }
       fs.unlinkSync(outputFilePath);
@@ -382,7 +382,7 @@ const cancelOrder = async (req, res) => {
     await Order.findByIdAndUpdate(_id, { $set: { status: "Cancelled" } });
     res.json(200);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };
@@ -424,7 +424,7 @@ const walletBalanceCheck = async (req, res) => {
       res.json({ status: "failed" });
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };

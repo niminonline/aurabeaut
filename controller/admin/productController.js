@@ -303,7 +303,7 @@ const deleteProductImage = async (req, res) => {
       res.sendstatus(500);
     }
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
