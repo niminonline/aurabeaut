@@ -148,7 +148,7 @@ const placeOrder = async (req, res) => {
       const orderData = await Order.findOne({ invoiceNumber: invoiceNumber });
       res.json(orderData);
     } else {
-      // console.log("Failed to add data");
+      // console.error("Failed to add data");
     }
   } catch (error) {
     console.error(error.message);
@@ -298,7 +298,7 @@ const pgOrder = async (req, res) => {
         res.sendStatus(500);
       }
     } else {
-      // console.log("Payment failed");
+      // console.error("Payment failed");
       res.sendStatus(500);
     }
   } catch (error) {
@@ -319,7 +319,7 @@ const orderSuccess = async (req, res) => {
       userData: userData,
     });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };
@@ -352,7 +352,7 @@ const returnPending = async (req, res) => {
       .then(res.json(200))
       
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
