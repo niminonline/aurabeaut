@@ -30,7 +30,6 @@ const loadAllProducts = async (req, res) => {
     if (search !== "") {
       // query.name =  search;
       query.name = { $regex: ".*" + search + ".*", $options: "i" };
-      console.log("ifff");
     }
 
     const page = req.query.page || 1;
@@ -96,7 +95,7 @@ const loadProduct = async (req, res) => {
       res.render("product", { productData: productData });
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");
   }
 };

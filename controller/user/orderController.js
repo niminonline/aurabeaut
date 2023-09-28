@@ -335,7 +335,7 @@ const orderFailure = async (req, res) => {
       errorMessage: errorMessage,
     });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(404).render("404");
   }
 };
