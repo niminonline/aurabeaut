@@ -118,7 +118,7 @@ const resetPassword = async (req, res) => {
     }
    
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -129,7 +129,7 @@ const submitOTP = (req, res) => {
   try {
     res.redirect("resetPassword");
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 //===============================Store signup details==================
@@ -153,7 +153,7 @@ const storeSignUpDetails = async (req, res) => {
       res.render("signup", { message: "User already exists" });
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
@@ -190,7 +190,7 @@ const insertUser = async (req, res) => {
     //   res.render("signup", { message: "Registration Failed" });
     // }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -201,7 +201,7 @@ const logout = async (req, res) => {
     // req.session.destroy();
     res.redirect("/login");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -211,7 +211,7 @@ const loadSignUp = (req, res) => {
   try {
     res.render("signup", { message: "" });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
