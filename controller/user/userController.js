@@ -300,7 +300,7 @@ const loadUserDashboard = async (req, res) => {
     const userData = await User.findOne({ _id: req.session.user_id });
     res.render("userDashboard", { userData: userData, orderData: orderData });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
@@ -378,7 +378,7 @@ const addToWishlist = async (req, res) => {
 
     // res.redirect(req.headers.referer);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
@@ -390,7 +390,7 @@ const addAddressLoad = async (req, res) => {
 
     res.render("addAddress", { userData: userData });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
@@ -429,7 +429,7 @@ const addAddress = async (req, res) => {
 
     // res.render("addAddress",{userData:userData});
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
