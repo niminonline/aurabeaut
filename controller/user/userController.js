@@ -342,7 +342,7 @@ const addToCart = async (req, res) => {
       // res.redirect(req.headers.referer);
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
@@ -445,7 +445,7 @@ const removeCartItem = async (req, res) => {
       { $pull: { cart: { product: id } } }
     ).then(res.json(200));
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
@@ -520,7 +520,7 @@ const quantityUpdate = async (req, res) => {
       res.json({ stocklimit: "stocklimit" });
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
@@ -544,7 +544,7 @@ const updateAddress = async (req, res) => {
     });
     res.redirect(req.headers.referer);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
@@ -558,7 +558,7 @@ const deleteAddress = async (req, res) => {
     ),
       res.redirect(req.headers.referer);
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -571,7 +571,7 @@ const removeWishlistItem = async (req, res) => {
       $pull: { wishlist: new ObjectId(id) },
     }).then(res.json(200));
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -580,7 +580,7 @@ const pageNotFound = async (req, res) => {
   try {
     res.render("404");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
