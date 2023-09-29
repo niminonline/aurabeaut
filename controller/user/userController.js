@@ -90,7 +90,7 @@ const sendOTP = async(req, res) => {
     }
 
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -101,7 +101,7 @@ const resetPasswordLoad = (req, res) => {
   try {
     res.render("resetPassword");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -220,7 +220,7 @@ const loadSignUpOtp = (req, res) => {
   try {
     res.render("verifySignUpOtp");
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
@@ -239,7 +239,7 @@ const loadHome = async (req, res) => {
       res.render("home", { categoryData: categoryData,carouselData });
     }
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -261,7 +261,7 @@ const loadCart = async (req, res) => {
     });
     res.render("cart", { userData: userData, subTotal: subTotal });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");  }
 };
 
