@@ -201,7 +201,7 @@ const handleSort =(option)=>{
 
 const handlePage=(event,currentPage,totalPages)=>{
     let pageNumber= event.target.innerText;
-    console.log("Page ",currentPage);
+    // console.log("Page ",currentPage);
     if(pageNumber=="Previous"){
         if(currentPage=='1'){
             pageNumber= parseInt(currentPage);
@@ -216,7 +216,7 @@ const handlePage=(event,currentPage,totalPages)=>{
         pageNumber= parseInt(currentPage)+1;
     }
     }
-    console.log("Page num",pageNumber);
+    // console.log("Page num",pageNumber);
     
     const url = new URL(window.location.href);
     url.searchParams.set('page', pageNumber);
@@ -226,7 +226,7 @@ const handlePage=(event,currentPage,totalPages)=>{
 
 const handleCat=(catId)=>{
 
-   console.log("cat",catId);
+//    console.log("cat",catId);
     const url = new URL(window.location.href);
     url.searchParams.set('cat', catId);
     window.location.href = url.toString();
