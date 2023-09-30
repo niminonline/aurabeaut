@@ -14,7 +14,7 @@ const loginLoad = async (req, res) => {
   try {
     res.render("login");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -25,7 +25,7 @@ const forgetPasswordLoad = (req, res) => {
   try {
     res.render("forgetPassword");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -36,7 +36,7 @@ const verifyRPOtpLoad = (req, res) => {
   try {
     res.render("verifyResetPassOtp");
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
@@ -65,7 +65,7 @@ const verifyLogin = async (req, res) => {
       res.render("login", { message: "User not found" });
     }
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(404).render("404");
   }
 };
