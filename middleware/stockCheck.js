@@ -36,7 +36,7 @@ const stockCheck = async (req, res,next) => {
      }
     }
     catch(err){
-        console.log(errr)
+        console.error(errr)
     }
 }
 module.exports={stockCheck}

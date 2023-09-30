@@ -23,7 +23,7 @@ async function verifyEmail(email, otp) {
     const result = await transporter.sendMail(mailOptions);
     // console.log(result);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");
   }
 }
@@ -33,7 +33,7 @@ const generateOtp = () => {
     const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
     return otp;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
 res.status(404).render("404");
   }
 };
@@ -45,7 +45,7 @@ const hashPassword = async (password) => {
     const passwordHash = await bcrypt.hash(password, 10);
     return await bcrypt.hash(password, 10);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
 res.status(404).render("404");
   }
 };
