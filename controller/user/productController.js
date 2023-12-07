@@ -34,7 +34,7 @@ const loadAllProducts = async (req, res) => {
 
     const page = req.query.page || 1;
 
-    const limit = 4;
+    const limit = 12;
     const totalPages = Math.ceil((await Product.countDocuments(query)) / limit);
 
     // if(page>totalPages){
