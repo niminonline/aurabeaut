@@ -58,14 +58,16 @@ const handlePhoneChange=()=>
 
 function handlePassword() {
   let password = document.getElementById("password").value;
-  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+  // const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z" !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"]{8,}$/;
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z" !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~]{8,}$/;
+
   if (!password) {
     passwordvalid = false
       document.getElementById("password-error").innerText = "Password is required"
   }
   else if (!password.match(passwordRegex)) {
     passwordvalid = false
-      document.getElementById("password-error").innerText = "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one digit. No special characters allowed."
+      document.getElementById("password-error").innerText = "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one digit and a special character."
   } else {
     passwordvalid = true
       document.getElementById("password-error").innerText = ""
