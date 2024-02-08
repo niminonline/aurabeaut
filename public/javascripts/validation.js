@@ -59,7 +59,7 @@ const handlePhoneChange=()=>
 function handlePassword() {
   let password = document.getElementById("password").value;
   // const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z" !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"]{8,}$/;
-  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z" !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~]{8,}$/;
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])[^\s]{8,}$/;
 
   if (!password) {
     passwordvalid = false
